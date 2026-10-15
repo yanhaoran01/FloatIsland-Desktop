@@ -1,0 +1,102 @@
+/* FloatIsland - https://github.com/JNTMTMTM/eIsland. Copyright (C) 2026 FloatIsland contributors. GPL-3.0. */
+/**
+ * @file floatGuide.css
+ * @description 首次使用引导：单列居中、留白充足、中性配色；步骤切换只用短促的淡入位移，窗口几何保持不变。
+ * @author 鸡哥
+ */
+.island-shell[data-island-state=guide] { width: 100vw !important; height: 100vh !important; max-width: none !important; padding: 0 !important; }
+
+.island-shell .float-guide {
+  position: relative; display: flex; flex-direction: column; box-sizing: border-box; width: 100%; height: 100%;
+  padding: 20px 28px; overflow: hidden; color: var(--ui-text); background: var(--ui-bg); font-family: var(--fi-font);
+}
+
+/* ===================== 页眉与页脚 ===================== */
+.island-shell .float-guide > header, .island-shell .float-guide > footer { display: flex; align-items: center; justify-content: space-between; flex: none; background: transparent; }
+.island-shell .float-guide .float-guide-brand { display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 500; color: var(--ui-muted); }
+.island-shell .float-guide .float-guide-brand img { border-radius: 5px; }
+.island-shell .float-guide button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 34px; padding: 6px 14px; border: 0; border-radius: 10px; font: inherit; font-size: 13px; color: var(--ui-muted); background: transparent; cursor: pointer; transition: background .2s, color .2s, opacity .2s, transform .2s var(--fs-ease); }
+.island-shell .float-guide button:hover:not(:disabled) { color: var(--ui-text); background: var(--fs-surface-2); }
+.island-shell .float-guide button:active:not(:disabled) { transform: scale(.97); }
+.island-shell .float-guide button:disabled { opacity: .3; cursor: default; }
+.island-shell .float-guide button:focus-visible, .island-shell .float-guide input:focus-visible { outline: 2px solid var(--fs-accent); outline-offset: 2px; }
+.island-shell .float-guide > footer { padding-top: 12px; }
+.island-shell .float-guide > footer .float-guide-next { min-width: 108px; color: var(--fs-accent-ink) !important; background: var(--fs-grad) !important; font-weight: 600; }
+.island-shell .float-guide > footer .float-guide-next:hover:not(:disabled) { filter: brightness(1.06); }
+.island-shell .float-guide .float-guide-next svg { transition: transform .25s var(--fs-ease); }
+.island-shell .float-guide .float-guide-next:hover:not(:disabled) svg { transform: translateX(2px); }
+.island-shell .float-guide .float-guide-dots { display: flex; gap: 6px; }
+.island-shell .float-guide .float-guide-dots span { width: 6px; height: 6px; border-radius: 99px; background: var(--fs-surface-3); transition: width .35s var(--fs-ease), background .3s; }
+.island-shell .float-guide .float-guide-dots span[data-done=true] { background: var(--fs-line-2); }
+.island-shell .float-guide .float-guide-dots span[data-active=true] { width: 20px; background: var(--ui-text); }
+.island-shell .float-guide .float-guide-error { margin: 0 0 8px; text-align: center; font-size: 12px; color: var(--ui-danger); }
+
+/* ===================== 舞台 ===================== */
+@keyframes float-guide-in { from { opacity: 0; transform: translateX(calc(var(--dir, 1) * 16px)); } to { opacity: 1; transform: none; } }
+@keyframes float-guide-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.island-shell .float-guide .float-guide-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; flex: 1; min-height: 0; padding: 12px 0; overflow: auto; scrollbar-width: none; text-align: center; }
+.island-shell .float-guide .float-guide-stage > * { flex: none; animation: float-guide-in .45s var(--fs-ease) both; }
+.island-shell .float-guide .float-guide-stage > :nth-child(2) { animation-delay: 40ms; }
+.island-shell .float-guide .float-guide-stage > :nth-child(3) { animation-delay: 80ms; }
+.island-shell .float-guide .float-guide-stage > :nth-child(4) { animation-delay: 120ms; }
+.island-shell .float-guide .float-guide-copy { display: flex; flex-direction: column; align-items: center; gap: 8px; max-width: 420px; }
+.island-shell .float-guide .float-guide-copy h1 { margin: 0; font: 650 24px/1.25 var(--fi-font-display); letter-spacing: -.01em; color: var(--ui-text); background: none; -webkit-text-fill-color: currentColor; }
+.island-shell .float-guide .float-guide-copy p { margin: 0; font-size: 13px; line-height: 1.7; color: var(--ui-muted); }
+/* 第 1 步：应用图标 */
+.island-shell .float-guide .float-guide-mark { width: clamp(72px, 18vh, 104px); aspect-ratio: 1; filter: drop-shadow(0 14px 24px #00000059); animation: float-guide-in .45s var(--fs-ease) both, float-guide-float 5s 0.5s ease-in-out infinite; }
+.island-shell .float-guide .float-guide-mark img { display: block; width: 100%; height: 100%; }
+
+/* 分段选择器 */
+.island-shell .float-guide .float-guide-segmented { position: relative; isolation: isolate; display: inline-flex; gap: 0; padding: 3px; border-radius: 12px; background: var(--fs-surface); box-shadow: inset 0 0 0 1px var(--fs-line); }
+.island-shell .float-guide .float-guide-segmented button { min-width: 76px; min-height: 30px; padding: 4px 14px; border-radius: 9px; background: transparent !important; color: var(--ui-muted); }
+.island-shell .float-guide .float-guide-segmented button[aria-pressed=true] { color: var(--ui-text); font-weight: 600; }
+.island-shell .float-guide .fi-segmented::before { content: ""; position: absolute; z-index: -1; left: 0; top: 0; width: var(--indicator-w, 0); height: var(--indicator-h, 0); opacity: var(--indicator-o, 0); transform: translate(var(--indicator-x, 0), var(--indicator-y, 0)); border-radius: 9px; background: var(--fs-surface-3); pointer-events: none; }
+.island-shell .float-guide .fi-segmented[data-indicator=ready]::before { transition: transform .35s var(--fs-ease), width .35s var(--fs-ease), opacity .2s; }
+.island-shell .float-guide .float-guide-segmented:not([data-indicator=ready]) button[aria-pressed=true] { background: var(--fs-surface-3) !important; }
+
+/* 第 2 步：停靠预览与快捷键 */
+.island-shell .float-guide .float-guide-desktop { position: relative; width: min(300px, 100%); height: 140px; overflow: hidden; border-radius: 14px; background: var(--fs-surface); box-shadow: inset 0 0 0 1px var(--fs-line); }
+.island-shell .float-guide .float-guide-window { position: absolute; border-radius: 6px; background: var(--fs-surface-2); }
+.island-shell .float-guide .float-guide-window:nth-of-type(1) { left: 34px; top: 34px; width: 120px; height: 72px; }
+.island-shell .float-guide .float-guide-window:nth-of-type(2) { right: 34px; top: 52px; width: 96px; height: 58px; }
+.island-shell .float-guide .float-guide-dock-preview { position: absolute; display: flex; align-items: center; justify-content: center; gap: 4px; left: 110px; top: 0; width: 80px; height: 18px; border-radius: 0 0 10px 10px; background: var(--ui-text); transition: left .45s var(--fs-ease), top .45s var(--fs-ease), width .45s var(--fs-ease), height .45s var(--fs-ease), border-radius .35s var(--fs-ease); }
+.island-shell .float-guide .float-guide-dock-preview span { width: 4px; height: 4px; border-radius: 2px; background: var(--ui-bg); }
+.island-shell .float-guide .float-guide-desktop:is([data-edge=left], [data-edge=right]) .float-guide-dock-preview { top: 30px; width: 18px; height: 80px; flex-direction: column; }
+.island-shell .float-guide .float-guide-desktop[data-edge=left] .float-guide-dock-preview { left: 0; border-radius: 0 10px 10px 0; }
+.island-shell .float-guide .float-guide-desktop[data-edge=right] .float-guide-dock-preview { left: calc(100% - 18px); border-radius: 10px 0 0 10px; }
+.island-shell .float-guide .float-guide-shortcuts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: min(440px, 100%); text-align: left; }
+.island-shell .float-guide .float-guide-key { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 12px 14px; border-radius: 12px; cursor: text; background: var(--fs-surface); box-shadow: inset 0 0 0 1px var(--fs-line); transition: box-shadow .2s, background .2s; }
+.island-shell .float-guide .float-guide-key:focus-within { background: var(--fs-surface-2); box-shadow: inset 0 0 0 1px rgba(var(--fs-glow), .55); }
+.island-shell .float-guide .float-guide-key > span:first-child { font-size: 11.5px; color: var(--ui-muted); }
+.island-shell .float-guide .float-guide-keycaps { display: flex; flex-wrap: wrap; gap: 5px; min-height: 26px; }
+.island-shell .float-guide .float-guide-keycaps kbd { display: inline-grid; place-items: center; min-width: 26px; height: 26px; padding: 0 8px; box-sizing: border-box; border-radius: 7px; font: 600 11.5px/1 var(--fi-font); color: var(--ui-text); background: var(--fs-surface-3); box-shadow: inset 0 -1px 0 #0000004d; }
+.island-shell .float-guide .float-guide-key input { position: relative; width: 100%; height: 32px; padding: 4px 8px; opacity: 1; }
+
+/* 第 3 步：角色登场 */
+.island-shell .float-guide .float-guide-companion { position: relative; display: grid; place-items: center; width: clamp(96px, 24vh, 140px); aspect-ratio: 1; }
+.island-shell .float-guide .float-guide-companion .fusion-pet { position: relative; z-index: 1; width: 100%; height: 100%; animation: float-guide-float 4.8s ease-in-out infinite; }
+.island-shell .float-guide .float-guide-halo { position: absolute; inset: 4%; border-radius: 50%; background: radial-gradient(circle, #ffffff10, transparent 68%); filter: blur(10px); }
+.island-shell .float-guide .float-guide-capabilities { display: flex; flex-direction: column; width: min(360px, 100%); margin: 0; padding: 0; list-style: none; text-align: left; }
+.island-shell .float-guide .float-guide-capabilities li { display: flex; align-items: center; gap: 12px; padding: 10px 2px; animation: float-guide-in .45s var(--fs-ease) both; animation-delay: calc(120ms + var(--i, 0) * 50ms); }
+.island-shell .float-guide .float-guide-capabilities li + li { border-top: 1px solid var(--fs-line); }
+.island-shell .float-guide .float-guide-capabilities span { display: grid; place-items: center; flex: none; width: 32px; height: 32px; border-radius: 9px; color: var(--ui-text); background: var(--fs-surface-2); }
+.island-shell .float-guide .float-guide-capabilities div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.island-shell .float-guide .float-guide-capabilities strong { font-size: 13px; font-weight: 600; }
+.island-shell .float-guide .float-guide-capabilities small { font-size: 12px; color: var(--ui-muted); }
+
+/* ===================== 小窗口 ===================== */
+@media (max-height: 480px) {
+  .island-shell .float-guide { padding: 14px 22px; }
+  .island-shell .float-guide .float-guide-stage { gap: 14px; }
+  .island-shell .float-guide .float-guide-desktop { height: 104px; }
+  .island-shell .float-guide .float-guide-copy h1 { font-size: 20px; }
+  .island-shell .float-guide .float-guide-capabilities li { padding: 6px 2px; }
+}
+@media (max-width: 639px) {
+  .island-shell .float-guide .float-guide-shortcuts { grid-template-columns: minmax(0,1fr); gap:8px; }
+  .island-shell .float-guide .float-guide-key { flex-direction:row; align-items:center; gap:12px; padding:12px; }
+  .island-shell .float-guide .float-guide-key > span { flex:0 0 100px; margin:0; }
+  .island-shell .float-guide .float-shortcut-control { flex:1; width:auto; }
+}
+:root[data-fi-reduced-motion=true] .island-shell .float-guide *, :root[data-fi-reduced-motion=true] .island-shell .float-guide *::before { animation-duration: 1ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+@media (prefers-reduced-motion: reduce) { .island-shell .float-guide *, .island-shell .float-guide *::before { animation-duration: 1ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; } }

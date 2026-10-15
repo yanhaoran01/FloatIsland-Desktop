@@ -1,0 +1,89 @@
+/* FloatIsland: compact entries and one context toolbar. */
+.island-shell .fusion-session-menu{position:relative}
+.island-shell .fusion-session-popover{width:300px!important;min-width:0!important;max-width:calc(100vw - 24px)!important;right:0!important;left:auto!important;top:calc(100% + 8px)!important;padding:12px!important;border-radius:12px!important;gap:8px!important;box-shadow:0 12px 36px #0005!important;background:#1c1d20!important}
+.island-shell .fusion-session-popover>label{display:grid!important;grid-template-columns:48px minmax(0,1fr)!important;align-items:center;gap:8px!important;font-size:12px!important;line-height:32px;margin:0!important}
+.island-shell .fusion-session-popover select{width:100%;height:32px!important;min-height:32px!important;font-size:12px!important;padding:0 8px!important;border-radius:7px!important;background:#ffffff05!important;color:#e5e7eb!important;box-shadow:none!important}
+.island-shell .fusion-session-popover>.fusion-tool-actions{display:flex;justify-content:flex-end;gap:4px!important;border-top:1px solid #ffffff09;padding-top:8px;margin:4px 0 0!important}
+.island-shell .fusion-session-popover>.fusion-tool-actions>button{width:32px!important;height:32px!important;min-height:32px!important;padding:0!important;display:grid;place-items:center;border:0!important;border-radius:7px!important;background:transparent!important;transform:none!important}
+.island-shell .fusion-session-popover>.fusion-tool-actions>button:hover{background:#ffffff0b!important}
+.island-shell .fusion-tools-panel{padding:8px 4px!important;gap:0!important;min-height:0;overflow:hidden}
+.island-shell .fusion-tools-home{width:100%;flex:1;min-height:0;overflow:auto;padding:12px 8px!important}
+.island-shell .fusion-tools-home>.fusion-tool-group{max-width:680px!important;margin:8px auto!important}
+.island-shell .fusion-tools-panel .fusion-tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+.island-shell .fusion-tools-panel .fusion-tool-card{display:flex!important;flex-direction:row!important;justify-content:flex-start!important;align-items:center!important;height:64px!important;min-height:64px!important;padding:0 18px!important;gap:14px!important;border:1px solid #ffffff05!important;background:#ffffff02!important}
+.island-shell .fusion-tools-panel .fusion-tool-card>span{flex:0 0 28px}
+.island-shell .fusion-tools-panel .fusion-tool-card strong{font-size:13px!important;font-weight:500!important;text-align:left}
+.island-shell .fusion-tools-panel .fusion-tool-content{padding:0!important;overflow:hidden!important;height:100%;flex:1;min-height:0}
+.fusion-tool-frame{display:flex;flex-direction:column;min-height:0;height:100%;container-type:inline-size}
+.fusion-tool-toolbar{height:40px;min-height:40px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #ffffff09;margin:0 6px}
+.fusion-tool-toolbar>.fusion-icon-button{width:32px!important;height:32px!important;flex:0 0 32px;padding:0!important;background:transparent!important}
+.fusion-tool-modes{display:flex;align-items:center;gap:6px;min-width:0;flex:1;overflow-x:auto;scrollbar-width:none}
+.fusion-tool-commands{display:flex;align-items:center;gap:4px;flex-shrink:0;min-width:0;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.fusion-tool-toolbar .fusion-product-tabs,.fusion-tool-toolbar .fusion-tool-actions{display:flex;flex-wrap:nowrap!important;gap:4px;margin:0!important;padding:0!important;min-height:32px}
+.island-shell .fusion-tool-toolbar :is(button,select){height:32px!important;min-height:32px!important;min-width:32px;border-radius:6px!important;font-size:12px!important;padding:0 9px!important;white-space:nowrap;background:transparent!important;border:0!important;box-shadow:none!important}
+.island-shell .fusion-tool-toolbar button:hover,.island-shell .fusion-tool-toolbar button[aria-pressed=true]{background:#ffffff0b!important}
+.island-shell .fusion-tool-toolbar button:focus-visible{outline:1px solid #c8cdd5;outline-offset:-2px}
+.fusion-tool-scroll{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:16px 12px;flex-direction:column;min-width:0}
+.fusion-tool-input-actions{display:flex;align-items:center;flex-wrap:wrap;gap:10px;flex:0 0 auto;margin-bottom:12px;color:var(--fusion-muted);font-size:11px}
+.fusion-tool-input-actions>button{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--fusion-line);background:var(--fusion-panel);color:var(--fusion-ink);cursor:pointer}
+.island-shell .fusion-tool-scroll .fusion-utility{min-height:0;gap:12px!important;display:flex;flex-direction:column;width:100%}
+.island-shell .fusion-tool-scroll :is(input,select){min-height:32px!important;border-radius:7px!important;font-size:12px}
+.island-shell .fusion-tool-scroll :is(button,.fusion-file-button){min-height:32px!important;font-size:12px!important;box-shadow:none!important;border-radius:7px!important}
+.fusion-form-focus{width:min(100%,480px);margin:12px auto;display:flex;flex-direction:column;gap:16px}
+.fusion-form-focus form{width:100%}.fusion-form-focus label{display:flex;flex-direction:column;gap:7px}
+.fusion-tool-busy{width:10px;height:10px;border-radius:50%;background:#c8cdd5;opacity:.6}
+.fusion-tool-editors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;min-height:240px;height:100%}
+.fusion-tool-editors:not(:has(>.fusion-editor-pane:nth-of-type(2))),.fusion-tool-editors[data-narrow=true]{grid-template-columns:1fr}
+.fusion-editor-pane{min-width:0;min-height:0;display:flex;flex-direction:column;gap:10px;overflow:hidden}
+.fusion-editor-pane>div:first-child{flex:1;min-height:0}
+.fusion-editor-pane label{display:flex;flex-direction:column;min-height:0;gap:6px}
+.fusion-editor-pane textarea{flex:1;height:100%;min-height:200px;resize:none;overflow:auto}
+.fusion-tool-single{display:flex;flex-direction:column;min-height:0}.fusion-tool-single>label{flex:1}
+.island-shell .fusion-tool-result{position:relative;display:flex;flex-direction:column;min-height:0;padding:12px!important;background:#ffffff02!important;border:1px solid #ffffff07!important;border-radius:9px!important;overflow:hidden}
+.fusion-tool-result>pre{flex:1;min-height:0;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;margin:0;padding:0 0 36px}
+.fusion-tool-result>.fusion-tool-actions{position:static;flex:0 0 auto;justify-content:flex-end;margin:8px 0 0;gap:6px}
+.fusion-tool-result>.fusion-tool-actions>button{padding:4px 8px!important;display:inline-flex;align-items:center;gap:5px;background:transparent!important;border:0!important}
+.fusion-tool-stats{font-size:11px;color:#969ba5;flex-shrink:0}
+.fusion-inline-options summary{font-size:12px;color:#969ba5;cursor:pointer}.fusion-inline-options>.fusion-tool-row{margin-top:8px}
+.fusion-tool-frame[data-presentation=editor]>.fusion-tool-scroll:has(.fusion-tool-editors){overflow:hidden;display:flex}
+.fusion-tool-frame[data-presentation=editor]>.fusion-tool-scroll:has(.fusion-tool-editors)>.fusion-utility{flex:1}
+.fusion-note-layout{flex:1;min-height:280px;grid-template-columns:160px minmax(0,1fr)!important}.fusion-note-layout>nav{overflow:auto;min-height:0}.fusion-note-editor{min-height:0}
+.fusion-avatar-preview{height:220px!important}.fusion-avatar-preview>.fusion-pet{width:220px!important;height:220px!important}
+.island-shell .fusion-voice-character>.fusion-pet{width:240px!important;height:240px!important}
+.fusion-avatar-thumb{border-radius:10px;overflow:hidden}
+@container(max-width:639px){.fusion-tool-editors .fusion-tool-columns{grid-template-columns:1fr}.fusion-editor-pane textarea{min-height:130px}.fusion-note-layout{grid-template-columns:112px minmax(0,1fr)!important}.fusion-tool-commands{max-width:100%}}
+
+
+.island-shell .fusion-utility button{transform:none!important;transition:background 120ms,color 120ms!important}
+.fusion-note-layout[data-list-open=false]{grid-template-columns:1fr!important}
+.fusion-focus-companion>.fusion-pet{width:240px!important;height:240px!important;animation:none!important}
+.island-shell .fusion-avatar-thumb>.fusion-pet{width:100%;height:100%}
+.fusion-tool-frame[data-presentation=canvas] .fusion-image-stage{min-height:220px;flex:1}
+.fusion-tool-frame[data-presentation=media]>.fusion-tool-scroll{padding:0;overflow:hidden;display:flex}
+.fusion-tool-frame[data-presentation=media] .fusion-web-tool{width:100%;flex:1;min-height:0}
+.fusion-tool-frame[data-presentation=media] .fusion-web-slot{flex:1;min-height:0}
+.fusion-tool-frame .settings-cards{gap:12px}
+.fusion-tool-frame .settings-card{border:0;background:transparent;padding:0}
+.fusion-tool-frame .settings-card-subtitle{font-size:11px}
+.fusion-tool-submode:not([hidden]){display:flex;flex-direction:column;min-width:0;min-height:0;flex:1;width:100%}.fusion-tool-submode[hidden]{display:none!important}
+.fusion-tool-submode>.fusion-product-preview{flex:1;min-height:0}
+.fusion-tool-frame:has(.fusion-web-tool) .fusion-tool-modes>.fusion-product-tabs{width:100%}
+.fusion-web-address-compact{flex:1;width:100%;gap:2px!important;min-width:0}
+.island-shell .fusion-web-address-compact input{height:30px;padding:4px 8px;font-size:12px;border:0;background:#ffffff05;border-radius:6px}
+.fusion-web-tool{gap:6px!important}.fusion-web-tool>small{font-size:10px}
+.fusion-web-bookmark{display:flex;min-width:0;gap:2px}.fusion-web-bookmark>button:first-child{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fusion-web-bookmark>button:last-child{width:32px;flex:0 0 32px;padding:0;justify-content:center}
+.island-shell .fusion-tool-scroll .fusion-form-focus{margin:4px auto;gap:10px}
+.island-shell .fusion-tool-scroll .fusion-color-preview{height:48px;min-height:48px}
+.island-shell .fusion-tool-scroll .fusion-tool-result{padding:8px!important}
+.fusion-tool-editors .fusion-editor-pane:has(>.fusion-tool-result)>.fusion-tool-result{flex:1}
+.island-shell .fusion-utility input[type=checkbox]{width:14px!important;height:14px!important;min-height:14px!important;flex:0 0 14px;padding:0!important;accent-color:#c8cdd5}
+.fusion-tool-frame[data-presentation=editor]>.fusion-tool-scroll:has(.fusion-tool-editors) .fusion-tool-submode:not([hidden]){flex:1;min-height:0}
+.fusion-tool-frame[data-presentation=editor]>.fusion-tool-scroll:has(.fusion-tool-editors) .fusion-encoding-entry{display:flex;flex:1;min-height:0}
+.fusion-tool-frame[data-presentation=editor]>.fusion-tool-scroll:has(.fusion-tool-editors) .fusion-tool-submode>.fusion-utility,.fusion-tool-frame[data-presentation=editor]>.fusion-tool-scroll:has(.fusion-tool-editors) .fusion-encoding-entry>.fusion-utility{flex:1;min-height:0}
+
+
+.float-reference-import{display:grid;gap:8px;margin:10px 0 14px}.float-reference-import .fusion-tool-actions{flex-wrap:wrap}.float-torrent-drop{display:grid;gap:12px}.float-torrent-drop textarea{min-height:88px;width:100%;resize:vertical}.float-torrent-preview{display:grid;gap:8px;padding:12px;border:1px solid var(--fi-line);border-radius:12px}.float-torrent-tree{max-height:230px;overflow:auto}.float-torrent-folder,.float-torrent-file{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12px}.float-torrent-file span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.float-torrent-file small{opacity:.65}.float-torrent-children{padding-left:18px}
+
+.float-download-filter{display:flex;gap:8px;margin-bottom:8px}.float-download-filter input{flex:1;min-width:0}.float-download-batch{flex-wrap:wrap;margin-bottom:10px}.float-download-batch label{display:flex;align-items:center;gap:6px;font-size:12px}.float-download-settings{font-size:12px;margin-bottom:14px}.float-download-settings .fusion-product-options{display:flex;flex-wrap:wrap;gap:12px;padding:12px 0}.float-download-settings input[type=number]{max-width:110px}.fusion-download-task-heading .fusion-tool-actions{flex-wrap:wrap}.fusion-download-task-heading .fusion-tool-actions span{font-size:11px}
+
+.float-download-start{display:grid;gap:12px}.float-download-start textarea{min-height:100px;resize:vertical;width:100%}.float-download-preview{display:flex;align-items:center;gap:8px;border:1px solid var(--fi-line);border-radius:10px;padding:10px}.float-download-preview>div{display:grid;gap:4px;min-width:0;flex:1}.float-download-preview strong{font-size:12px}.float-download-preview small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:.6}.float-download-preview>span{font-size:11px;opacity:.65}

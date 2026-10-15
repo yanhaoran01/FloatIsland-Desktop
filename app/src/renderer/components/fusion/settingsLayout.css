@@ -1,0 +1,21 @@
+/* FloatIsland - https://github.com/yanhaoran01/FloatIsland. Copyright (C) 2026 contributors. GPL-3.0. */
+/** @file settingsLayout.css @description Bounded settings scrolling and consistent accessible switches. @author 鸡哥 */
+.fusion-settings.fusion-settings{box-sizing:border-box;height:100%;min-height:0;min-width:0;overflow:hidden}
+.fusion-settings.fusion-settings>aside{box-sizing:border-box;flex:0 0 164px;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:12px 8px;gap:4px}
+.fusion-settings.fusion-settings>aside button{flex:none;min-height:36px;white-space:normal;line-height:1.4}
+.fusion-settings.fusion-settings>.fusion-settings-body{box-sizing:border-box;flex:1;min-height:0;min-width:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-gutter:stable;padding:16px 18px!important;animation:none}
+.fusion-settings.fusion-settings .fusion-setting-row{box-sizing:border-box;min-height:48px;padding:8px 0;gap:16px;align-items:center;cursor:pointer}
+.fusion-settings.fusion-settings .fusion-setting-row>span{flex:1;min-width:0;line-height:1.5}
+.fusion-settings.fusion-settings .fusion-setting-row input[type=checkbox]{appearance:none;position:relative;box-sizing:border-box;flex:0 0 38px;width:38px!important;min-width:38px!important;max-width:38px!important;height:22px!important;min-height:22px!important;max-height:22px!important;margin:0;padding:0;border:0;border-radius:999px;background:#ffffff26;box-shadow:inset 0 0 0 1px #ffffff16;cursor:pointer;transition:background-color 120ms;vertical-align:middle}
+.fusion-settings.fusion-settings .fusion-setting-row input[type=checkbox]::before{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#f4f5f8;box-shadow:0 1px 3px #0005;transform:translateX(0);transition:transform 120ms ease-out}
+.fusion-settings.fusion-settings .fusion-setting-row input[type=checkbox]:checked{background:#929ba9}
+.fusion-settings.fusion-settings .fusion-setting-row input[type=checkbox]:checked::before{transform:translateX(16px)}
+.fusion-settings.fusion-settings .fusion-setting-row input[type=checkbox]:focus-visible{outline:2px solid #c8cdd5;outline-offset:3px}
+.fusion-settings.fusion-settings .fusion-setting-row input[type=checkbox]:disabled{opacity:.55;cursor:default}
+.fusion-settings.fusion-settings :is(fieldset,.fusion-api-settings,.fusion-settings-card){min-width:0;box-sizing:border-box}
+.fusion-settings.fusion-settings .fusion-integration-card{box-sizing:border-box;padding:14px 16px;gap:12px;border-radius:12px}
+.fusion-settings.fusion-settings .fusion-integration-card>div:last-child{display:flex;flex-wrap:wrap;gap:8px}
+.fusion-settings.fusion-settings .fusion-setting-row>select{flex:0 1 200px;max-width:55%;min-width:0}
+.fusion-settings.fusion-settings[data-narrow=true]>.fusion-settings-body{padding:12px!important}
+@media(prefers-reduced-motion:reduce){.fusion-settings.fusion-settings .fusion-setting-row input[type=checkbox],.fusion-settings.fusion-settings .fusion-setting-row input[type=checkbox]::before{transition:none}}
+:root[data-fi-reduced-motion=true] .fusion-settings.fusion-settings .fusion-setting-row input[type=checkbox],:root[data-fi-reduced-motion=true] .fusion-settings.fusion-settings .fusion-setting-row input[type=checkbox]::before{transition:none}

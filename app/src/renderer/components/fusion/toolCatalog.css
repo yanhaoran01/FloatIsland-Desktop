@@ -1,0 +1,43 @@
+/* FloatIsland - Copyright (C) 2026 contributors. GPL-3.0. */
+.fusion-tools-panel.fusion-tool-directory-panel{padding:0!important;gap:0!important;background:transparent!important}
+.fusion-tool-directory-panel .fusion-tool-directory{padding:20px 18px 28px!important;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;width:100%;min-height:0;flex:1}
+.fusion-tool-directory[hidden],.fusion-tool-catalog-grid[hidden]{display:none!important}
+.fusion-tool-directory-top{max-width:680px;margin:0 auto 18px;display:flex;flex-direction:column;gap:14px}
+.fusion-tool-directory-top h2{font-size:20px;font-weight:600;letter-spacing:-.35px;line-height:1.35;margin:0;color:var(--fusion-ink,#eef0f4)}
+.fusion-tool-directory-top p{margin:5px 0 0;font-size:12px;line-height:1.5;color:var(--fusion-muted,#969ba5)}
+.fusion-tool-directory-search{display:flex;align-items:center;gap:9px;height:38px;padding:0 11px;border:1px solid var(--fusion-line,#ffffff12);border-radius:10px;background:var(--fi-surface,#ffffff04);color:var(--fusion-muted,#969ba5)}
+.fusion-tool-directory-search:focus-within{border-color:var(--fi-line-strong,#ffffff25);box-shadow:0 0 0 2px #c8cdd509}
+.fusion-tool-directory-search input{flex:1;min-width:0;height:34px!important;padding:0!important;border:0!important;background:transparent!important;outline:0!important;box-shadow:none!important;font-size:12px;color:var(--fusion-ink,#eef0f4)}
+.fusion-tool-directory-search input::-webkit-search-cancel-button{display:none}
+.fusion-tool-directory-search button{display:grid;place-items:center;flex:0 0 26px;height:26px;padding:0;border:0;background:transparent;border-radius:6px;color:inherit}
+.fusion-tool-directory-categories{display:flex;flex-wrap:wrap;gap:6px}
+.fusion-tool-directory-categories button{padding:5px 10px;min-height:28px;border:1px solid var(--fusion-line,#ffffff0b);border-radius:7px;background:transparent;color:var(--fusion-muted,#969ba5);font:inherit;font-size:11px;cursor:pointer}
+.fusion-tool-directory-categories button:hover{color:var(--fusion-ink,#eef0f4);background:var(--fi-surface-2,#ffffff09)}
+.fusion-tool-category{max-width:680px;margin:0 auto 20px;scroll-margin-top:12px}
+.fusion-tool-category-heading{display:flex;align-items:center;gap:7px;width:100%;padding:0 1px 9px;min-height:30px;border:0;background:transparent;color:var(--fusion-ink,#eef0f4);text-align:left;cursor:pointer}
+.fusion-tool-category-heading>svg{color:var(--fusion-muted,#969ba5)}
+.fusion-tool-category-heading strong{font-size:13px;font-weight:600;letter-spacing:.2px}
+.fusion-tool-category-heading>span{margin-left:auto;font-size:11px;font-variant-numeric:tabular-nums;color:var(--fusion-muted,#969ba5)}
+.fusion-tool-catalog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.fusion-tool-directory .fusion-tool-entry{display:flex;align-items:center;gap:11px;min-width:0;min-height:68px;padding:12px;border:1px solid var(--fusion-line,#ffffff0c)!important;border-radius:11px;background:var(--fi-surface,#ffffff03)!important;color:var(--fusion-ink,#eef0f4);font:inherit;text-align:left;cursor:pointer;transition:background 120ms,border-color 120ms;box-shadow:inset 0 1px 0 #ffffff02}
+.fusion-tool-directory .fusion-tool-entry:hover{background:var(--fi-surface-2,#ffffff09)!important;border-color:var(--fi-line-strong,#ffffff20)!important}
+.fusion-tool-directory .fusion-tool-entry:active{background:var(--fi-surface-3,#ffffff12)!important}
+.fusion-tool-directory :is(.fusion-tool-entry,.fusion-tool-category-heading):focus-visible{outline:2px solid var(--fusion-accent,#c8cdd5)!important;outline-offset:2px}
+.fusion-tool-entry-icon{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;border-radius:9px;background:#ffffff04;color:var(--fusion-accent,#c8cdd5)}
+.fusion-tool-entry-text{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1}
+.fusion-tool-entry-text strong{font-size:13px;font-weight:500;line-height:1.3;overflow-wrap:anywhere}
+.fusion-tool-entry-text small{font-size:11px;line-height:1.4;color:var(--fusion-muted,#969ba5);overflow-wrap:anywhere}
+.fusion-tool-entry-arrow{flex-shrink:0;opacity:.28}
+.fusion-tool-directory-empty{padding:32px 12px;text-align:center;color:var(--fusion-muted,#969ba5);font-size:13px}
+@container fi-workspace (max-width:560px){.fusion-tool-directory-panel .fusion-tool-directory{padding:14px 12px 22px!important}.fusion-tool-directory-top{margin-bottom:14px;gap:10px}.fusion-tool-directory-top h2{font-size:18px}.fusion-tool-catalog-grid{gap:8px}.fusion-tool-directory .fusion-tool-entry{padding:10px;gap:9px;min-height:66px}.fusion-tool-entry-icon{flex-basis:28px;width:28px;height:30px}.fusion-tool-entry-arrow{display:none}}
+@media(prefers-reduced-motion:reduce){.fusion-tool-directory .fusion-tool-entry{transition:none}}
+
+/* Match the moving capsule used by the primary Music / Reading navigation. */
+:is(.island-shell,.fusion-workbench) .fusion-tool-directory-categories{position:relative;isolation:isolate;align-self:flex-start;padding:3px;gap:0!important;border-radius:13px;background:var(--fs-surface,#ffffff06);box-shadow:inset 0 0 0 1px var(--fs-line,#ffffff0b)}
+:is(.island-shell,.fusion-workbench) .fusion-tool-directory-categories::before{content:"";position:absolute;left:0;top:0;z-index:-1;pointer-events:none;width:var(--indicator-w,0);height:var(--indicator-h,0);opacity:var(--indicator-o,0);transform:translate(var(--indicator-x,0),var(--indicator-y,0));border-radius:10px;background:var(--fs-surface-3,#ffffff1a);box-shadow:inset 0 1px 0 #ffffff14,0 4px 12px #0000002e}
+:is(.island-shell,.fusion-workbench) .fusion-tool-directory-categories[data-indicator=ready]::before{transition:transform .22s var(--fs-ease,cubic-bezier(.16,1,.3,1)),width .22s var(--fs-ease,cubic-bezier(.16,1,.3,1)),height .22s var(--fs-ease,cubic-bezier(.16,1,.3,1)),opacity .2s}
+:is(.island-shell,.fusion-workbench) .fusion-tool-directory-categories>button{position:relative;min-height:30px!important;padding:4px 13px!important;font-weight:500;border:0!important;background:transparent!important;transition:color .25s var(--fs-ease,cubic-bezier(.16,1,.3,1))!important}
+:is(.island-shell,.fusion-workbench) .fusion-tool-directory-categories>button[aria-pressed=true]{color:var(--ui-text,#eef0f4)!important}
+:is(.island-shell,.fusion-workbench) .fusion-tool-directory-categories>button:focus-visible{outline:2px solid var(--ui-muted,#969ba5);outline-offset:-2px}
+@media(prefers-reduced-motion:reduce){:is(.island-shell,.fusion-workbench) .fusion-tool-directory-categories[data-indicator=ready]::before{transition:none}}
+:root[data-fi-reduced-motion=true] :is(.island-shell,.fusion-workbench) .fusion-tool-directory-categories[data-indicator=ready]::before{transition:none}

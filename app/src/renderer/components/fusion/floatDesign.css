@@ -1,0 +1,336 @@
+/* FloatIsland - https://github.com/JNTMTMTM/eIsland. Copyright (C) 2026 FloatIsland contributors. GPL-3.0. */
+/**
+ * @file floatDesign.css
+ * @description FloatIsland 工作区样式：石墨玻璃配色、弹性动效、分段指示器与各页面精修。
+ * @description 所有规则限定在 .island-shell / .fusion-product-root 内，避免影响独立工作台和旧页面。
+ * @author 鸡哥
+ */
+
+/* ===================== 设计令牌 ===================== */
+:root {
+  --fi-bg-top: #191a20;
+  --fi-bg-bottom: #101115;
+  --fi-surface: rgba(255, 255, 255, .035);
+  --fi-surface-2: rgba(255, 255, 255, .065);
+  --fi-surface-3: rgba(255, 255, 255, .1);
+  --fi-line: rgba(255, 255, 255, .07);
+  --fi-line-strong: rgba(255, 255, 255, .12);
+  --fi-ink: #eef0f4;
+  --fi-muted: #8d929c;
+  --fi-faint: #5f6570;
+  --fi-accent: #c8cdd5;
+  --fi-accent-2: #c8cdd5;
+  --fi-warm: #c8cdd5;
+  --fi-accent-grad: #c8cdd5;
+  --fi-ease: cubic-bezier(.16, 1, .3, 1);
+  --fi-ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  /* 轻微回弹的弹簧曲线，过冲约 4%。 */
+  --fi-spring: ease-out;
+  --fi-font: "Segoe UI Variable Text", "Microsoft YaHei UI", "PingFang SC", sans-serif;
+  --fi-font-display: "Segoe UI Variable Display", "Microsoft YaHei UI", "PingFang SC", sans-serif;
+}
+
+@keyframes fi-open { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fi-enter { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fi-rise { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fi-pop { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fi-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fi-breathe { 0%, 100% { transform: scale(1); opacity: .55; } 50% { transform: scale(1.08); opacity: .85; } }
+@keyframes fi-spin { to { transform: rotate(360deg); } }
+@keyframes fi-pulse { 0% { box-shadow: 0 0 0 0 currentColor; } 70% { box-shadow: 0 0 0 6px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+
+/* ===================== 外壳 ===================== */
+.fusion-product-root ::-webkit-scrollbar { width: 8px; height: 8px; }
+.fusion-product-root ::-webkit-scrollbar-track, .fusion-product-root ::-webkit-scrollbar-corner { background: transparent; }
+.fusion-product-root ::-webkit-scrollbar-button { display: none; height: 0; width: 0; }
+.fusion-product-root ::-webkit-scrollbar-thumb { border: 2px solid transparent; border-radius: 99px; background: rgba(255, 255, 255, .1) padding-box; }
+.fusion-product-root ::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, .2); }
+.island-shell.island-shell {
+  background: #1c1d20 !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .055), inset 0 1px 0 rgba(255, 255, 255, .05);
+  font-family: var(--fi-font);
+}
+.island-shell .fusion-chat,
+.island-shell .fusion-tools-panel,
+.island-shell .fusion-island-tools .fusion-tools-panel,
+.island-shell .fusion-compact,
+.island-shell .fusion-compact.float-side-dock,
+.island-shell .fusion-media-bar.is-collapsed { background: transparent; }
+.island-shell .fusion-chat {
+  --fusion-ink: var(--fi-ink); --fusion-muted: var(--fi-muted); --fusion-line: var(--fi-line); --fusion-accent: var(--fi-accent);
+  color: var(--fi-ink);
+}
+
+/* 展开时内容从停靠边缓缓落下；隐藏页恢复显示时 CSS 动画自动重放。 */
+.island-shell .fusion-retained-workspace:not([hidden]) > .fusion-chat { animation: fi-open .5s var(--fi-ease) both; transform-origin: top center; }
+.island-shell[data-dock-edge=left] .fusion-retained-workspace:not([hidden]) > .fusion-chat { transform-origin: left center; }
+.island-shell[data-dock-edge=right] .fusion-retained-workspace:not([hidden]) > .fusion-chat { transform-origin: right center; }
+
+/* ===================== 顶栏与分段导航 ===================== */
+.island-shell .fusion-chat--compact .fusion-chat-header { border-bottom: 0; box-shadow: 0 1px 0 var(--fi-line); gap: 6px; }
+.island-shell .fusion-chat--compact .fusion-island-tabs {
+  position: relative; isolation: isolate; flex: 0 1 auto; margin: 0 auto 0 6px; padding: 3px; gap: 0;
+  border-radius: 12px; background: var(--fi-surface); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .035);
+}
+.island-shell .fusion-island-tabs::before,
+.island-shell .fusion-settings > aside::before,
+.island-shell .fi-segmented::before {
+  content: ""; position: absolute; z-index: -1; left: 0; top: 0;
+  width: var(--indicator-w, 0); height: var(--indicator-h, 0); opacity: var(--indicator-o, 0);
+  transform: translate(var(--indicator-x, 0), var(--indicator-y, 0));
+  border-radius: 9px; background: linear-gradient(180deg, rgba(255, 255, 255, .13), rgba(255, 255, 255, .07));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .09), 0 6px 16px rgba(0, 0, 0, .3);
+  pointer-events: none;
+}
+.island-shell .fusion-island-tabs[data-indicator=ready]::before,
+.island-shell .fusion-settings > aside[data-indicator=ready]::before,
+.island-shell .fi-segmented[data-indicator=ready]::before {
+  transition: transform .5s var(--fi-spring), width .5s var(--fi-spring), height .5s var(--fi-spring), opacity .2s;
+}
+.island-shell .fusion-chat--compact .fusion-island-tabs button {
+  position: relative; padding: 6px 13px; border-radius: 9px; font-size: 12.5px; color: var(--fi-muted);
+  background: transparent !important; transition: color .25s var(--fi-ease);
+}
+.island-shell .fusion-chat--compact .fusion-island-tabs button:hover { color: #c9cdd6; }
+.island-shell .fusion-chat--compact .fusion-island-tabs button[aria-pressed=true] { color: var(--fi-ink); }
+
+.island-shell .fusion-icon-button {
+  display: inline-grid; place-items: center; border-radius: 10px; color: var(--fi-muted);
+  transition: background .2s var(--fi-ease), color .2s var(--fi-ease), transform .3s var(--fi-spring);
+}
+.island-shell .fusion-icon-button:hover:not(:disabled) { background: var(--fi-surface-2); color: var(--fi-ink); }
+.island-shell .fusion-icon-button:active:not(:disabled) { transform: scale(.9); }
+.island-shell .fusion-chat--compact .fusion-chat-header > .fusion-icon-button,
+.island-shell .fusion-session-menu > .fusion-icon-button { width: 32px; height: 32px; }
+
+.island-shell .fusion-session-popover {
+  top: 40px; padding: 14px; border-radius: 16px; border: 1px solid var(--fi-line-strong);
+  background: rgba(26, 27, 33, .985); backdrop-filter: blur(18px) saturate(1.2);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .5); animation: fi-pop .32s var(--fi-spring) both; transform-origin: top right;
+}
+.island-shell .fusion-session-popover select { background: var(--fi-surface); border-color: var(--fi-line); border-radius: 9px; }
+.island-shell .fusion-session-popover button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 32px; padding: 6px 11px; border-color: var(--fi-line); border-radius: 9px; transition: background .2s, transform .3s var(--fi-spring); }
+.island-shell .fusion-session-popover button:active:not(:disabled) { transform: scale(.95); }
+.island-shell .fusion-session-popover button:hover { background: var(--fi-surface-2); }
+
+/* ===================== 对话主页 ===================== */
+.island-shell .fusion-chat--compact .fusion-voice-focus { animation: fi-enter .45s var(--fi-ease) both; }
+.island-shell .fusion-focus-companion { isolation: isolate; }
+.island-shell .fusion-focus-companion::before {
+  content: ""; position: absolute; inset: -14%; z-index: -1; border-radius: 50%;
+  background: radial-gradient(circle, rgba(170, 184, 255, .3) 0%, rgba(134, 227, 213, .1) 42%, transparent 68%);
+  filter: blur(10px); animation: fi-breathe 5.5s ease-in-out infinite;
+}
+.island-shell .fusion-focus-companion::after {
+  content: ""; position: absolute; inset: 2%; z-index: -1; border-radius: 50%; opacity: 0;
+  background: conic-gradient(from 0deg, transparent 0 62%, rgba(170, 184, 255, .55) 80%, rgba(134, 227, 213, .7) 92%, transparent 100%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+  transition: opacity .4s var(--fi-ease);
+}
+.island-shell .fusion-focus-companion:is([data-mood=thinking], [data-mood=working])::after { opacity: 1; animation: fi-spin 2.4s linear infinite; }
+.island-shell .fusion-focus-companion[data-mood=waiting]::before { background: radial-gradient(circle, rgba(242, 200, 121, .2) 0%, transparent 68%); }
+.island-shell .fusion-focus-companion[data-mood=error]::before { background: radial-gradient(circle, rgba(240, 145, 139, .18) 0%, transparent 68%); }
+.island-shell .fusion-focus-companion[data-recording=true]::before { animation-duration: 1.6s; }
+.island-shell .fusion-companion-listening span { background: var(--fi-accent-grad); }
+
+.island-shell .fusion-focus-reply { color: #d9dce3; animation: fi-enter .4s var(--fi-ease) both; }
+
+.island-shell .fusion-focus-input {
+  padding: 12px 12px 10px 16px; border-radius: 20px; border: 1px solid var(--fi-line);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .025));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05), 0 16px 40px rgba(0, 0, 0, .28);
+  transition: border-color .3s var(--fi-ease), box-shadow .3s var(--fi-ease);
+}
+.island-shell .fusion-focus-input:focus-within {
+  border-color: rgba(170, 184, 255, .32);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06), 0 0 0 4px rgba(170, 184, 255, .07), 0 16px 40px rgba(0, 0, 0, .3);
+}
+.island-shell .fusion-focus-input .fusion-voice-draft { color: var(--fi-ink); font-size: 14px; }
+.island-shell .fusion-focus-input .fusion-voice-draft::placeholder { color: var(--fi-faint); font-size: 14px; }
+.island-shell .fusion-focus-input .fusion-voice-controls { margin-top: 2px; }
+.island-shell .fusion-focus-input .fusion-voice-controls .fusion-focus-mic { border-radius: 50%; background: var(--fi-surface); color: #b7bcc6; transition: background .2s, color .2s, transform .3s var(--fi-spring); }
+.island-shell .fusion-focus-input .fusion-voice-controls .fusion-focus-mic:hover:not(:disabled) { background: var(--fi-surface-2); color: var(--fi-ink); }
+.island-shell .fusion-focus-input .fusion-voice-controls .fusion-focus-mic:active:not(:disabled) { transform: scale(.9); }
+.island-shell .fusion-voice-focus[data-phase=recording] .fusion-focus-input .fusion-focus-mic { color: #15161a; background: var(--fi-accent-grad); box-shadow: 0 0 0 5px rgba(170, 184, 255, .14); }
+.island-shell .fusion-focus-input .fusion-voice-controls > .fusion-icon-button:last-child { border-radius: 50%; }
+.island-shell .fusion-focus-input .fusion-voice-controls > .fusion-icon-button:last-child:not(:disabled) {
+  color: #121317; background: var(--fi-accent-grad); box-shadow: 0 6px 18px rgba(150, 168, 255, .3);
+}
+.island-shell .fusion-focus-input .fusion-voice-controls > .fusion-icon-button:last-child:disabled { opacity: .35; }
+.island-shell .fusion-voice-time { color: var(--fi-accent); font-variant-numeric: tabular-nums; }
+
+/* ===================== 工具首页 ===================== */
+.island-shell .fusion-island-tools:not([hidden]) { animation: fi-enter .42s var(--fi-ease) both; }
+.island-shell .fusion-tools-panel,
+.island-shell .fusion-island-tools .fusion-tools-panel { padding: 18px 8px 0; gap: 10px; }
+.island-shell .fusion-tool-search {
+  width: 220px; padding: 7px 12px; gap: 8px; border: 0; border-radius: 12px;
+  background: var(--fi-surface); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .04);
+  transition: box-shadow .25s var(--fi-ease), background .25s var(--fi-ease), width .45s var(--fi-spring);
+}
+.island-shell .fusion-tool-search:focus-within { width: 260px; background: var(--fi-surface-2); box-shadow: inset 0 0 0 1px rgba(170, 184, 255, .3), 0 0 0 4px rgba(170, 184, 255, .06); }
+.island-shell .fusion-tool-search input { font-size: 12.5px; }
+.island-shell .fusion-tool-search input::placeholder { color: var(--fi-faint); }
+.island-shell .fusion-tool-search .fusion-icon-button { width: 18px; height: 18px; background: transparent; }
+
+.island-shell .fusion-tools-home > .fusion-tool-group { max-width: 600px; margin: 30px auto 0; }
+.island-shell .fusion-tools-panel .fusion-tool-grid,
+.island-shell .fusion-island-tools .fusion-tool-grid { gap: 14px 12px; }
+.island-shell .fusion-tools-panel .fusion-tool-card,
+.island-shell .fusion-island-tools .fusion-tool-card {
+  height: 104px; min-height: 104px; gap: 11px; border-radius: 16px; background: transparent;
+  animation: fi-rise .52s var(--fi-ease) both; animation-delay: calc(var(--i, 0) * 32ms);
+  transition: background .25s var(--fi-ease);
+}
+.island-shell .fusion-tools-panel .fusion-tool-card > span {
+  width: 48px; height: 48px; border-radius: 15px; color: #dfe3ea;
+  background: linear-gradient(160deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .025));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .09), inset 0 0 0 1px rgba(255, 255, 255, .04), 0 8px 18px rgba(0, 0, 0, .28);
+  transition: transform .45s var(--fi-spring), box-shadow .3s var(--fi-ease), color .25s;
+}
+.island-shell .fusion-tool-card svg { width: 21px; height: 21px; }
+.island-shell .fusion-tools-panel .fusion-tool-card strong { font-size: 12.5px; color: #c4c8d0; transition: color .25s; }
+.island-shell .fusion-tool-card:hover { background: rgba(255, 255, 255, .025); }
+.island-shell .fusion-tool-card:hover > span {
+  transform: translateY(-3px); color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12), inset 0 0 0 1px rgba(170, 184, 255, .22), 0 12px 26px rgba(120, 140, 255, .18);
+}
+.island-shell .fusion-tool-card:hover strong { color: var(--fi-ink); }
+.island-shell .fusion-tool-card:active > span { transform: scale(.92); transition-duration: .15s; }
+.island-shell .fusion-tool-card:focus-visible { outline: 0; }
+.island-shell .fusion-tool-card:focus-visible > span { box-shadow: 0 0 0 2px var(--fi-accent); }
+
+.island-shell .fusion-tool-pagination { gap: 6px; margin-top: 22px; }
+.island-shell .fusion-tool-page-dot { width: 6px; height: 6px; background: var(--fi-faint); transition: width .45s var(--fi-spring), background .3s; border-radius: 99px; }
+.island-shell .fusion-tool-page-dot[aria-current=page] { width: 20px; background: var(--fi-ink); }
+.island-shell .fusion-tool-empty { color: var(--fi-faint); margin-top: 48px; }
+
+.island-shell .fusion-tools-panel > .fusion-tool-content:not([hidden]) { animation: fi-enter .4s var(--fi-ease) both; }
+.island-shell .fusion-tools-heading .fusion-icon-button { width: 30px; height: 30px; }
+
+/* 工具内常用控件 */
+.island-shell .fusion-utility input:not([type=checkbox]):not([type=color]):not([type=range]),
+.island-shell .fusion-utility select,
+.island-shell .fusion-utility textarea,
+.island-shell .fusion-web-address input {
+  border-radius: 11px; border-color: var(--fi-line); background: var(--fi-surface); transition: border-color .2s, box-shadow .2s;
+}
+.island-shell .fusion-utility :is(input, select, textarea):focus-visible,
+.island-shell .fusion-web-address input:focus-visible { outline: 0; border-color: rgba(170, 184, 255, .35); box-shadow: 0 0 0 3px rgba(170, 184, 255, .08); }
+.island-shell .fusion-utility button,
+.island-shell .fusion-web-tool button:not(.fusion-icon-button) { border-radius: 10px; border-color: var(--fi-line); transition: background .2s, transform .3s var(--fi-spring); }
+.island-shell .fusion-utility button:active:not(:disabled) { transform: scale(.96); }
+.island-shell .fusion-tool-result { border-radius: 14px; border-color: var(--fi-line); background: var(--fi-surface); }
+.island-shell .fusion-product-tabs { border-bottom-color: var(--fi-line); }
+.island-shell .fusion-product-tabs button { border-radius: 9px; transition: background .2s, color .2s; }
+
+/* ===================== 设置 ===================== */
+.island-shell .fusion-settings > aside { position: relative; isolation: isolate; border-right-color: var(--fi-line); gap: 2px; }
+.island-shell .fusion-settings > aside button { position: relative; padding: 9px 14px; color: var(--fi-muted); background: transparent !important; transition: color .25s; }
+.island-shell .fusion-settings > aside button:hover { color: #c9cdd6; }
+.island-shell .fusion-settings > aside button[aria-current] { color: var(--fi-ink); }
+.island-shell .fusion-settings-body { animation: fi-enter .35s var(--fi-ease) both; }
+.island-shell .fusion-settings-body h2 { font: 600 19px/1.3 var(--fi-font-display); letter-spacing: .01em; color: var(--fi-ink); }
+.island-shell .fusion-setting-row { border-bottom-color: var(--fi-line); color: #d5d8df; }
+.island-shell .fusion-setting-row input[type=checkbox] {
+  appearance: none; position: relative; flex: none; width: 38px; height: 22px; margin: 0; border-radius: 99px; cursor: pointer;
+  background: rgba(255, 255, 255, .12); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .05); transition: background .3s var(--fi-ease);
+}
+.island-shell .fusion-setting-row input[type=checkbox]::before {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%;
+  background: #f4f5f8; box-shadow: 0 2px 6px rgba(0, 0, 0, .35); transition: transform .45s var(--fi-spring);
+}
+.island-shell .fusion-setting-row input[type=checkbox]:checked { background: var(--fi-accent-grad); }
+.island-shell .fusion-setting-row input[type=checkbox]:checked::before { transform: translateX(16px); }
+.island-shell .fusion-setting-row input[type=checkbox]:focus-visible { outline: 2px solid var(--fi-accent); outline-offset: 2px; }
+.island-shell .fusion-integration-card,
+.island-shell .fusion-settings-card { border-radius: 16px; border-color: var(--fi-line); background: var(--fi-surface); }
+.island-shell .fusion-integration-card button,
+.island-shell .fusion-settings-body button { border-radius: 10px; border-color: var(--fi-line); background: var(--fi-surface-2); color: #d7dae1; transition: background .2s, transform .3s var(--fi-spring); }
+.island-shell .fusion-integration-card button:hover:not(:disabled),
+.island-shell .fusion-settings-body button:hover:not(:disabled) { background: var(--fi-surface-3); }
+.island-shell .fusion-integration-card button:active:not(:disabled),
+.island-shell .fusion-settings-body button:active:not(:disabled) { transform: scale(.96); }
+.island-shell .fusion-settings-body input:not([type=checkbox]),
+.island-shell .fusion-settings-body select { border-radius: 10px; border-color: var(--fi-line); background: var(--fi-surface); }
+
+/* ===================== 胶囊与侧栏 ===================== */
+.island-shell .fusion-compact:not(.float-side-dock) { animation: fi-pop .42s var(--fi-spring) both; gap: 10px; }
+.island-shell .fusion-compact:not(.float-side-dock) strong { font-size: 12.5px; font-weight: 500; letter-spacing: .01em; color: #dfe2e8; }
+.island-shell .fusion-compact[data-mood]::after {
+  content: ""; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--fi-faint); opacity: .7;
+}
+.island-shell .fusion-compact[data-mood=working]::after { color: rgba(170, 184, 255, .6); background: var(--fi-accent); opacity: 1; animation: fi-pulse 1.8s ease-out infinite; }
+.island-shell .fusion-compact[data-mood=waiting]::after { color: rgba(242, 200, 121, .6); background: var(--fi-warm); opacity: 1; animation: fi-pulse 1.4s ease-out infinite; }
+.island-shell .fusion-compact.float-side-dock::after { display: none; }
+.island-shell .fusion-compact.float-side-dock { animation: fi-fade .35s var(--fi-ease) both; }
+.island-shell .float-sidebar-button { border-radius: 11px; color: var(--fi-muted); transition: background .2s, color .2s, transform .35s var(--fi-spring); }
+.island-shell .float-sidebar-button:hover { background: var(--fi-surface-2); color: var(--fi-ink); transform: scale(1.06); }
+.island-shell .float-sidebar-button:active { transform: scale(.92); }
+.island-shell .float-side-state[data-active=true] { background: var(--fi-accent); box-shadow: 0 0 8px var(--fi-accent); }
+.fusion-dock-handle { border-radius: 99px; background: linear-gradient(90deg, #9aa3b5, #c3c9d6); transition: opacity .25s; }
+.fusion-dock-handle[data-waiting=true] { background: var(--fi-warm); }
+
+/* ===================== 收起态媒体胶囊 ===================== */
+@keyframes fi-eq { 0%, 100% { transform: scaleY(.3); } 50% { transform: scaleY(1); } }
+.island-shell .fusion-media-bar.fi-media-capsule {
+  display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; grid-template-rows: 1fr auto; align-items: center; column-gap: 12px; row-gap: 6px;
+  padding: 10px 14px 9px 12px; border-radius: 20px; animation: fi-pop .45s var(--fi-spring) both;
+}
+.island-shell .fi-mini-disc {
+  grid-row: 1 / 3; position: relative; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+  background: repeating-radial-gradient(circle, rgba(255, 255, 255, .05) 0 1px, transparent 1px 2.5px), radial-gradient(circle, #1b1c21 0 30%, #0b0b0d 31% 100%);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .5), 0 0 0 1px rgba(255, 255, 255, .06);
+  animation: fi-spin 3.6s linear infinite; animation-play-state: paused; transition: transform .35s var(--fi-spring);
+}
+.island-shell .fi-mini-disc > span { position: absolute; inset: 34%; border-radius: 50%; background: var(--fi-accent-grad); box-shadow: inset 0 0 0 2px rgba(0, 0, 0, .3); }
+.island-shell .fi-media-capsule[data-playing=true] .fi-mini-disc { animation-play-state: running; }
+.island-shell .fi-mini-disc:focus-visible { outline: 2px solid var(--fi-accent); outline-offset: 2px; }
+.island-shell .fi-media-copy { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.island-shell .fi-media-copy strong { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 12.5px; font-weight: 500; color: var(--fi-ink); }
+.island-shell .fi-eq { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; flex: none; }
+.island-shell .fi-eq i { width: 2.5px; height: 100%; border-radius: 2px; background: var(--fi-accent-grad); transform-origin: bottom; transform: scaleY(.3); }
+.island-shell .fi-media-capsule[data-playing=true] .fi-eq i { animation: fi-eq .9s ease-in-out infinite; animation-delay: calc(var(--bar) * -.22s); }
+.island-shell .fi-media-capsule .fusion-media-row { gap: 2px; width: auto; }
+.island-shell .fi-media-capsule .fusion-icon-button { width: 28px; height: 28px; }
+.island-shell .fi-media-progress {
+  grid-column: 2 / 4; width: 100%; height: 3px; margin: 0; appearance: none; border-radius: 99px; cursor: pointer;
+  background: linear-gradient(90deg, #dfe3ff calc(var(--p, 0) * 100%), rgba(255, 255, 255, .12) 0);
+}
+.island-shell .fi-media-progress::-webkit-slider-thumb { appearance: none; width: 10px; height: 10px; border-radius: 50%; background: #f4f5f8; box-shadow: 0 1px 4px rgba(0, 0, 0, .5); opacity: 0; transition: opacity .2s; }
+.island-shell .fi-media-progress:hover::-webkit-slider-thumb, .island-shell .fi-media-progress:focus-visible::-webkit-slider-thumb { opacity: 1; }
+.island-shell .fi-media-capsule > small { grid-column: 1 / 4; font-size: 10px; color: #f0a8a2; }
+
+/* ===================== 弹层（搜索 / 拖入） ===================== */
+.fusion-product-root .fusion-product-overlay { background: rgba(8, 9, 12, .5); backdrop-filter: blur(12px); animation: fi-fade .22s ease both; }
+.fusion-product-root .fusion-product-drag { background: rgba(10, 11, 14, .6); border: 1.5px dashed rgba(170, 184, 255, .45); color: var(--fi-accent); backdrop-filter: blur(6px); animation: fi-fade .2s ease both; }
+.fusion-product-root .fusion-product-drag svg { animation: fi-breathe 2s ease-in-out infinite; }
+.fusion-product-root .fusion-product-dialog {
+  border-radius: 20px; border: 1px solid var(--fi-line-strong); background: rgba(24, 25, 31, .9);
+  backdrop-filter: blur(24px) saturate(1.25); box-shadow: 0 30px 80px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(255, 255, 255, .06);
+  animation: fi-pop .38s var(--fi-spring) both; transform-origin: top center;
+}
+.fusion-product-root .fusion-product-search { border-bottom-color: var(--fi-line); font-size: 14px; }
+.fusion-product-root .fusion-product-search input { font-size: 14px; }
+.fusion-product-root [cmdk-group-heading] { color: var(--fi-faint); font-size: 10.5px; letter-spacing: .06em; }
+.fusion-product-root [cmdk-item] { border-radius: 10px; transition: background .15s; }
+.fusion-product-root [cmdk-item][data-selected=true] { background: var(--fi-surface-2); box-shadow: inset 2px 0 0 var(--fi-accent); }
+.fusion-product-root .fusion-product-drop-actions button { border-radius: 14px; background: var(--fi-surface); transition: background .2s, transform .35s var(--fi-spring); animation: fi-rise .45s var(--fi-ease) both; }
+.fusion-product-root .fusion-product-drop-actions button:nth-child(2) { animation-delay: 30ms; }
+.fusion-product-root .fusion-product-drop-actions button:nth-child(3) { animation-delay: 60ms; }
+.fusion-product-root .fusion-product-drop-actions button:nth-child(4) { animation-delay: 90ms; }
+.fusion-product-root .fusion-product-drop-actions button:nth-child(n+5) { animation-delay: 120ms; }
+.fusion-product-root .fusion-product-drop-actions button:hover { background: var(--fi-surface-2); transform: translateY(-2px); }
+
+/* ===================== 减少动效 ===================== */
+:root[data-fi-reduced-motion=true] :is(.island-shell, .fusion-product-root) *,
+:root[data-fi-reduced-motion=true] :is(.island-shell, .fusion-product-root) *::before,
+:root[data-fi-reduced-motion=true] :is(.island-shell, .fusion-product-root) *::after {
+  animation-duration: 1ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.island-shell, .fusion-product-root) *, :is(.island-shell, .fusion-product-root) *::before, :is(.island-shell, .fusion-product-root) *::after {
+    animation-duration: 1ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important;
+  }
+}

@@ -1,0 +1,138 @@
+use std::collections::HashSet;
+
+use super::SessionFocusTarget;
+
+#[cfg_attr(not(target_os = "windows"), allow(dead_code))]
+pub fn normalized_token(value: &str) -> Option<String> {
+    let normalized = value.trim().replace('\\', "/").to_ascii_lowercase();
+    if normalized.is_empty() {
+        None
+    } else {
+        Some(normalized)
+    }
+}
+
+#[cfg_attr(not(target_os = "windows"), allow(dead_code))]
+pub fn cwd_leaf(cwd: &str) -> Option<String> {
+    cwd.trim_end_matches(['\\', '/'])
+        .rsplit(['\\', '/'])
+        .next()
+        .and_then(normalized_token)
+}
+
+#[cfg_attr(not(target_os = "windows"), allow(dead_code))]
+pub fn focus_tokens(target: &SessionFocusTarget) -> Vec<String> {
+    let mut values = HashSet::new();
+    if let Some(window_title) = &target.window_title
+        && let Some(token) = normalized_token(window_title)
+    {
+        values.insert(token);
+    }
+    if let Some(project_name) = &target.project_name
+        && let Some(token) = normalized_token(project_name)
+    {
+        values.insert(token);
+    }
+    if let Some(cwd) = &target.cwd {
+        if let Some(token) = normalized_token(cwd) {
+            values.insert(token);
+        }
+        if let Some(token) = cwd_leaf(cwd) {
+            values.insert(token);
+        }
+    }
+    values.into_iter().collect()
+}
+
+#[cfg_attr(not(target_os = "windows"), allow(dead_code))]
+pub fn tab_focus_tokens(target: &SessionFocusTarget) -> Vec<String> {
+    let mut values = focus_tokens(target).into_iter().collect::<HashSet<_>>();
+    for alias in tab_title_aliases(&target.source, target.host_app.as_deref()) {
+        if let Some(token) = normalized_token(&alias) {
+            values.insert(token);
+        }
+    }
+    values.into_iter().collect()
+}
+
+#[cfg_attr(not(target_os = "windows"), allow(dead_code))]
+pub fn host_app_aliases(source: &str, host_app: Option<&str>) -> Vec<String> {
+    let source = source.to_ascii_lowercase();
+    let host_app = host_app.unwrap_or_default().to_ascii_lowercase();
+    match host_app.as_str() {
+        "claude-vscode" | "vscode" | "com.microsoft.vscode" => vec![
+            "code".to_string(),
+            "code.exe".to_string(),
+            "visual studio code".to_string(),
+            "claude".to_string(),
+        ],
+        "cursor" | "com.todesktop.230313mzl4w4u92" => {
+            vec!["cursor".to_string(), "cursor.exe".to_string()]
+        }
+        "com.openai.codex" => vec![
+            "codex".to_string(),
+            "codex.exe".to_string(),
+            "openai codex".to_string(),
+        ],
+        "trae" | "com.trae.app" => vec!["trae".to_string(), "trae.exe".to_string()],
+        "windsurf" => vec!["windsurf".to_string()],
+        "cli" if source == "gemini" => vec![
+            "gemini".to_string(),
+            "windowsterminal".to_string(),
+            "powershell".to_string(),
+            "pwsh".to_string(),
+            "cmd".to_string(),
+        ],
+        "cli" if source == "glm" => vec![
+            "glm".to_string(),
+            "zai".to_string(),
+            "windowsterminal".to_string(),
+            "powershell".to_string(),
+            "pwsh".to_string(),
+            "cmd".to_string(),
+        ],
+        "cli" if source == "claude" => vec![
+            "claude".to_string(),
+            "windowsterminal".to_string(),
+            "powershell".to_string(),
+            "pwsh".to_string(),
+            "cmd".to_string(),
+        ],
+        "cli" if source == "opencode" => vec![
+            "windowsterminal".to_string(),
+            "powershell".to_string(),
+            "pwsh".to_string(),
+            "cmd".to_string(),
+        ],
+        "cli" if source == "openclaw" => vec![
+            "openclaw".to_string(),
+            "windowsterminal".to_string(),
+            "powershell".to_string(),
+            "pwsh".to_string(),
+            "cmd".to_string(),
+        ],
+        other if !other.is_empty() => vec![other.to_string()],
+        _ => Vec::new(),
+    }
+}
+
+#[cfg_attr(not(target_os = "windows"), allow(dead_code))]
+pub fn tab_title_aliases(source: &str, host_app: Option<&str>) -> Vec<String> {
+    let source = source.to_ascii_lowercase();
+    let host_app = host_app.unwrap_or_default().to_ascii_lowercase();
+    match (source.as_str(), host_app.as_str()) {
+        ("codex", _) => vec!["codex".to_string()],
+        ("gemini", "cli") => vec!["gemini".to_string()],
+        ("glm", "cli") => vec!["glm".to_string(), "zai".to_string()],
+        ("claude", "cli") => vec!["initial conversation setup".to_string()],
+        ("claude", "claude-vscode") => vec!["claude".to_string()],
+        _ => Vec::new(),
+    }
+}
+
+pub fn is_active_status(status: &str) -> bool {
+    matches!(
+        status.to_ascii_lowercase().as_str(),
+        "processing" | "running" | "waitingapproval" | "waitingquestion"
+    )
+}

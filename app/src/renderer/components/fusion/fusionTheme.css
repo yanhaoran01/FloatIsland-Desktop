@@ -1,0 +1,14 @@
+/* FusionIsland - Copyright (C) 2026 contributors. GPL-3.0. */
+/** @file fusionTheme.css @description 岛、工具、工作台和独立视频共用的冷灰主题。 @author 鸡哥 */
+:root { --fusion-panel:#1c1d20;--fusion-surface:#242629;--fusion-ink:#e5e7eb;--fusion-muted:#969ba5;--fusion-line:#ffffff0a;--fusion-accent:#c8cdd5; }
+.fusion-chat, .fusion-shell, .fusion-compact, .fusion-tools-panel, .fusion-session-overview, .fusion-island-tools .fusion-tools-panel {
+  --fusion-panel:#1c1d20;--fusion-surface:#242629;--fusion-ink:#e5e7eb;--fusion-muted:#969ba5;--fusion-line:#ffffff0a;--fusion-accent:#c8cdd5;
+  color:var(--fusion-ink);background:var(--fusion-panel);font-family:"Segoe UI Variable Text","Microsoft YaHei UI",sans-serif;
+}
+.fusion-chat .fusion-icon-button, .fusion-shell .fusion-icon-button { background:transparent;border:0;color:var(--fusion-muted);box-shadow:none; }
+.fusion-icon-button:hover { color:var(--fusion-ink);background:#ffffff08; }
+.fusion-chat .fusion-send, .fusion-focus-mic { color:#1c1d20;background:#dce0e6;border:0; }
+.fusion-chat button:focus-visible, .fusion-shell button:focus-visible, .fusion-tools-panel :focus-visible { outline:1px solid #c8cdd5;outline-offset:2px; }
+.fusion-chat-header select, .fusion-chat-context select, .fusion-chat-model select { color:var(--fusion-ink);border-color:#ffffff10;background:#242629; }
+.fusion-message--user { background:#ffffff05;border-color:transparent; }
+.fusion-media-bar, .fusion-compact { color:var(--fusion-ink);background:var(--fusion-panel); }

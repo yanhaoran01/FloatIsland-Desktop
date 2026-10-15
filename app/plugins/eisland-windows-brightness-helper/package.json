@@ -1,0 +1,31 @@
+{
+  "name": "@eisland/windows-brightness-helper",
+  "version": "26.0.4",
+  "description": "Windows screen brightness query and control via WMI and DDC/CI, with WMI event monitoring.",
+  "author": "JNTMTMTM",
+  "license": "GPL-3.0",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64",
+    "ia32"
+  ],
+  "scripts": {
+    "postinstall": "dotnet build src/eIslandBrightnessReader.csproj -c Release",
+    "build": "dotnet build src/eIslandBrightnessReader.csproj -c Release",
+    "clean": "dotnet clean src/eIslandBrightnessReader.csproj",
+    "rebuild": "npm run clean && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.4"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "src"
+  ]
+}

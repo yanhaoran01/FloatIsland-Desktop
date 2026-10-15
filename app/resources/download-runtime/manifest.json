@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "project": "yt-dlp/yt-dlp",
+      "version": "2026.08.19",
+      "source": "https://github.com/yt-dlp/yt-dlp/releases/tag/2026.08.19",
+      "url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.08.19/yt-dlp.exe",
+      "archiveSha256": "66674953fe251b89f4d08c5f0e35e0728679bd67ab3d7d05c0562af101dd3e7a",
+      "files": [
+        {
+          "name": "yt-dlp.exe",
+          "sha256": "66674953fe251b89f4d08c5f0e35e0728679bd67ab3d7d05c0562af101dd3e7a"
+        }
+      ]
+    },
+    {
+      "project": "denoland/deno",
+      "version": "v2.9.7",
+      "source": "https://github.com/denoland/deno/releases/tag/v2.9.7",
+      "url": "https://github.com/denoland/deno/releases/download/v2.9.7/deno-x86_64-pc-windows-msvc.zip",
+      "archiveSha256": "a0c3101b4158d1dfb7d6a78a7bf0f3de80c96bb423c152beec8beb22786f2238",
+      "files": [
+        {
+          "name": "deno.exe",
+          "sha256": "e020f3e232bd16e33768dee528e5983349c962952051ced0a5d58ad42f5d9b33"
+        }
+      ]
+    },
+    {
+      "project": "BtbN/FFmpeg-Builds",
+      "version": "autobuild-2026-10-08-13-05",
+      "source": "https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2026-10-08-13-05",
+      "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-10-08-13-05/ffmpeg-n9.0.2-23-g27b46f0fbc-win64-gpl-shared-9.0.zip",
+      "archiveSha256": "879dd8660cbdd1faab1b7260e509a1d26c5268d170a3bd4899792d34c5b547cb",
+      "files": [
+        {
+          "name": "avfilter-12.dll",
+          "sha256": "82a91099d40e2cc3da0c8d8411dffcb0ac0164b76fce79a6e82282bd0eae6d9b"
+        },
+        {
+          "name": "avutil-61.dll",
+          "sha256": "a1b6a459dbedc5a2acdc20c1ec1b6f29027c05fec49e6dddf381dceb5ed62664"
+        },
+        {
+          "name": "swscale-10.dll",
+          "sha256": "479487255bf8d08dc4f96cadc3796b055f23866837149d7646de8d7df9f2f2d8"
+        },
+        {
+          "name": "ffmpeg.exe",
+          "sha256": "9b8e47e88d122208f92abd2820f37f6fd7aebabd88b400b13b842d2f4e62d634"
+        },
+        {
+          "name": "avdevice-63.dll",
+          "sha256": "e0c51fb54fd6db694adde250284ec6b62b603cafb894b31d6d0d8db7477d2492"
+        },
+        {
+          "name": "ffprobe.exe",
+          "sha256": "9f2018d07a9f9816bb58db9bb0b92a94a9ef747da3907e61c07de37f7526d137"
+        },
+        {
+          "name": "avcodec-63.dll",
+          "sha256": "0531d107d2d2bd10eb5e848ce2e5b338aecc7eb633880db818070186dd9ae573"
+        },
+        {
+          "name": "avformat-63.dll",
+          "sha256": "3b9f3618cc458f31935184deb6376c641425fb8f2f9a69a4407d832cbdb8caf2"
+        },
+        {
+          "name": "swresample-7.dll",
+          "sha256": "a5e19fb8f3b8d6017ac3086ba3fac8d96bffd58698e29435e02ab99aed2e9422"
+        }
+      ]
+    }
+  ]
+}

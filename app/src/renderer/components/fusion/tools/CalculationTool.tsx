@@ -1,0 +1,28 @@
+/* FloatIsland - https://github.com/yanhaoran01/FloatIsland
+ * Copyright (C) 2026 contributors. GPL-3.0. */
+/** @file CalculationTool.tsx @description Separate calculator and unit drafts in a compact workspace. @author 鸡哥 */
+import { useEffect, useState,useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useToolJob } from './toolHooks';
+import { ToolBody, ToolResult, ToolTabs } from './ToolControls';
+import {useProductStore,useProductFiles} from '../productStore';
+import {useToolPreference} from './toolPreferences';
+const UNITS={length:['mm','cm','m','km','inch','ft','mile'],area:['mm^2','cm^2','m^2','km^2','ha','acre'],weight:['mg','g','kg','lb','oz'],temperature:['degC','degF','K'],time:['ms','s','min','hour','day'],storage:['bit','byte','kB','MB','GB','KiB','MiB','GiB']};
+/** Uses independent jobs to preserve each mode's result. */
+export function CalculationTool() {
+ const {t}=useTranslation(),product=useProductStore(),[mode,setMode]=useState<'calculate'|'units'>(()=>product.tab==='units'?'units':'calculate');
+ useEffect(()=>{if(product.target==='calculator')setMode(product.tab==='units'?'units':'calculate');},[product.nonce]);
+ const [expression,setExpression]=useState(''),[category,setCategory]=useState<keyof typeof UNITS>('length'),[value,setValue]=useState('1'),[from,setFrom]=useState('m'),[to,setTo]=useState('cm');
+ const calculation=useToolJob(),conversion=useToolJob(),job=mode==='calculate'?calculation:conversion;
+ const [precision,setPrecision]=useToolPreference('calculator.precision',14,(value):value is number=>Number.isInteger(value)&&Number(value)>=1&&Number(value)<=16),[history,setHistory]=useToolPreference<Array<{expression:string;result:string}>>('calculator.history',[],(value):value is Array<{expression:string;result:string}>=>Array.isArray(value)&&value.length<=30&&value.every(row=>row&&typeof row.expression==='string'&&row.expression.length<=4096&&typeof row.result==='string'&&row.result.length<200)),[favorites,setFavorites]=useToolPreference<Array<{category:keyof typeof UNITS;from:string;to:string}>>('units.favorites',[],(value):value is Array<{category:keyof typeof UNITS;from:string;to:string}>=>Array.isArray(value)&&value.length<=20&&value.every(row=>row&&row.category in UNITS&&typeof row.from==='string'&&typeof row.to==='string'));
+ const pending=useRef('');useProductFiles('calculator',files=>{if(files[0])void files[0].text().then(text=>setExpression(text.slice(0,4096)));});
+ useEffect(()=>{if(typeof calculation.result==='string'&&pending.current){setHistory([{expression:pending.current,result:calculation.result},...history.filter(row=>row.expression!==pending.current)].slice(0,30));pending.current='';}},[calculation.result]);
+ const run=():void=>{if(mode==='calculate'){pending.current=expression;calculation.run({kind:'calculate',expression,precision});}else conversion.run({kind:'convert',value:value.trim()?Number(value):NaN,from,to});};
+ return <ToolBody busy={job.busy} error={job.error} cancel={job.cancel} actions={<button disabled={job.busy} onClick={run}>{t(mode==='calculate'?'fusion.toolbox.calculate':'fusion.toolbox.convert')}</button>}>
+ <ToolTabs>{(['calculate','units'] as const).map(id=><button key={id} aria-pressed={mode===id} onClick={()=>{setMode(id);product.set({tab:id});}}>{t('fusion.toolbox.workspace.'+id)}</button>)}</ToolTabs>
+ <div className="fusion-form-focus">{mode==='calculate'?<form onSubmit={event=>{event.preventDefault();run();}}><label>{t('fusion.toolbox.expression')}<input value={expression} placeholder="sqrt(3^2 + 4^2)" onChange={event=>setExpression(event.target.value)}/></label></form>:<>
+ <label>{t('fusion.toolbox.category')}<select value={category} onChange={event=>{const next=event.target.value as keyof typeof UNITS;setCategory(next);setFrom(UNITS[next][0]);setTo(UNITS[next][1]);}}>{Object.keys(UNITS).map(id=><option key={id} value={id}>{t('fusion.toolbox.units.'+id)}</option>)}</select></label>
+ <label>{t('fusion.toolbox.value')}<input type="number" value={value} onChange={event=>setValue(event.target.value)}/></label>
+ <div className="fusion-tool-columns">{(['from','to'] as const).map(id=><label key={id}>{t('fusion.toolbox.'+id)}<input list="float-unit-options" value={id==='from'?from:to} onChange={event=>(id==='from'?setFrom:setTo)(event.target.value)}/></label>)}</div><datalist id="float-unit-options">{UNITS[category].map(unit=><option key={unit} value={unit}/>)}</datalist><div className="fusion-tool-actions"><button onClick={()=>{setFrom(to);setTo(from);}}>{t('fusion.enhance.utility.swap')}</button><button onClick={()=>setFavorites([{category,from,to},...favorites.filter(row=>row.from!==from||row.to!==to)].slice(0,20))}>{t('fusion.enhance.utility.favorite')}</button></div>{favorites.length>0&&<details><summary>{t('fusion.enhance.utility.favorites')}</summary>{favorites.map(row=><button key={row.from+'-'+row.to} onClick={()=>{setCategory(row.category);setFrom(row.from);setTo(row.to);}}>{row.from} → {row.to}</button>)}</details>}</>}
+ {typeof job.result==='string'&&<ToolResult text={job.result}/>} {mode==='calculate'&&<details><summary>{t('fusion.enhance.utility.more')}</summary><label>{t('fusion.enhance.utility.precision')}<input type="number" min={1} max={16} value={precision} onChange={event=>setPrecision(Number(event.target.value))}/></label><div className="fusion-file-list">{history.map(row=><button key={row.expression} onClick={()=>setExpression(row.expression)}>{row.expression} = {row.result}</button>)}</div>{history.length>0&&<button onClick={()=>setHistory([])}>{t('fusion.toolbox.clear')}</button>}</details>}</div></ToolBody>;
+}

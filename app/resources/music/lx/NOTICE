@@ -1,0 +1,7 @@
+LX Music desktop catalog modules
+Source: https://github.com/lyswhut/lx-music-desktop
+Commit: ad95d5091c9ed689fa72b5e5c849df65f5a679ce
+Copyright lyswhut and contributors. Apache License 2.0; see LICENSE.
+Original files are preserved. FloatIsland removes import/export declarations at runtime
+and adapts bounded HTTP, signing, format helpers, cancellation and metadata in
+src/main/music/fusionMusicCatalog.ts. No user login or account data is used.

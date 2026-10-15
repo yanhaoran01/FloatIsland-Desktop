@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "description": "Restore unchanged eIsland audio assets from a user-provided pinned upstream or matching FloatIsland app.asar before building.",
+  "license": "See ../LICENSE and docs/UPSTREAM-NOTICE.md",
+  "files": [
+    {
+      "path": "src/renderer/public/audio/AGENT.wav",
+      "archivePath": "out/renderer/audio/AGENT.wav",
+      "bytes": 2721036,
+      "sha256": "b894ea4c91f5fe1055fac54b3038aaf081c7df3167c3d5fdaeb6cd043cde3a28"
+    },
+    {
+      "path": "src/renderer/public/audio/ALARM/ALARM_1.wav",
+      "archivePath": "out/renderer/audio/ALARM/ALARM_1.wav",
+      "bytes": 25519724,
+      "sha256": "4c155497f8329ac3d6cd5f095b56bcdb10b7244e4a6c1679afe94dbf343fae2a"
+    },
+    {
+      "path": "src/renderer/public/audio/ALARM/ALARM_2.wav",
+      "archivePath": "out/renderer/audio/ALARM/ALARM_2.wav",
+      "bytes": 34235212,
+      "sha256": "a4d9533ff2de7e73192e1e5b7e7ccc05fbddfc732f8e8b439c02b48cbedda158"
+    },
+    {
+      "path": "src/renderer/public/audio/GOMOKU.wav",
+      "archivePath": "out/renderer/audio/GOMOKU.wav",
+      "bytes": 625566,
+      "sha256": "7e96d6a009d8eaff5a459651b8912d2f93bf57c6d4bd9b1037b8f740b2f7b1cf"
+    },
+    {
+      "path": "src/renderer/public/audio/Mokugyo.wav",
+      "archivePath": "out/renderer/audio/Mokugyo.wav",
+      "bytes": 204740,
+      "sha256": "51df45c422781433f2931fee7ec863fc1da667616a1d33524813d90c66c858dc"
+    },
+    {
+      "path": "src/renderer/public/audio/NOTIFICATION.wav",
+      "archivePath": "out/renderer/audio/NOTIFICATION.wav",
+      "bytes": 2879500,
+      "sha256": "eab71644e84087449b8b46c292289222d8613ef08cec6306507fa8e70142a025"
+    }
+  ]
+}

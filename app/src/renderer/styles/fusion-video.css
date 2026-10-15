@@ -1,0 +1,31 @@
+/* FusionIsland - Copyright (C) 2026 contributors. GPL-3.0. */
+/** @file fusion-video.css @description 灰白、贴底、自动淡出的原生播放器控件。 @author 鸡哥 */
+html,body,#root{width:100%;height:100%;margin:0;background:#101113;color:var(--fusion-ink)}
+*{box-sizing:border-box}
+.fusion-player{position:relative;width:100%;height:100%;overflow:hidden;border-radius:10px;outline:0}
+.fusion-player video{display:block;width:100%;height:100%;object-fit:contain}
+.fusion-player-shade{position:absolute;inset:55% 0 0;pointer-events:none;background:linear-gradient(transparent,#0009);transition:opacity .2s}
+.fusion-player-controls{position:absolute;inset:auto 14px 8px;display:flex;flex-direction:column;gap:3px;pointer-events:none;transition:opacity .2s}
+.fusion-player-controls:not([data-visible]),.fusion-player-shade:not([data-visible]){opacity:0}
+.fusion-player-row{display:flex;align-items:center;gap:10px;height:32px;pointer-events:auto}
+.fusion-player-controls:not([data-visible]):not(:focus-within) .fusion-player-row,.fusion-player-controls:not([data-visible]):not(:focus-within) .fusion-player-seek{pointer-events:none}
+.fusion-player-button{display:flex;align-items:center;justify-content:center;border:0;background:transparent;color:#eee;width:28px;height:28px;border-radius:6px;cursor:pointer;padding:0}
+.fusion-player-button:hover{background:#ffffff14}
+.fusion-player-button:focus-visible{outline:1px solid #eee;outline-offset:2px}
+.fusion-player-rate{font:11px "Segoe UI",sans-serif;width:32px}
+.fusion-player-time{display:flex;gap:4px;color:#d3d6dd;font:10px Consolas,monospace}
+.fusion-player-space{flex:1}
+.fusion-player-seek,.fusion-player-volume-slider{position:relative;display:flex;align-items:center;height:14px;cursor:pointer;pointer-events:auto;touch-action:none}
+.fusion-player-track{position:absolute;width:100%;height:2px;background:#ffffff35;border-radius:2px;overflow:hidden}
+.fusion-player-buffer,.fusion-player-fill{position:absolute;inset:0 auto 0 0;height:100%;width:var(--media-slider-fill,0%);background:#ffffff65}
+.fusion-player-buffer{width:var(--media-slider-buffer,0%)}
+.fusion-player-fill{background:#e1e6e2}
+.fusion-player-thumb{position:absolute;left:var(--media-slider-fill,0%);width:7px;height:7px;border-radius:50%;background:#eef1ee;transform:translateX(-50%);opacity:0}
+.fusion-player-seek:hover .fusion-player-thumb,.fusion-player-seek:focus-within .fusion-player-thumb{opacity:1}
+.fusion-player-volume{display:flex;align-items:center;gap:4px}
+.fusion-player-volume-slider{width:0;opacity:0;transition:width .15s,opacity .15s}
+.fusion-player-volume:hover .fusion-player-volume-slider,.fusion-player-volume:focus-within .fusion-player-volume-slider{width:58px;opacity:1}
+.fusion-player-muted,.fusion-player-button[data-muted] .fusion-player-sound{display:none}
+.fusion-player-button[data-muted] .fusion-player-muted{display:block}
+.fusion-video-error{position:absolute;inset:40% 20px auto;padding:12px;font:12px/1.6 "Segoe UI",sans-serif;text-align:center;color:#d6d8dd;background:#1c1d20;border-radius:8px}
+@media(prefers-reduced-motion:reduce){.fusion-player-controls,.fusion-player-shade,.fusion-player-volume-slider{transition:none}}

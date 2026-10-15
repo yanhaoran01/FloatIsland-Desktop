@@ -1,0 +1,49 @@
+[
+  {
+    "package": "@mozilla/readability",
+    "version": "0.6.0",
+    "license": "Apache-2.0",
+    "source": {
+      "type": "git",
+      "url": "https://github.com/mozilla/readability"
+    },
+    "usage": "Library metadata search / safe reading / RSS parsing; existing service integration"
+  },
+  {
+    "package": "rss-parser",
+    "version": "3.13.0",
+    "license": "MIT",
+    "source": {
+      "type": "git",
+      "url": "git+https://github.com/bobby-brennan/rss-parser.git"
+    },
+    "usage": "Library metadata search / safe reading / RSS parsing; existing service integration"
+  },
+  {
+    "package": "fuse.js",
+    "version": "7.5.0",
+    "license": "Apache-2.0",
+    "source": {
+      "type": "git",
+      "url": "https://github.com/krisk/Fuse.git"
+    },
+    "usage": "Library metadata search / safe reading / RSS parsing; existing service integration"
+  },
+  {
+    "package": "dompurify",
+    "version": "3.4.16",
+    "license": "(MPL-2.0 OR Apache-2.0)",
+    "source": {
+      "type": "git",
+      "url": "git://github.com/cure53/DOMPurify.git"
+    },
+    "usage": "Library metadata search / safe reading / RSS parsing; existing service integration"
+  },
+  {
+    "package": "cheerio",
+    "version": "1.2.0",
+    "license": "MIT",
+    "source": "https://github.com/cheeriojs/cheerio",
+    "usage": "Inert bookmark and article markup parsing"
+  }
+]

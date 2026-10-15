@@ -1,0 +1,8 @@
+{
+  "repository": "https://github.com/johnfactotum/foliate-js",
+  "commit": "78914aef4466eb960965702401634c2cb348e9b1",
+  "archiveSHA256": "4878cd5f04073af5046ea543da73a963a7f9e1a4b30ddc63ac86cea5adf02f38",
+  "localChanges": [
+    "Use compact, theme-aware scrollbars in the reading paginator."
+  ]
+}

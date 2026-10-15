@@ -1,0 +1,7 @@
+/* FloatIsland - Copyright (C) 2026 contributors. GPL-3.0. */
+:is(.island-shell,.fusion-workbench) .float-shortcut-control { display:flex; align-items:center; gap:6px; min-width:0; width:100%; }
+:is(.island-shell,.fusion-workbench) .float-shortcut-control input { flex:1; min-width:0; height:32px; }
+:is(.island-shell,.fusion-workbench) .float-shortcut-control button { display:inline-flex; align-items:center; justify-content:center; gap:4px; flex:none; min-height:32px; padding:4px 8px; font-size:12px; }
+:is(.island-shell,.fusion-workbench) .float-shortcut-control button[aria-pressed=true] { color:var(--ui-accent); }
+:is(.island-shell,.fusion-workbench) .fusion-setting-row > .float-shortcut-control {flex:1;width:auto}
+:is(.island-shell,.fusion-workbench) .fusion-setting-row:has(> .float-shortcut-control) > span {flex:0 0 112px;line-height:1.5}

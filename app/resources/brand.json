@@ -1,0 +1,9 @@
+{
+  "englishName": "FloatIsland",
+  "chineseName": "FloatIsland",
+  "internalName": "FusionIsland",
+  "appId": "com.fusionisland.desktop",
+  "icon": "icon/float-island.ico",
+  "trayLight": "icon/float-tray-light.png",
+  "trayDark": "icon/float-tray-dark.png"
+}

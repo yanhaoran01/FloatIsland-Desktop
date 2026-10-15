@@ -1,0 +1,151 @@
+{
+  "appId": "com.fusionisland.desktop",
+  "productName": "FloatIsland",
+  "directories": {
+    "buildResources": "resources",
+    "output": "../release"
+  },
+  "files": [
+    "out/**/*",
+    "!out/renderer/.vite/**"
+  ],
+  "asarUnpack": [
+    "node_modules/tesseract.js/**",
+    "node_modules/tesseract.js-core/**",
+    "node_modules/@eisland/**/src/bin/Release/**/*",
+    "node_modules/@eisland/**/*.node",
+    "node_modules/koffi/**/*"
+  ],
+  "extraResources": [
+    {
+      "from": "resources/ocr",
+      "to": "ocr",
+      "filter": [
+        "**/*"
+      ]
+    },
+    {
+      "from": "resources/icon",
+      "to": "icon",
+      "filter": [
+        "**/*"
+      ]
+    },
+    {
+      "from": "resources/capture.html",
+      "to": "capture.html"
+    },
+    {
+      "from": "resources/capture.css",
+      "to": "capture.css"
+    },
+    {
+      "from": "resources/capture.js",
+      "to": "capture.js"
+    },
+    {
+      "from": "resources/qishui-auth-v6.js",
+      "to": "qishui-auth-v6.js"
+    },
+    {
+      "from": "resources/qishui-qr-login.js",
+      "to": "qishui-qr-login.js"
+    },
+    {
+      "from": "resources/qishui-auth-v6",
+      "to": "qishui-auth-v6",
+      "filter": [
+        "**/*"
+      ]
+    },
+    {
+      "from": "resources/svg",
+      "to": "svg",
+      "filter": [
+        "**/*"
+      ]
+    },
+    {
+      "from": "node_modules/@eisland/windows-brightness-helper/src/bin/Release/net10.0",
+      "to": "helpers/brightness",
+      "filter": [
+        "**/*"
+      ]
+    },
+    {
+      "from": "node_modules/@eisland/windows-volume-helper/src/bin/Release/net10.0",
+      "to": "helpers/volume",
+      "filter": [
+        "**/*"
+      ]
+    },
+    {
+      "from": "resources/echoisland/desktop-host.exe",
+      "to": "echoisland/desktop-host.exe"
+    },
+    {
+      "from": "resources/echoisland/fusion-host.exe",
+      "to": "echoisland/fusion-host.exe"
+    },
+    {
+      "from": "resources/echoisland/fusion-hook.exe",
+      "to": "echoisland/fusion-hook.exe"
+    },
+    {
+      "from": "../dsh-plugin",
+      "to": "dsh-plugin",
+      "filter": [
+        "index.mjs",
+        "package.json",
+        "install.ps1"
+      ]
+    },
+    {
+      "from": "docs/THIRD_PARTY_TOOLS.md",
+      "to": "licenses/THIRD_PARTY_TOOLS.md"
+    },
+    {
+      "from": "src/renderer/vendor/bloub/LICENSE",
+      "to": "licenses/bloub-LICENSE"
+    },
+    {
+      "from": "src/renderer/vendor/shadcn/LICENSE",
+      "to": "licenses/shadcn-ui-LICENSE"
+    },
+    {
+      "from": "resources/download-runtime",
+      "to": "download-runtime",
+      "filter": [
+        "**/*"
+      ]
+    }
+  ],
+  "win": {
+    "icon": "resources/icon/float-island.ico",
+    "target": [
+      {
+        "target": "portable",
+        "arch": [
+          "x64"
+        ]
+      }
+    ],
+    "artifactName": "${productName}-${version}-portable.${ext}"
+  },
+  "nsis": {
+    "installerIcon": "resources/icon/float-island.ico",
+    "uninstallerIcon": "resources/icon/float-island.ico",
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "allowElevation": true,
+    "deleteAppDataOnUninstall": false
+  },
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "yanhaoran01",
+      "repo": "FloatIsland-Desktop"
+    }
+  ]
+}

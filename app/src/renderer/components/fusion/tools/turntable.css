@@ -1,0 +1,117 @@
+/* FloatIsland - https://github.com/JNTMTMTM/eIsland. Copyright (C) 2026 FloatIsland contributors. GPL-3.0. */
+/**
+ * @file turntable.css
+ * @description 留声机播放器：黑胶纹路、唱臂、封面氛围光与滚动歌词。
+ * @author 鸡哥
+ */
+.fi-turntable {
+  --deck: 240px; --line-h: 30px;
+  position: relative; isolation: isolate; display: grid; grid-template-columns: calc(var(--deck) + 56px) minmax(0, 1fr); align-items: center; column-gap: 36px;
+  min-height: 420px; padding: 8px 28px 8px 30px;
+}
+.fi-turntable::before {
+  content: ""; position: absolute; left: -60px; top: 50%; z-index: -1; width: 480px; height: 480px; margin-top: -240px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--tint), .2), transparent 62%); transition: background 1.2s ease; pointer-events: none;
+}
+.fi-turntable-backdrop {
+  position: absolute; inset: -30%; z-index: -1; background-size: cover; background-position: center;
+  filter: blur(60px) saturate(1.4); opacity: .22; transform: scale(1.1); animation: fi-fade 1.2s ease both;
+}
+
+/* ===================== 唱盘 ===================== */
+.fi-deck { position: relative; width: var(--deck, 240px); height: var(--deck, 240px); }
+.fi-platter {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle, #1a1b20 0 66%, #0c0d10 67% 100%);
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, .7), 0 0 0 1px rgba(255, 255, 255, .05), 0 0 80px -20px rgba(var(--tint), .45);
+  transition: box-shadow 1s ease;
+}
+.fi-record {
+  position: absolute; inset: 4%; border-radius: 50%;
+  background:
+    repeating-radial-gradient(circle, rgba(255, 255, 255, .028) 0 1px, transparent 1px 3px),
+    radial-gradient(circle, #16171b 0 34%, #0b0b0d 35% 37%, #141519 38% 96%, #2a2c33 97% 100%);
+  animation: fi-record-spin 4.2s linear infinite; animation-play-state: paused;
+}
+.fi-turntable[data-playing=true] .fi-record, .fi-deck[data-playing=true] .fi-record { animation-play-state: running; }
+.fi-deck { flex: none; }
+.fi-record-label {
+  position: absolute; inset: 33%; display: grid; place-items: center; border-radius: 50%; overflow: hidden;
+  background: linear-gradient(135deg, rgba(var(--tint), .9), rgba(var(--tint), .45)); background-size: cover; background-position: center;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, .35), 0 0 0 3px rgba(255, 255, 255, .04);
+}
+.fi-record-label img { width: 46%; height: auto; opacity: .85; border-radius: 22%; }
+.fi-record-sheen {
+  position: absolute; inset: 4%; border-radius: 50%; pointer-events: none; mix-blend-mode: screen;
+  background: conic-gradient(from 210deg, transparent 0 8%, rgba(255, 255, 255, .09) 13%, transparent 20% 56%, rgba(255, 255, 255, .06) 62%, transparent 70%);
+}
+.fi-spindle { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #f0f2f6, #7d8492); box-shadow: 0 1px 3px rgba(0, 0, 0, .6); }
+.fi-tonearm {
+  position: absolute; right: -44px; top: -18px; width: 60px; height: 220px; overflow: visible;
+  transform-origin: 30px 22px; filter: drop-shadow(0 10px 10px rgba(0, 0, 0, .5));
+  transition: transform 1.1s var(--fi-spring, cubic-bezier(.16, 1, .3, 1));
+}
+@keyframes fi-record-spin { to { transform: rotate(360deg); } }
+
+/* ===================== 信息区 ===================== */
+.fi-turntable-info { display: flex; flex-direction: column; justify-content: center; gap: 20px; min-width: 0; }
+.fi-turntable-info header { min-width: 0; animation: fi-enter .5s var(--fi-ease) both; }
+.fi-turntable-info h2 {
+  margin: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font: 600 24px/1.25 var(--fi-font-display, sans-serif); letter-spacing: .005em; color: var(--fi-ink, #eef0f4);
+}
+.fi-turntable-info header p { margin: 6px 0 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 13px; color: var(--fi-muted, #8d929c); }
+
+.fi-lyrics {
+  position: relative; height: calc(var(--line-h) * 5); overflow: hidden;
+  -webkit-mask: linear-gradient(transparent, #000 28%, #000 72%, transparent);
+  mask: linear-gradient(transparent, #000 28%, #000 72%, transparent);
+}
+.fi-lyrics ol {
+  margin: 0; padding: 0; list-style: none;
+  transform: translateY(calc((2 - var(--line, 0)) * var(--line-h)));
+  transition: transform .7s var(--fi-ease, ease);
+}
+.fi-lyrics li {
+  height: var(--line-h); line-height: var(--line-h); overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font-size: 14px; color: rgba(255, 255, 255, .28); transform-origin: left center;
+  transition: color .5s ease, transform .6s var(--fi-ease, ease), opacity .5s ease;
+}
+.fi-lyrics li[data-near=true] { color: rgba(255, 255, 255, .45); }
+.fi-lyrics li[data-current=true] { color: var(--fi-ink, #fff); font-weight: 600; transform: scale(1.06); text-shadow: 0 0 18px rgba(var(--tint), .45); }
+.fi-turntable[data-active=false] .fi-lyrics { display: none; }
+.fi-lyrics-empty { display: grid; place-items: center start; height: 100%; font-size: 13px; color: var(--fi-faint, #5f6570); }
+
+.fi-progress { display: flex; flex-direction: column; gap: 7px; }
+.fi-progress-track { position: relative; height: 16px; cursor: pointer; touch-action: none; }
+.fi-progress-track::before,
+.fi-progress-track > span { content: ""; position: absolute; left: 0; right: 0; top: 6px; height: 4px; border-radius: 99px; }
+.fi-progress-track::before { background: rgba(255, 255, 255, .1); }
+.fi-progress-track > span { transform-origin: left; background: linear-gradient(90deg, rgba(var(--tint), .7), #eef0f4); transition: transform .25s linear; }
+.fi-progress-track > i {
+  position: absolute; top: 2px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: #f4f5f8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .5); transform: scale(0); transition: transform .35s var(--fi-spring, ease), left .25s linear;
+}
+.fi-progress-track:hover > i, .fi-progress-track:focus-visible > i { transform: scale(1); }
+.fi-progress-track:focus-visible { outline: 0; }
+.fi-progress-track:focus-visible::before { box-shadow: 0 0 0 2px rgba(var(--tint), .5); }
+.fi-turntable[data-active=false] .fi-progress-track { cursor: default; }
+.fi-progress-time { display: flex; justify-content: space-between; font: 11px/1 Consolas, "Segoe UI", monospace; color: var(--fi-faint, #5f6570); font-variant-numeric: tabular-nums; }
+
+.fi-controls { display: flex; align-items: center; gap: 22px; }
+.fi-controls button {
+  display: grid; place-items: center; width: 42px; height: 42px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+  color: #c9cdd6; background: transparent; transition: background .2s, color .2s, transform .35s var(--fi-spring, ease);
+}
+.fi-controls button:hover:not(:disabled) { background: rgba(255, 255, 255, .07); color: #fff; }
+.fi-controls button:active:not(:disabled) { transform: scale(.88); }
+.fi-controls button:disabled { opacity: .3; cursor: default; }
+.fi-controls .fi-play:disabled { opacity: .5; box-shadow: none; }
+.fi-controls .fi-play { width: 56px; height: 56px; color: #121317; background: #f1f3f7; box-shadow: 0 10px 28px rgba(var(--tint), .35), inset 0 -2px 0 rgba(0, 0, 0, .12); }
+.fi-controls .fi-play:hover:not(:disabled) { background: #fff; color: #121317; transform: scale(1.05); }
+.fi-controls button:focus-visible { outline: 2px solid rgba(var(--tint), .8); outline-offset: 3px; }
+
+@media (max-width: 620px) {
+  .fi-turntable { --deck: 190px; grid-template-columns: 1fr; row-gap: 24px; justify-items: center; gap: 24px; padding: 18px; }
+  .fi-turntable-info { width: 100%; }
+}

@@ -1,0 +1,589 @@
+/*
+ * FusionIsland - A private Windows companion for local coding agents.
+ * https://github.com/JNTMTMTM/eIsland
+ *
+ * Copyright (C) 2026 JNTMTMTM
+ * Copyright (C) 2026 pyisland.com
+ * Copyright (C) 2026 FusionIsland contributors
+ *
+ * Licensed under GPL-3.0 with eIsland's additional terms. See LICENSE.
+ */
+
+/**
+ * @file fusionIsland.css
+ * @description Graphite styles for the agent workspace and the reused Coucou companion.
+ * @author 鸡哥
+ */
+
+.fusion-workspace {
+  position: relative;
+  --fusion-ink:#e5e7eb;
+  --fusion-muted:#969ba5;
+  --fusion-panel:#1c1d20;
+  --fusion-line:#ffffff0a;
+  --fusion-accent:#c8cdd5;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  overflow: hidden;
+  color: var(--fusion-ink);
+  background: radial-gradient(ellipse at 8% 0%, rgba(96, 148, 145, 0.13), transparent 45%), var(--fusion-panel);
+  border: 1px solid var(--fusion-line);
+  border-radius: 24px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+  font-family: "Segoe UI Variable Text", "Segoe UI", sans-serif;
+}
+
+.fusion-header,
+.fusion-toolbar,
+.fusion-session-row,
+.fusion-conversation-heading,
+.fusion-composer,
+.fusion-header-actions,
+.fusion-brand,
+.fusion-request-actions,
+.fusion-connect-row {
+  display: flex;
+  align-items: center;
+}
+
+.fusion-header {
+  justify-content: space-between;
+  min-height: 72px;
+  padding: 8px 20px;
+  border-bottom: 1px solid var(--fusion-line);
+}
+
+.fusion-brand { gap: 11px; }
+.fusion-brand-copy { display: grid; gap: 3px; }
+.fusion-brand-copy strong { font-size: 15px; font-weight: 650; letter-spacing: 0.01em; }
+.fusion-brand-copy span { color: var(--fusion-muted); font-size: 12px; }
+.fusion-header-actions { gap: 9px; }
+
+.fusion-pet {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  place-items: center;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.fusion-pet { position: relative; overflow: visible; }
+.fusion-pet canvas { position: absolute; width: 100%; height: auto; aspect-ratio: 3 / 4; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+.fusion-pet:focus-visible { outline: 2px solid var(--fusion-accent, #c8cdd5); outline-offset: 3px; border-radius: 12px; }
+
+.fusion-toolbar {
+  gap: 8px;
+  min-height: 46px;
+  padding: 6px 20px;
+}
+
+.fusion-provider,
+.fusion-project,
+.fusion-icon-button,
+.fusion-legacy-link,
+.fusion-new-session,
+.fusion-stop,
+.fusion-connect-row button {
+  color: var(--fusion-ink);
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid var(--fusion-line);
+  cursor: pointer;
+}
+
+.fusion-provider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.fusion-provider svg:first-child { color: #9ddfc6; }
+.fusion-provider select { width: 100%; padding: 0; color: inherit; background: transparent; border: 0; outline: 0; appearance: none; cursor: pointer; font: inherit; font-size: 12px; }
+.fusion-provider option { color: #1d2029; }
+.fusion-project {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 10px;
+  color: var(--fusion-muted);
+  text-align: left;
+  font-size: 12px;
+}
+.fusion-project span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fusion-project.is-selected { color: var(--fusion-ink); }
+.fusion-icon-button { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 10px; }
+.fusion-legacy-link { padding: 7px 10px; border-radius: 9px; color: #bbc2d5; font-size: 11px; }
+
+.fusion-session-row {
+  gap: 9px;
+  padding: 0 20px 10px;
+}
+.fusion-session-select { display: flex; flex: 1; align-items: center; gap: 9px; min-width: 0; }
+.fusion-session-select span { color: var(--fusion-muted); white-space: nowrap; font-size: 11px; }
+.fusion-session-select select {
+  width: 100%;
+  min-width: 0;
+  height: 32px;
+  padding: 0 9px;
+  color: var(--fusion-ink);
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid var(--fusion-line);
+  border-radius: 9px;
+  font: inherit;
+  font-size: 12px;
+}
+.fusion-session-select option { color: #1d2029; }
+.fusion-new-session,
+.fusion-stop,
+.fusion-connect-row button { display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border-radius: 9px; font-size: 11px; }
+.fusion-new-session:disabled { opacity: 0.45; cursor: default; }
+
+.fusion-external-sessions { padding: 0 20px 9px; }
+.fusion-external-sessions summary { width: fit-content; color: var(--fusion-accent); cursor: pointer; font-size: 11px; }
+.fusion-external-focus { margin-top: 7px; padding: 5px 8px; color: var(--fusion-ink); background: rgba(255, 255, 255, 0.055); border: 1px solid var(--fusion-line); border-radius: 7px; cursor: pointer; font: inherit; font-size: 10px; }
+.fusion-external-session-list { display: grid; max-height: 128px; gap: 6px; overflow: auto; margin-top: 7px; }
+.fusion-external-session { display: grid; gap: 3px; padding: 8px 10px; background: rgba(255, 255, 255, 0.035); border: 1px solid var(--fusion-line); border-radius: 10px; }
+.fusion-external-session-heading { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.fusion-external-session-heading strong { overflow: hidden; color: var(--fusion-ink); text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
+.fusion-external-session-heading span, .fusion-external-session small { color: var(--fusion-muted); font-size: 10px; }
+.fusion-external-session p { overflow: hidden; margin: 0; color: #c5c7d0; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; }
+
+.fusion-conversation-heading {
+  justify-content: space-between;
+  min-height: 38px;
+  padding: 0 20px;
+  border-top: 1px solid var(--fusion-line);
+}
+.fusion-session-title { overflow: hidden; color: #d8dbe5; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+.fusion-stop { color: #ffb5ad; background: rgba(214, 100, 95, 0.12); }
+
+.fusion-message-feed {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 11px;
+  min-height: 120px;
+  padding: 12px 20px 16px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+.fusion-empty-state { display: grid; flex: 1; align-content: center; justify-items: center; gap: 8px; min-height: 130px; color: var(--fusion-muted); text-align: center; }
+.fusion-empty-state strong { color: #e4e7ef; font-size: 14px; font-weight: 580; }
+.fusion-empty-state p { max-width: 320px; margin: 0; font-size: 12px; line-height: 1.55; }
+.fusion-empty-orb { display: grid; width: 40px; height: 40px; place-items: center; margin-bottom: 3px; color: #a9ead5; background: rgba(145, 225, 197, 0.1); border: 1px solid rgba(145, 225, 197, 0.22); border-radius: 14px; }
+.fusion-message { max-width: min(86%, 680px); padding: 9px 12px; border-radius: 14px; font-size: 12px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+.fusion-message p { margin: 0; }
+.fusion-message--user { align-self: flex-end; color: #f0f3f5; background: rgba(114, 184, 164, 0.19); border: 1px solid rgba(145, 225, 197, 0.15); border-bottom-right-radius: 5px; }
+.fusion-message--assistant { align-self: flex-start; background: rgba(255, 255, 255, 0.055); border: 1px solid var(--fusion-line); border-bottom-left-radius: 5px; }
+.fusion-message--tool { align-self: flex-start; max-width: 100%; color: #b9c2d2; background: rgba(126, 143, 178, 0.1); border: 1px solid var(--fusion-line); font-family: ui-monospace, Consolas, monospace; }
+.fusion-tool-status { display: block; margin-bottom: 4px; color: #9da8bf; font-family: "Segoe UI", sans-serif; font-size: 10px; }
+.fusion-thinking { display: flex; align-items: center; gap: 8px; color: var(--fusion-muted); font-size: 11px; }
+.fusion-thinking span { width: 7px; height: 7px; background: #a4e6d1; border-radius: 50%; box-shadow: 0 0 12px rgba(164, 230, 209, 0.7); animation: fusion-pulse 0.9s ease-in-out infinite alternate; }
+
+.fusion-request { align-self: stretch; padding: 12px 13px; background: rgba(230, 174, 104, 0.09); border: 1px solid rgba(242, 190, 130, 0.28); border-radius: 14px; font-size: 12px; }
+.fusion-request > strong { color: #f3d5ac; font-size: 12px; }
+.fusion-request p { margin: 7px 0; color: #d6d6df; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+.fusion-request code { display: block; padding: 7px 9px; color: #d5dded; background: rgba(0, 0, 0, 0.22); border-radius: 8px; overflow-wrap: anywhere; }
+.fusion-request-actions { gap: 7px; flex-wrap: wrap; margin-top: 10px; }
+.fusion-request button { padding: 6px 9px; color: #f4f5f8; background: rgba(255, 255, 255, 0.09); border: 1px solid rgba(255, 255, 255, 0.09); border-radius: 8px; cursor: pointer; font: inherit; font-size: 11px; }
+.fusion-request button.is-muted { color: #f1aaa3; background: rgba(205, 95, 88, 0.1); }
+.fusion-question { margin-top: 10px; padding-top: 9px; border-top: 1px solid rgba(255, 255, 255, 0.09); }
+.fusion-question > span { color: #f4f0e9; font-weight: 600; }
+.fusion-question > button { margin: 4px 5px 0 0; }
+.fusion-answer-input { display: flex; gap: 6px; margin-top: 8px; }
+.fusion-answer-input input { flex: 1; min-width: 0; padding: 7px 9px; color: var(--fusion-ink); background: rgba(0, 0, 0, 0.2); border: 1px solid var(--fusion-line); border-radius: 8px; font: inherit; }
+.fusion-inline-error { margin: 0 20px 7px; padding: 7px 10px; color: #ffb6af; background: rgba(189, 76, 70, 0.11); border-radius: 8px; font-size: 11px; }
+.fusion-connect-row { justify-content: space-between; min-height: 34px; padding: 0 20px 6px; color: var(--fusion-muted); font-size: 11px; }
+.fusion-composer { gap: 8px; margin: 0 14px 14px; padding: 8px 9px 8px 12px; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--fusion-line); border-radius: 15px; }
+.fusion-composer:focus-within { border-color: rgba(145, 225, 197, 0.4); box-shadow: 0 0 0 3px rgba(145, 225, 197, 0.06); }
+.fusion-composer textarea { flex: 1; min-width: 0; max-height: 88px; resize: none; color: var(--fusion-ink); background: transparent; border: 0; outline: 0; font: inherit; font-size: 12px; line-height: 1.5; }
+.fusion-composer textarea::placeholder { color: #858a9a; }
+.fusion-composer button { display: grid; width: 30px; height: 30px; flex: 0 0 auto; place-items: center; color: #1c2926; background: var(--fusion-accent); border: 0; border-radius: 10px; cursor: pointer; }
+.fusion-composer button:disabled { color: #87968f; background: rgba(145, 225, 197, 0.15); cursor: default; }
+
+.fusion-drop-overlay { position: absolute; z-index: 5; inset: 82px 10px 10px; display: flex; align-items: center; justify-content: center; gap: 9px; color: #d8f4e9; background: rgba(12, 21, 24, 0.88); border: 1px dashed rgba(145, 225, 197, 0.65); border-radius: 18px; font-size: 13px; pointer-events: none; backdrop-filter: blur(8px); }
+.fusion-attachment-strip { display: flex; flex-wrap: wrap; gap: 6px; max-height: 64px; overflow: auto; margin: 0 16px 7px; }
+.fusion-attachment-chip { display: inline-flex; align-items: center; gap: 4px; max-width: 100%; padding: 4px 5px 4px 9px; color: #d7e4df; background: rgba(145, 225, 197, 0.09); border: 1px solid rgba(145, 225, 197, 0.18); border-radius: 9px; font-size: 10px; }
+.fusion-attachment-chip > span { max-width: 210px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fusion-attachment-chip button { display: grid; width: 19px; height: 19px; flex: 0 0 auto; place-items: center; color: var(--fusion-muted); background: transparent; border: 0; border-radius: 6px; cursor: pointer; }
+.fusion-attachment-chip button:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+
+.fusion-local-badge { max-width: 42%; overflow: hidden; color: var(--fusion-muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.fusion-local-badge.is-ready { color: #a9dfca; }
+.fusion-api-settings { display: grid; gap: 9px; padding: 12px 16px; background: rgba(255, 255, 255, 0.035); border-bottom: 1px solid var(--fusion-border); }
+.fusion-api-settings label { display: grid; gap: 5px; color: var(--fusion-muted); font-size: 11px; }
+.fusion-api-settings input { min-width: 0; padding: 8px 10px; color: var(--fusion-ink); background: rgba(4, 9, 12, 0.5); border: 1px solid var(--fusion-border); border-radius: 9px; outline: none; }
+.fusion-api-settings input:focus { border-color: rgba(145, 225, 197, 0.55); }
+.fusion-api-settings > button { justify-self: end; padding: 7px 12px; color: #14201d; background: var(--fusion-accent); border: 0; border-radius: 9px; cursor: pointer; }
+.fusion-api-settings > button:disabled { opacity: 0.55; cursor: wait; }
+.fusion-attach { display: grid; width: 30px; height: 30px; flex: 0 0 auto; place-items: center; color: var(--fusion-muted); cursor: pointer; }
+.fusion-attach input { display: none; }
+.fusion-request-context { color: var(--fusion-muted); font-size: 10px; }
+
+.fusion-session-overview,
+.fusion-tools-panel {
+  --fusion-ink:#e5e7eb;
+  --fusion-muted:#969ba5;
+  --fusion-panel:#1c1d20;
+  --fusion-line:#ffffff0a;
+  --fusion-accent:#c8cdd5;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  overflow: auto;
+  padding: 17px 19px 15px;
+  color: var(--fusion-ink);
+  background: radial-gradient(ellipse at 7% 0%, rgba(96, 148, 145, 0.12), transparent 42%), var(--fusion-panel);
+  border: 1px solid var(--fusion-line);
+  border-radius: 24px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+  font-family: "Segoe UI Variable Text", "Segoe UI", sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+.fusion-overview-header,
+.fusion-overview-brand,
+.fusion-overview-actions,
+.fusion-agent-card-heading,
+.fusion-agent-name,
+.fusion-section-heading,
+.fusion-pending-open,
+.fusion-overview-chat-link,
+.fusion-tools-heading { display: flex; align-items: center; }
+.fusion-overview-header { justify-content: space-between; gap: 14px; margin-bottom: 14px; }
+.fusion-overview-brand { min-width: 0; gap: 10px; }
+.fusion-overview-brand .fusion-pet { width: 48px; height: 48px; flex: 0 0 auto; }
+.fusion-overview-brand > div { display: grid; gap: 3px; min-width: 0; }
+.fusion-overview-brand strong, .fusion-tools-heading strong { color: var(--fusion-ink); font-size: 15px; font-weight: 650; }
+.fusion-overview-brand span, .fusion-tools-heading span { color: var(--fusion-muted); font-size: 11px; line-height: 1.45; }
+.fusion-overview-actions { flex: 0 0 auto; gap: 7px; }
+.fusion-count-badge { display: inline-flex; align-items: center; gap: 5px; padding: 6px 8px; color: var(--fusion-muted); background: rgba(255, 255, 255, 0.05); border: 1px solid var(--fusion-line); border-radius: 9px; font-size: 10px; }
+.fusion-count-badge.is-pending { color: #f1c991; background: rgba(227, 169, 99, 0.11); border-color: rgba(227, 169, 99, 0.24); }
+.fusion-overview-error { margin-bottom: 9px; padding: 8px 10px; color: #ffb6af; background: rgba(189, 76, 70, 0.11); border: 1px solid rgba(189, 76, 70, 0.16); border-radius: 9px; font-size: 11px; }
+.fusion-agent-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.fusion-agent-card { display: flex; flex-direction: column; min-width: 0; padding: 11px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--fusion-line); border-radius: 15px; }
+.fusion-agent-card-heading { justify-content: space-between; gap: 7px; margin-bottom: 8px; }
+.fusion-agent-name { min-width: 0; gap: 8px; }
+.fusion-agent-name > div { display: grid; gap: 2px; min-width: 0; }
+.fusion-agent-name strong { color: var(--fusion-ink); font-size: 12px; }
+.fusion-agent-name small { color: var(--fusion-muted); font-size: 10px; }
+.fusion-agent-icon { display: grid; width: 29px; height: 29px; flex: 0 0 auto; place-items: center; color: #a8e5d2; background: rgba(145, 225, 197, 0.1); border: 1px solid rgba(145, 225, 197, 0.16); border-radius: 10px; }
+.fusion-agent-card--dsh .fusion-agent-icon { color: #c6b5f3; background: rgba(166, 137, 222, 0.1); border-color: rgba(166, 137, 222, 0.16); }
+.fusion-agent-card .fusion-new-session { flex: 0 0 auto; padding: 6px 8px; font-size: 10px; }
+.fusion-session-list { display: grid; gap: 5px; max-height: 153px; overflow: auto; }
+.fusion-session-card { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; padding: 7px 8px; color: var(--fusion-ink); text-align: left; background: rgba(0, 0, 0, 0.12); border: 1px solid rgba(255, 255, 255, 0.045); border-radius: 9px; cursor: pointer; }
+.fusion-session-card:hover, .fusion-pending-open:hover, .fusion-overview-chat-link:hover, .fusion-tool-card:hover { border-color: rgba(145, 225, 197, 0.28); background-color: rgba(145, 225, 197, 0.08); }
+.fusion-session-card > svg { flex: 0 0 auto; color: var(--fusion-accent); }
+.fusion-session-card-copy { display: grid; min-width: 0; gap: 3px; }
+.fusion-session-card-copy strong, .fusion-session-card-copy small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fusion-session-card-copy strong { font-size: 10px; font-weight: 580; }
+.fusion-session-card-copy small { color: var(--fusion-muted); font-size: 9px; }
+.fusion-overview-empty { margin: 5px 2px 2px; color: var(--fusion-muted); font-size: 10px; line-height: 1.5; }
+.fusion-pending-section, .fusion-external-section { display: grid; gap: 7px; margin-top: 11px; }
+.fusion-section-heading { gap: 7px; color: #f3d5ac; font-size: 11px; }
+  .fusion-section-heading > span { color: var(--fusion-muted); font-size: 10px; }
+  .fusion-section-heading > .fusion-external-freshness { color: var(--fusion-muted); font-size: 9px; }
+.fusion-section-heading button { margin-left: auto; padding: 5px 8px; color: var(--fusion-ink); background: rgba(255, 255, 255, 0.055); border: 1px solid var(--fusion-line); border-radius: 8px; cursor: pointer; font: inherit; font-size: 10px; }
+.fusion-pending-card { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 10px; background: rgba(230, 174, 104, 0.08); border: 1px solid rgba(242, 190, 130, 0.2); border-radius: 11px; }
+.fusion-pending-card > div { min-width: 0; }
+.fusion-pending-card strong { color: #f3d5ac; font-size: 10px; }
+.fusion-pending-card p { overflow: hidden; margin: 3px 0; color: #d4d4de; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; }
+.fusion-pending-card small { color: var(--fusion-muted); font-size: 9px; }
+.fusion-pending-open { flex: 0 0 auto; gap: 5px; padding: 6px 8px; color: #f5e0c3; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; cursor: pointer; font: inherit; font-size: 9px; }
+.fusion-external-section .fusion-section-heading { color: var(--fusion-ink); }
+.fusion-external-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.fusion-external-session { min-width: 0; padding: 8px 9px; }
+.fusion-external-session strong, .fusion-external-session small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fusion-external-session strong { color: var(--fusion-ink); font-size: 10px; }
+.fusion-external-session small { color: var(--fusion-muted); font-size: 9px; }
+.fusion-overview-chat-link { justify-content: center; gap: 7px; align-self: center; margin: 12px 0 2px; padding: 8px 12px; color: var(--fusion-accent); background: rgba(145, 225, 197, 0.06); border: 1px solid rgba(145, 225, 197, 0.14); border-radius: 10px; cursor: pointer; font: inherit; font-size: 10px; }
+.fusion-refresh-spinning { animation: fusion-refresh 0.9s linear infinite; }
+
+.fusion-tools-panel { overflow: hidden; }
+.fusion-tools-heading { min-height: 45px; gap: 9px; margin-bottom: 14px; }
+.fusion-tools-heading > div { display: grid; gap: 3px; }
+.fusion-tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.fusion-tool-card { display: grid; min-height: 116px; align-content: center; justify-items: center; gap: 10px; padding: 13px; color: var(--fusion-ink); background: rgba(255, 255, 255, 0.045); border: 1px solid var(--fusion-line); border-radius: 16px; cursor: pointer; font: inherit; transition: background-color 140ms ease, border-color 140ms ease, transform 140ms ease; }
+.fusion-tool-card:hover { transform: translateY(-1px); }
+.fusion-tool-card > span { display: grid; width: 42px; height: 42px; place-items: center; color: var(--fusion-accent); background: rgba(145, 225, 197, 0.1); border: 1px solid rgba(145, 225, 197, 0.15); border-radius: 13px; }
+.fusion-tool-card strong { font-size: 11px; font-weight: 580; }
+.fusion-tool-card--accent { background: radial-gradient(circle at 50% 10%, rgba(145, 225, 197, 0.1), transparent 60%), rgba(255, 255, 255, 0.045); }
+.fusion-tool-card--more > span { color: #c6b5f3; background: rgba(166, 137, 222, 0.1); border-color: rgba(166, 137, 222, 0.15); }
+.fusion-tool-card:disabled { opacity: 0.6; cursor: wait; }
+.fusion-tool-content { min-height: 0; flex: 1; overflow: auto; }
+.fusion-tool-content > * { min-height: 100%; }
+
+@keyframes fusion-refresh { to { transform: rotate(360deg); } }
+
+@media (max-width: 600px) {
+  .fusion-session-overview, .fusion-tools-panel { padding: 13px; }
+  .fusion-agent-grid { grid-template-columns: 1fr; }
+  .fusion-agent-card { padding: 10px; }
+  .fusion-overview-brand span { max-width: 270px; }
+  .fusion-overview-actions { gap: 4px; }
+}
+
+@keyframes fusion-pulse { to { opacity: 0.4; transform: scale(0.78); } }
+
+@media (max-width: 600px) {
+  .fusion-header { padding-right: 13px; padding-left: 13px; }
+  .fusion-toolbar, .fusion-session-row { padding-right: 13px; padding-left: 13px; }
+  .fusion-external-sessions { padding-right: 13px; padding-left: 13px; }
+  .fusion-message-feed { padding-right: 13px; padding-left: 13px; }
+  .fusion-conversation-heading, .fusion-connect-row { padding-right: 13px; padding-left: 13px; }
+  .fusion-legacy-link { padding-right: 6px; padding-left: 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fusion-pet *, .fusion-thinking span { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+  .fusion-message-feed { scroll-behavior: auto; }
+}
+
+/* Original host icons and EchoIsland animation resources. */
+.fusion-resource-icon { width: 16px; height: 16px; object-fit: contain; flex: 0 0 auto; }
+.fusion-tool-icon { width: 20px; height: 20px; object-fit: contain; }
+.fusion-echo-avatar { display: inline-block; flex: 0 0 38px; background-repeat: no-repeat; animation-name: fusion-echo-frames; }
+.fusion-external-session { display: flex; align-items: center; gap: 10px; }
+.fusion-external-session-copy { display: grid; gap: 4px; min-width: 0; }
+@keyframes fusion-echo-frames { from { background-position-x: 0; } to { background-position-x: var(--echo-frame-end); } }
+.fusion-pet--finished::after { content: ""; position: absolute; inset: 12px -12px; border: 10px solid transparent; border-image: url('../../public/echoisland/completion-glow.png') 0 160 fill / 0 22px stretch; opacity: .65; pointer-events: none; }
+.fusion-markdown { min-width: 0; overflow-wrap: anywhere; }
+.fusion-markdown > :first-child { margin-top: 0; }
+.fusion-markdown > :last-child { margin-bottom: 0; }
+.fusion-markdown p { white-space: normal; margin: 0 0 8px; }
+.fusion-message--user .fusion-markdown p, .fusion-message--tool .fusion-markdown p { white-space: pre-wrap; }
+.fusion-markdown ul, .fusion-markdown ol { padding-left: 22px; }
+.fusion-markdown a { color: var(--fusion-accent); }
+.fusion-markdown table { border-collapse: collapse; display: block; overflow: auto; }
+.fusion-markdown td, .fusion-markdown th { border: 1px solid var(--fusion-line); padding: 6px 9px; }
+.fusion-markdown .max-expand-chat-code-block { margin: 8px 0; overflow: hidden; border: 1px solid var(--fusion-line); border-radius: 10px; background: rgba(0,0,0,.18); }
+.fusion-markdown .max-expand-chat-code-block-head { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; }
+.fusion-markdown .max-expand-chat-code-lang { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--fusion-muted); }
+.fusion-markdown .max-expand-chat-code-lang-icon { width: 14px; height: 14px; }
+.fusion-markdown .max-expand-chat-code-copy-btn { background: none; border: 0; color: var(--fusion-accent); cursor: pointer; }
+.fusion-markdown pre { margin: 0; padding: 10px; overflow: auto; white-space: pre; }
+@media (prefers-reduced-motion: reduce) { .fusion-echo-avatar { animation: none; } }
+
+/* Unified shell; hidden pages retain state without drawing or intercepting input. */
+.fusion-shell, .fusion-guide, .fusion-compact { --fusion-ink:#e5e7eb; --fusion-muted:#969ba5; --fusion-panel:#1c1d20; --fusion-line:#ffffff0a; --fusion-accent:#c8cdd5; color: var(--fusion-ink); font-family: "Segoe UI Variable Text", "Microsoft YaHei UI", sans-serif; }
+.fusion-retained-workspace { width: 100%; height: 100%; min-height: 0; }
+.fusion-retained-workspace[hidden], .fusion-page[hidden], .fusion-provider-page[hidden] { display: none !important; }
+.fusion-shell { height: 100%; width: 100%; display: flex; flex-direction: column; overflow: hidden; background: var(--fusion-panel); border-radius: 24px; }
+.fusion-shell-header { display: flex; align-items: center; flex: 0 0 54px; gap: 10px; padding: 0 18px; border-bottom: 1px solid var(--fusion-line); }
+.fusion-shell-header > strong { font-size: 13px; letter-spacing: .02em; margin-right: auto; }
+.fusion-navigation { display: flex; gap: 4px; }
+.fusion-navigation button, .fusion-settings aside button { border: 0; background: transparent; color: var(--fusion-muted); padding: 9px 16px; border-radius: 10px; cursor: pointer; font: inherit; font-size: 12px; }
+.fusion-navigation button[aria-current], .fusion-settings aside button[aria-current] { background: #b9ddc814; color: var(--fusion-accent); }
+.fusion-shell button:focus-visible, .fusion-shell input:focus-visible, .fusion-shell select:focus-visible { outline: 2px solid var(--fusion-accent); outline-offset: 2px; }
+.fusion-pages, .fusion-page, .fusion-provider-page { flex: 1; min-height: 0; height: 100%; overflow: hidden; }
+.fusion-page > .fusion-workspace, .fusion-provider-page > .fusion-workspace { min-height: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.fusion-provider-pages { height: 100%; min-height: 0; }
+.fusion-shell .fusion-header { min-height: 56px; padding: 8px 20px; }
+.fusion-shell .fusion-header .fusion-pet { width: 48px; height: 48px; }
+.fusion-settings { display: flex; height: 100%; font-size: 13px; }
+.fusion-settings aside { flex: 0 0 160px; padding: 16px 10px; border-right: 1px solid var(--fusion-line); display: flex; flex-direction: column; gap: 5px; }
+.fusion-settings aside button { text-align: left; }
+.fusion-settings-body { flex: 1; min-width: 0; padding: 24px; overflow-y: auto; }
+.fusion-settings-body h2 { margin: 0 0 20px; font-size: 17px; font-weight: 600; }
+.fusion-settings-body p { color: var(--fusion-muted); line-height: 1.8; }
+.fusion-settings-body select, .fusion-guide select { background: #292b30; color: inherit; padding: 8px; border: 1px solid var(--fusion-line); border-radius: 8px; }
+.fusion-setting-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 48px; border-bottom: 1px solid var(--fusion-line); }
+.fusion-setting-row input { accent-color: var(--fusion-accent); }
+.fusion-settings .fusion-api-settings { margin: 18px 0; }
+.fusion-tool-back { color: var(--fusion-muted); display: flex; align-items: center; gap: 8px; background: transparent; border: 0; padding: 8px 20px; cursor: pointer; }
+.fusion-compact { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; gap: 12px; padding: 0 16px; box-sizing: border-box; cursor: pointer; }
+.fusion-compact .fusion-pet { flex: 0 0 38px; width: 38px; height: 38px; }
+.fusion-compact strong { font-size: 12px; font-weight: 500; }
+.fusion-compact-copy { min-width:0; }
+.fusion-compact--overview { display:grid; grid-template-columns:52px minmax(0,1fr) 32px; gap:16px; padding:18px 22px; text-align:left; background:#1c1d20; }
+.fusion-compact--overview .fusion-pet { width:52px; height:52px; }
+.fusion-compact--overview strong { display:block; font-size:13px; line-height:20px; font-weight:600; white-space:nowrap; }
+.fusion-compact--overview p { margin:5px 0 0; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; font-size:12px; line-height:19px; overflow-wrap:anywhere; color:var(--fusion-muted); }
+.fusion-compact-open { display:grid; place-items:center; width:32px; height:32px; border:1px solid #ffffff0c; border-radius:11px; color:#cfc4b0; background:#ffffff06; cursor:pointer; }
+.fusion-compact-open:hover { background:#ffffff10; }
+.fusion-compact-open:focus-visible { outline:2px solid #c8cdd5; outline-offset:3px; }
+.island-shell.hover, .island-shell.shape-pill.hover { width:min(480px,100vw); height:104px; background:#1c1d20; }
+.fusion-guide { height: 100%; padding: 22px 32px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: var(--fusion-panel); }
+.fusion-guide h1, .fusion-guide h2, .fusion-guide p { margin: 0; }
+.fusion-guide h1 { font-size: 22px; }
+.fusion-guide p { color: var(--fusion-muted); line-height: 1.7; font-size: 12px; }
+.fusion-guide-features { display: flex; gap: 14px; margin: 8px 0; }
+.fusion-guide-features article { flex: 1; padding: 14px; background: #ffffff05; border-radius: 12px; }
+.fusion-guide-features h2 { font-size: 13px; margin-bottom: 8px; }
+.fusion-guide > button { background: var(--fusion-accent); color: #1c2521; padding: 10px 24px; border: 0; border-radius: 10px; cursor: pointer; }
+
+.fusion-global-requests { flex: 0 0 auto; border-bottom: 1px solid var(--fusion-line); }
+.fusion-request-disclosure { width: 100%; border: 0; background: #dcc48a14; color: #e1cd9b; padding: 9px 20px; text-align: left; cursor: pointer; }
+.fusion-request-list { max-height: 260px; overflow-y: auto; padding: 0 20px; }
+.fusion-request-list[hidden] { display: none; }
+.fusion-request-list pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.fusion-question-answer { display: flex; flex-direction: column; gap: 8px; margin: 8px 0; }
+.fusion-question-answer textarea { background: #ffffff09; color: inherit; padding: 8px; border: 1px solid var(--fusion-line); border-radius: 8px; }
+.fusion-session-detail { display: block; }
+.fusion-session-detail summary { display: flex; align-items: center; gap: 12px; cursor: pointer; list-style: none; }
+.fusion-session-detail-body { padding: 12px; color: var(--fusion-ink); overflow-wrap: anywhere; }
+.fusion-session-detail-body pre { white-space: pre-wrap; font-size: 12px; }
+
+/* Shared conversation and standalone workbench. */
+.fusion-workbench { height:100vh; display:flex; flex-direction:column; background:#181a1e; color:#c8cdd5; }
+.fusion-titlebar { display:flex; align-items:center; height:36px; flex-shrink:0; padding-left:18px; background:#14161a; -webkit-app-region:drag; font-size:12px; color:#aca9a3; }
+.fusion-titlebar > div { flex:1; }
+.fusion-titlebar button { display:grid; place-items:center; width:42px; height:36px; border:0; color:inherit; background:none; -webkit-app-region:no-drag; }
+.fusion-titlebar button:hover { background:#353236; color:#fff; }
+.fusion-workbench > .fusion-shell { flex:1; min-height:0; }
+.fusion-chat { box-sizing:border-box; height:100%; min-height:0; display:flex; flex-direction:column; gap:8px; padding:16px 22px; color:#c8cdd5; background:#1c1d20; font-size:13px; }
+.fusion-chat--compact { padding:10px 16px 14px; border-radius:0 0 22px 22px; gap:6px; }
+.fusion-chat button, .fusion-chat select, .fusion-chat textarea { font:inherit; }
+.fusion-chat button { cursor:pointer; }
+.fusion-chat button:disabled { cursor:default; opacity:.42; }
+.fusion-chat :focus-visible { outline:2px solid #c8cdd5; outline-offset:2px; }
+.fusion-chat-header { display:flex; align-items:center; gap:8px; min-height:42px; flex-shrink:0; }
+.fusion-chat-header .fusion-pet { width:48px; height:42px; flex-shrink:0; }
+.fusion-chat-header select { background:transparent; border:0; color:#e5e7eb; max-width:170px; font-weight:600; }
+.fusion-chat select option { background:#25272c; color:#e5e7eb; }
+.fusion-chat-status { flex:1; font-size:11px; color:#969ba5; }
+.fusion-chat-context { display:flex; align-items:center; gap:6px; min-height:28px; flex-shrink:0; }
+.fusion-chat-context > select { min-width:0; flex:1; max-width:100%; background:#25272c; color:#969ba5; border:1px solid #393a3e; border-radius:8px; padding:5px 8px; font-size:11px; }
+.fusion-chat-context > span { flex:1; color:#969ba5; }
+.fusion-small-action { display:flex; align-items:center; gap:4px; white-space:nowrap; background:transparent; border:0; color:#969ba5; }
+.fusion-chat-feed { flex:1; min-height:40px; overflow:auto; scrollbar-width:thin; padding:4px 2px; user-select:text; overflow-anchor:none; }
+.fusion-chat-feed-content { display:flow-root; }
+.fusion-chat--compact .fusion-chat-feed-content > :last-child { margin-bottom:0; }
+.fusion-chat--compact .fusion-message { padding:9px 10px; }
+.fusion-chat--compact .fusion-message--assistant { background:#222429; border:1px solid #33353a; }
+.fusion-chat--compact .fusion-chat-feed-content img { max-width:100%; height:auto; }
+.fusion-chat--compact .fusion-chat-feed-content table { display:block; overflow-x:auto; max-width:100%; }
+.fusion-chat-feed .fusion-message { max-width:100%; margin:0 0 10px; padding:9px 12px; border-radius:12px; overflow-wrap:anywhere; }
+.fusion-chat-feed .fusion-message p { margin:0; white-space:pre-wrap; }
+.fusion-chat-feed .fusion-message--user { background:#2b2d32; color:#969ba5; }
+.fusion-chat-feed .fusion-message--assistant { background:transparent; line-height:1.65; white-space:normal; font-size:13px; }
+.fusion-chat-feed .fusion-message--assistant p { white-space:normal; margin:0 0 10px; }
+.fusion-chat-feed .fusion-message--assistant > :last-child { margin-bottom:0; }
+.fusion-chat-feed .fusion-message--assistant h1, .fusion-chat-feed .fusion-message--assistant h2, .fusion-chat-feed .fusion-message--assistant h3 { font-size:14px; line-height:1.5; font-weight:600; margin:12px 0 8px; }
+.fusion-chat-feed .fusion-message--assistant > :first-child { margin-top:0; }
+.fusion-chat-feed .fusion-message--assistant ol, .fusion-chat-feed .fusion-message--assistant ul { padding-left:22px; margin:8px 0; list-style:revert; }
+.fusion-chat-feed .fusion-message--assistant li { margin:5px 0; padding-left:2px; }
+.fusion-chat-feed .fusion-message--assistant li > p { margin-bottom:5px; }
+.fusion-chat-feed .fusion-message--assistant .max-expand-chat-code-block { margin:10px 0; }
+.fusion-chat-feed pre { overflow:auto; max-width:100%; }
+.fusion-chat-empty { min-height:56px; display:grid; place-items:center; text-align:center; line-height:1.65; color:#969ba5; }
+.fusion-chat-error { font-size:11px; color:#e9afa7; margin:0; max-height:48px; overflow:auto; flex-shrink:0; }
+.fusion-chat-progress { font-size:11px; color:#969ba5; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.fusion-chat-composer { border:1px solid #424247; background:#24262b; border-radius:15px; padding:9px; flex-shrink:0; }
+.fusion-chat-composer textarea { width:100%; box-sizing:border-box; resize:none; border:0; background:transparent; color:#c8cdd5; line-height:1.5; outline:none; padding:2px 3px; }
+.fusion-chat-composer textarea::placeholder { color:#969ba5; }
+.fusion-chat-actions { display:flex; align-items:center; gap:5px; }
+.fusion-chat-actions > button:not(.fusion-icon-button):not(.fusion-send), .fusion-inline-notice button, .fusion-short-request button { border:1px solid #464347; border-radius:8px; padding:4px 8px; background:#303036; color:#c8cdd5; font-size:11px; }
+.fusion-chat-spacer { flex:1; }
+.fusion-chat .fusion-send { width:30px; height:30px; border:0; border-radius:10px; display:grid; place-items:center; background:#c8cdd5; color:#252525; }
+.fusion-voice-hint { max-width:215px; font-size:10px; color:#969ba5; }
+.fusion-chat-attachments { display:flex; gap:4px; flex-wrap:wrap; flex-shrink:0; }
+.fusion-chat-attachments:empty { display:none; }
+.fusion-chat-attachments button { display:flex; align-items:center; gap:5px; border:1px solid #49464a; border-radius:7px; padding:3px 6px; color:#969ba5; background:#242629; max-width:180px; overflow:hidden; text-overflow:ellipsis; font-size:10px; }
+.fusion-short-request { padding:8px 10px; border:1px solid #ffffff12; border-radius:10px; background:#242629; flex-shrink:0; max-height:120px; overflow:auto; font-size:11px; }
+.fusion-short-request strong { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.fusion-short-request p { margin:5px 0; max-height:34px; overflow:hidden; overflow-wrap:anywhere; }
+.fusion-short-request > div { display:flex; gap:7px; }
+.fusion-inline-notice { font-size:11px; color:#c8cdd5; max-height:85px; overflow:auto; }
+.fusion-inline-notice button { margin:3px; }
+.fusion-chat .is-recording { color:#f0918b; background:#553739; }
+.fusion-chat.is-file-drop-active { outline:2px dashed #c8cdd5; outline-offset:-5px; }
+.fusion-chat-body { display:flex; flex-direction:column; flex:1; min-height:0; gap:inherit; overflow:auto; }
+.fusion-chat-body[hidden], .fusion-island-tools[hidden] { display:none !important; }
+.fusion-island-tabs { display:flex; align-items:center; gap:6px; flex-shrink:0; padding:4px 0 8px; border-bottom:1px solid #34363a; }
+.fusion-island-tabs button { border:0; border-radius:9px; padding:7px 16px; color:#969ba5; background:transparent; }
+.fusion-island-tabs button[aria-pressed='true'] { background:#242629; color:#c8cdd5; }
+.fusion-island-tabs > span { margin-left:auto; font-size:11px; color:#969ba5; }
+.fusion-island-tools { flex:1; min-height:0; overflow:hidden; }
+.fusion-island-tools .fusion-tools-panel { box-sizing:border-box; min-height:0; padding:10px 0 0; border:0; border-radius:0; box-shadow:none; background:transparent; --fusion-accent:#c8cdd5; --fusion-ink:#e5e7eb; --fusion-muted:#969ba5; }
+.fusion-island-tools .fusion-tool-grid { overflow:auto; grid-template-columns:repeat(3,minmax(0,1fr)); padding:2px; }
+.fusion-island-tools .fusion-tool-card { min-height:108px; border-radius:14px; }
+.fusion-island-tools .fusion-tool-content { height:auto; overflow:auto; }
+.fusion-voice-state { display:flex; flex-wrap:wrap; align-items:center; gap:5px; color:#969ba5; font-size:11px; }
+.fusion-chat-model { display:flex; align-items:center; gap:8px; flex-shrink:0; color:#969ba5; font-size:11px; }
+.fusion-chat-model select { flex:1; min-width:0; color:#969ba5; background:#25272c; border:1px solid #393a3e; border-radius:8px; padding:5px 8px; }
+.ov-panel[data-reduced-motion='true'] * { animation:none !important; transition:none !important; }
+@media (prefers-reduced-motion:reduce) { .ov-panel * { animation:none !important; transition:none !important; } }
+.fusion-chat-actions { flex-wrap:wrap; }
+@media (max-width:440px) {
+  .fusion-island-tabs > span { display:none; }
+  .fusion-island-tools .fusion-tool-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .fusion-chat-header select { max-width:140px; }
+}
+.fusion-workbench .fusion-page > .fusion-chat { height:100%; }
+.fusion-timer-panel { margin:24px auto; max-width:440px; padding:28px; display:flex; flex-direction:column; align-items:center; gap:20px; border:1px solid #ffffff12; border-radius:22px; background:#24262a; color:#eeeae5; }
+.fusion-timer-clock { font-size:44px; font-variant-numeric:tabular-nums; letter-spacing:.04em; }
+.fusion-timer-panel label { display:flex; align-items:center; gap:12px; }
+.fusion-timer-panel input { width:86px; padding:8px; border:1px solid #4b4844; border-radius:8px; background:#1c1d20; color:inherit; }
+.fusion-timer-presets, .fusion-timer-actions { display:flex; gap:10px; }
+.fusion-timer-panel button, .fusion-integration-card button { padding:8px 12px; border:1px solid #ffffff18; border-radius:9px; background:#242629; color:#c8cdd5; cursor:pointer; }
+.fusion-timer-panel button:disabled, .fusion-integration-card button:disabled { opacity:.45; cursor:default; }
+.fusion-integration-list { display:grid; gap:12px; margin-top:22px; }
+.fusion-integration-card { padding:16px; border:1px solid #ffffff12; border-radius:14px; background:#ffffff03; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.fusion-integration-card p { margin:6px 0 0; font-size:12px; }
+.fusion-integration-card > div:last-child { display:flex; gap:8px; flex-wrap:wrap; }
+@media (max-width:800px) { .fusion-workbench .fusion-settings { grid-template-columns:140px 1fr; } }
+.fusion-native-settings fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.fusion-native-settings select { max-width: 58%; }
+.fusion-position-settings {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+.fusion-position-settings label { display: grid; gap: 8px; flex: 1; min-width: 110px; }
+.fusion-position-settings input { width: 100%; box-sizing: border-box; }
+
+/* Use the original orb palette when a GPU adapter is unavailable. */
+@media (prefers-reduced-motion:reduce) { .fusion-voice-visual * { animation:none !important; transition:none !important; } }
+
+/* Focused recording shares the island surface and preserves the hidden conversation. */
+.fusion-chat [hidden] { display:none !important; }
+.fusion-chat.is-voice-focused { padding:12px 20px 16px; gap:4px; }
+.is-voice-focused .fusion-chat-header select { flex:1; max-width:none; opacity:1; appearance:none; }
+.fusion-voice-focus { flex:1; min-height:0; display:flex; flex-direction:column; align-items:center; justify-content:space-evenly; gap:8px; }
+.fusion-voice-time { font-size:12px; color:#969ba5; font-variant-numeric:tabular-nums; letter-spacing:.08em; }
+.fusion-voice-controls { display:flex; justify-content:center; gap:14px; width:100%; }
+.fusion-voice-controls button { min-width:112px; min-height:36px; border:1px solid #ffffff16; border-radius:12px; background:#292b2e; color:#969ba5; }
+.fusion-voice-controls .fusion-voice-done { background:#c8cdd5; color:#242629; border-color:transparent; font-weight:600; }
+.fusion-voice-controls button:disabled { opacity:.4; }
+
+html[data-fusion-dock-strip='true'] .island-shell { display:none !important; }
+.fusion-dock-handle { position:fixed; inset:0; width:100%; height:100%; margin:0; padding:0; border:0; border-radius:5px; background:#969ba5; opacity:.85; cursor:pointer; }
+.fusion-dock-handle[data-waiting='true'] { background:#c8cdd5; }
+.island-shell[data-dock-preview] { outline:2px solid #c8cdd5; outline-offset:-3px; }
+
+.fusion-dock-settings { border:0; padding:0; margin:0 0 16px; min-width:0; }
+.fusion-settings-card { padding:16px; margin:16px 0; border:1px solid #ffffff12; border-radius:14px; background:#ffffff03; }
+.fusion-settings-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+.fusion-settings-body input:not([type=checkbox]), .fusion-settings-body select { background:#25272c; color:#c8cdd5; border:1px solid #ffffff1c; border-radius:8px; padding:7px 9px; max-width:100%; }
+.fusion-settings-body button { padding:8px 12px; background:#242629; color:#c8cdd5; border:1px solid #ffffff16; border-radius:9px; cursor:pointer; }
+.fusion-settings-body p { color:#969ba5; line-height:1.6; }
+.fusion-settings-body h3 { font-size:14px; font-weight:600; }
+
+.fusion-dock-handle[data-edge='top'] { width:64px; height:10px; }
+.fusion-dock-handle[data-edge='left'], .fusion-dock-handle[data-edge='right'] { width:10px; height:64px; }
+

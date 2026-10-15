@@ -1,0 +1,22 @@
+/* FloatIsland: one shared viewport, container-driven content reflow. */
+.island-shell .fusion-chat--compact{container:fi-workspace/inline-size;min-width:0;min-height:0}
+.fusion-chat--compact .fusion-island-tabs{overflow-x:auto;scrollbar-width:none;justify-content:flex-start!important}
+.fusion-chat--compact .fusion-chat-header{min-width:0}.fusion-chat--compact .fusion-island-tabs button{flex:0 0 auto}
+.fusion-settings[data-narrow=true]{flex-direction:column;min-width:0;min-height:0}.fusion-settings-selector{padding:8px 12px;border-bottom:1px solid #ffffff0a;flex-shrink:0}.fusion-settings-selector select{width:100%;font-size:12px;height:32px;border-radius:7px;background:#242629;color:#e5e7eb;border:1px solid #ffffff0c}.fusion-settings[data-narrow=true] .fusion-settings-body{padding:12px;min-height:0}
+.fusion-setting-row{min-width:0;gap:12px}.fusion-setting-row>span{overflow-wrap:anywhere}.fusion-integration-card{flex-wrap:wrap;min-width:0}.fusion-integration-card>div{min-width:0}.fusion-settings :is(input,select){max-width:100%;min-width:0}.fusion-settings :is(p,small){overflow-wrap:anywhere}
+.fusion-tool-frame[data-presentation=media] .fusion-tool-scroll:has(.fi-music){overflow:hidden;padding:0}
+.fusion-product-pdf{display:flex;min-width:0;min-height:0;width:100%}.fusion-product-pdf-page{flex:1;min-width:0;overflow:auto}.fusion-product-thumbs{flex:0 0 102px;min-width:0}.fusion-product-preview-image{max-width:100%;max-height:100%;object-fit:contain}.fusion-data-preview{overflow:auto;min-width:0;overscroll-behavior:contain}
+.fusion-chat--compact:has(.fusion-page:not([hidden]) .fi-music)>.fusion-media-bar,.fusion-content-main:has(.fusion-page:not([hidden]) .fi-music)~.fusion-media-bar{display:none}
+.fusion-web-address{display:flex;gap:4px;min-width:0;flex-wrap:nowrap}.fusion-web-address input{flex:1;min-width:0}.fusion-web-address button{flex-shrink:0}.fusion-web-actions{flex-shrink:0;max-height:70px;overflow:auto}.fusion-web-slot{flex:1;min-width:0;min-height:0}.fusion-web-tool{min-height:0;min-width:0}
+@container fi-workspace (max-width:639px){
+ .fusion-chat--compact .fusion-island-tabs button{padding:5px 7px;font-size:11px}
+ .fusion-tool-columns{grid-template-columns:minmax(0,1fr)}
+ .fusion-note-layout{grid-template-columns:110px minmax(0,1fr)!important}
+ .fusion-session-grid{grid-template-columns:minmax(0,1fr)!important}
+ .fusion-product-thumbs{flex-basis:94px}
+ .fusion-voice-character,.fusion-focus-companion{min-height:0;flex-shrink:1}
+ .fusion-focus-companion>.fusion-pet{width:min(240px,30vh)!important;height:min(240px,30vh)!important}
+ .fusion-chat-context,.fusion-chat-model{gap:4px;flex-wrap:wrap}
+ .fusion-chat-context select{flex:1;min-width:0;max-width:100%}
+}
+@media(max-height:470px){.fusion-focus-companion>.fusion-pet{width:170px!important;height:170px!important}.fusion-focus-reply{max-height:70px!important}}

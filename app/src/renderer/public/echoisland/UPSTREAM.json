@@ -1,0 +1,31 @@
+{
+  "project": "EchoIsland",
+  "revision": "a7ebfff5887f7edae285f71fac049d025361880f",
+  "assets": [
+    {
+      "source": "apps/desktop/src-tauri/resources/mascot/default/pet.json",
+      "destination": "mascot/pet.json",
+      "sha256": "4ef4026ecf661f6d98ae77467b39107c5798e5b6a1c339ce8d4c3435ba953108"
+    },
+    {
+      "source": "apps/desktop/src-tauri/resources/mascot/default/spritesheet.png",
+      "destination": "mascot/spritesheet.png",
+      "sha256": "0273a5b2afbb579c1a9fac3cfe9ea72bb6fe85d0b1cf8e62bb0b12eb7f6bfe42"
+    },
+    {
+      "source": "apps/desktop/src-tauri/resources/island-completion-inner-glow-9slice.png",
+      "destination": "completion-glow.png",
+      "sha256": "ed4de215171e43e8538328eb9b2567cd87edbcac8d2728fd0b9feb548640fdc4"
+    },
+    {
+      "source": "apps/desktop/src-tauri/icons/128x128.png",
+      "destination": "icon.png",
+      "sha256": "9b401a4bd36ea4301d40da79b507b77754658e2c6ec4ee326406850a68df8e98"
+    },
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "sha256": "ee5a6f93bdfa1c2188ff489a1c7a6c25aaca52d181ed48946183fc925c33cadc"
+    }
+  ]
+}

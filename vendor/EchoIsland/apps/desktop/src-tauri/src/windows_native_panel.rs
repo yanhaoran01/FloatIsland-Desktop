@@ -1,0 +1,54 @@
+#![allow(dead_code)]
+
+// Windows owns only the host boundary: Win32 window/message/pump/paint details.
+// Scene, layout, interaction, transition requests, and runtime commands must flow
+// through native_panel_renderer::facade so macOS and Windows consume the same model.
+
+use crate::native_panel_core::PanelRect;
+
+mod d2d_painter;
+mod d2d_resource_cache;
+mod direct2d;
+mod directwrite;
+mod dpi;
+mod draw_presenter;
+mod facade;
+mod hit_region;
+mod host_runtime;
+mod host_runtime_close;
+mod host_runtime_hover;
+mod host_window;
+mod layered_window;
+mod message_dispatch;
+mod paint_backend;
+mod paint_bridge;
+mod platform_loop;
+mod renderer;
+pub(crate) mod runtime_backend;
+mod runtime_entry;
+mod runtime_input;
+mod runtime_traits;
+mod window_shell;
+
+#[allow(unused_imports)]
+pub(crate) use facade::{
+    apply_native_panel_animation_descriptor, create_native_panel,
+    current_windows_native_panel_runtime_backend, dispatch_queued_native_panel_platform_events,
+    handle_native_panel_pointer_click, handle_native_panel_pointer_leave,
+    handle_native_panel_pointer_move, handle_native_panel_window_message, hide_native_panel,
+    native_ui_enabled, refresh_native_panel_from_last_snapshot,
+    reposition_native_panel_to_selected_display, set_shared_expanded_body_height,
+    spawn_platform_loops, update_native_panel_snapshot,
+};
+pub(crate) use host_runtime::WindowsNativePanelRuntime;
+pub(crate) use renderer::WindowsNativePanelRenderer;
+#[cfg(target_os = "windows")]
+pub(crate) use runtime_backend::WindowsNativePanelRuntimeBackendFacade;
+
+
+const WINDOWS_FALLBACK_PANEL_SCREEN_FRAME: PanelRect = PanelRect {
+    x: 0.0,
+    y: 0.0,
+    width: 1440.0,
+    height: 900.0,
+};

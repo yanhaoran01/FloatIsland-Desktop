@@ -1,0 +1,102 @@
+/* FloatIsland - Copyright (C) 2026 contributors. GPL-3.0. */
+/* 会话弹层与书架在独立工作区、灵动岛内共享同一紧凑布局。 */
+:is(.island-shell, .fusion-workbench) .fusion-session-menu .fusion-session-popover {
+  box-sizing: border-box;
+  width: min(340px, calc(100vw - 24px)) !important;
+  max-width: calc(100vw - 24px) !important;
+  max-height: calc(100vh - 64px);
+  padding: 14px !important;
+  gap: 10px !important;
+  overflow: auto;
+}
+:is(.island-shell, .fusion-workbench) .fusion-session-menu .fusion-session-popover > label {
+  display: grid !important;
+  grid-template-columns: 48px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100%;
+  min-width: 0;
+  margin: 0 !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+}
+:is(.island-shell, .fusion-workbench) .fusion-session-menu .fusion-session-popover select {
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 0 10px !important;
+  font-size: 13px !important;
+  text-overflow: ellipsis;
+}
+:is(.island-shell, .fusion-workbench) .fusion-session-menu .fusion-session-popover > .fusion-tool-actions {
+  display: flex !important;
+  justify-content: flex-end;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding-top: 10px;
+}
+:is(.island-shell, .fusion-workbench) .fusion-session-menu .fusion-session-popover > .fusion-tool-actions > button {
+  width: 32px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+:is(.island-shell, .fusion-workbench) .float-reading-shelf .float-book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 12px;
+  align-items: start;
+}
+:is(.island-shell, .fusion-workbench) .float-reading-shelf .float-book-card {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--ui-border, #ffffff16);
+  border-radius: 14px;
+}
+:is(.island-shell, .fusion-workbench) .float-reading-shelf .float-book-open {
+  display: grid;
+  grid-template-columns: 66px minmax(0, 1fr);
+  gap: 14px;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+}
+:is(.island-shell, .fusion-workbench) .float-reading-shelf .float-book-cover {
+  width: 66px;
+  height: 94px;
+  object-fit: contain;
+  border-radius: 5px;
+}
+:is(.island-shell, .fusion-workbench) .float-reading-shelf .float-book-open > span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 5px;
+}
+:is(.island-shell, .fusion-workbench) .float-reading-shelf .float-book-open strong {
+  font-size: 14px;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+:is(.island-shell, .fusion-workbench) .float-reading-shelf .float-book-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 12px;
+}
+:is(.island-shell, .fusion-workbench) .float-reading-shelf .float-book-actions > button {
+  justify-content: center;
+  min-width: 0;
+  min-height: 34px;
+  padding: 5px 6px !important;
+  font-size: 11px;
+  white-space: nowrap;
+}

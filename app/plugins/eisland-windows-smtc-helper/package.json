@@ -1,0 +1,39 @@
+{
+  "name": "@eisland/windows-smtc-helper",
+  "version": "26.0.1",
+  "description": "Windows SMTC (System Media Transport Controls) all-in-one: commands, status, and real-time session monitoring via Native AOT DLL.",
+  "author": "JNTMTMTM",
+  "license": "GPL-3.0",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64",
+    "ia32"
+  ],
+  "scripts": {
+    "postinstall": "npm run build:all",
+    "build": "dotnet publish src/eIslandSmtcHelper.csproj -c Release -r win-x64",
+    "build:ctypes": "dotnet publish smtc-ctypes/eIslandSmtcCtypes.csproj -c Release -r win-x64",
+    "build:all": "npm run build && npm run build:ctypes",
+    "clean": "dotnet clean src/eIslandSmtcHelper.csproj && dotnet clean smtc-ctypes/eIslandSmtcCtypes.csproj",
+    "rebuild": "npm run clean && npm run build:all"
+  },
+  "dependencies": {
+    "koffi": "^2.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.3"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "ffi-loader.js",
+    "smtc-monitor.js",
+    "src",
+    "smtc-ctypes"
+  ]
+}

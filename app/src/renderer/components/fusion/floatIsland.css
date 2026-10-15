@@ -1,0 +1,59 @@
+/* FloatIsland, GPL-3.0. @file floatIsland.css @description Stable edge rails and unified first-run visual language. @author 鸡哥 */
+.island-shell[data-island-state=guide]{width:100vw!important;height:100vh!important;max-width:none!important;padding:0!important;}
+.island-shell[data-dock-edge=left]{border-radius:0 16px 16px 0!important;}
+.island-shell[data-dock-edge=right]{border-radius:16px 0 0 16px!important;}
+.island-shell[data-dock-edge=top]{border-radius:0 0 16px 16px!important;}
+.island-shell:is([data-dock-edge=left],[data-dock-edge=right]):is([data-island-state=idle],[data-island-state=hover],[data-island-state=expanded]):not(.fusion-media-capsule){width:100vw!important;height:100vh!important;padding:0!important;min-width:0!important;}
+.fusion-compact.float-side-dock{display:flex;flex-direction:column;width:100%;height:100%;padding:10px 6px;gap:10px;box-sizing:border-box;background:#1c1d20;overflow:hidden;}
+.float-sidebar-header{display:flex;align-items:center;justify-content:center;height:38px;flex-shrink:0;}
+.float-sidebar-header .fusion-pet{width:36px!important;height:36px!important;}
+.float-sidebar-menu{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none;width:100%;}
+.float-sidebar-menu li{display:flex;justify-content:center;}
+.float-sidebar-button{display:flex;align-items:center;justify-content:center;width:36px;height:36px;padding:0;border:0;border-radius:8px;background:transparent;color:#969ba5;cursor:pointer;flex-shrink:0;transition:background 120ms,color 120ms;}
+.float-sidebar-button:hover,.float-sidebar-button[data-active=true]{background:#ffffff0a;color:#e5e7eb;}
+.float-sidebar-button:focus-visible{outline:1px solid #c8cdd5;outline-offset:1px;}
+.float-sidebar-button:disabled{pointer-events:none;opacity:.45;}
+.float-side-record{display:flex;align-items:center;justify-content:center;gap:2px;margin-top:auto;width:36px;font:9px/1.4 Consolas,monospace;}
+.float-side-record{font-size:8px;gap:1px;}
+.float-side-record .fusion-icon-button{display:flex;align-items:center;justify-content:center;gap:1px;width:36px;height:36px;min-width:36px;min-height:36px;padding:0;border:0;border-radius:8px;background:transparent;color:#e5e7eb;font:8px Consolas,monospace;}
+.float-side-dock:has(.float-side-record){padding:6px;gap:4px;}
+.float-side-dock:has(.float-side-record) .float-sidebar-header{height:36px;}
+.float-side-dock:has(.float-side-record) .float-sidebar-menu{gap:4px;}
+.fusion-island-settings{display:flex;flex:1;min-height:0;overflow:hidden;padding-top:12px;}
+.fusion-island-settings>.fusion-settings{width:100%;height:100%;min-height:0;overflow:hidden;}
+.fusion-island-settings .fusion-settings-body{min-height:0;overflow:auto;}
+.float-side-state{margin-top:auto;width:4px;height:4px;border-radius:50%;align-self:center;background:#969ba5;}
+.float-side-state[data-active=true]{background:#e5e7eb;}
+@media(prefers-reduced-motion:reduce){.float-sidebar-button{transition:none;}}
+
+/* Geometry belongs to the native viewport; only opacity may animate on the shell. */
+.island-shell[data-island-state=maxExpand]{width:100vw!important;height:100vh!important;max-width:none!important;max-height:none!important;}
+.island-shell,.island-shell .fusion-chat,.island-shell .fusion-retained-workspace,.island-shell .fusion-tool-card,.island-shell .fusion-tool-card>span,.island-shell .fusion-tool-content,.island-shell .fusion-compact,.island-shell .fusion-media-bar{transform:none!important;animation:none!important;transition:opacity 120ms,background 120ms,color 120ms!important;}
+.island-shell .fusion-chat{position:relative;}
+.island-shell .fusion-tools-panel{container-type:inline-size;padding:12px 8px!important;gap:12px!important;}
+.island-shell .fusion-tool-search,.island-shell .fusion-tool-search:focus-within{width:240px!important;max-width:100%;box-shadow:none!important;transition:background 120ms!important;}
+.island-shell .fusion-tools-home>.fusion-tool-group{max-width:680px!important;width:100%;margin:8px auto 0!important;}
+.island-shell .fusion-tool-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:10px!important;}
+.island-shell .fusion-tools-panel .fusion-tool-card{height:76px!important;min-height:76px!important;gap:8px!important;border-radius:10px!important;}
+.island-shell .fusion-tools-panel .fusion-tool-card>span{width:28px!important;height:28px!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;}
+.island-shell .fusion-tool-card svg{width:20px!important;height:20px!important;}
+.island-shell .fusion-tool-card:hover{background:#ffffff09!important;}
+.island-shell .fusion-tool-card:focus-visible{outline:1px solid #c8cdd5!important;outline-offset:2px;}
+.island-shell .fusion-tool-pagination{margin-top:12px!important;min-height:28px;}
+.island-shell .fusion-island-tabs{min-width:0;overflow-x:auto;scrollbar-width:none;}
+.island-shell .fusion-island-tabs::-webkit-scrollbar{display:none;}
+.island-shell .fusion-chat-header{flex-shrink:0;gap:6px;}
+.island-shell .fusion-pet-svg{overflow:hidden!important;}
+.float-resize-handle{position:absolute;z-index:90;touch-action:none;-webkit-app-region:no-drag;}
+.float-resize-n,.float-resize-s{left:14px;right:14px;height:6px;cursor:ns-resize;}
+.float-resize-n{top:0}.float-resize-s{bottom:0}
+.float-resize-w,.float-resize-e{top:14px;bottom:14px;width:6px;cursor:ew-resize;}
+.float-resize-w{left:0}.float-resize-e{right:0}
+.float-resize-ne,.float-resize-nw,.float-resize-se,.float-resize-sw{width:12px;height:12px;}
+.float-resize-ne{top:0;right:0;cursor:nesw-resize}.float-resize-nw{top:0;left:0;cursor:nwse-resize}
+.float-resize-se{bottom:0;right:0;cursor:nwse-resize}.float-resize-sw{bottom:0;left:0;cursor:nesw-resize}
+.island-shell[data-dock-edge=top] :is(.float-resize-n,.float-resize-ne,.float-resize-nw),
+.island-shell[data-dock-edge=left] :is(.float-resize-w,.float-resize-nw,.float-resize-sw),
+.island-shell[data-dock-edge=right] :is(.float-resize-e,.float-resize-ne,.float-resize-se){display:none;}
+.float-resize-error{position:absolute;bottom:14px;left:14px;z-index:91;font-size:12px;color:#e5e7eb;background:#1c1d20;}
+@container(max-width:639px){.island-shell .fusion-tool-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;}}

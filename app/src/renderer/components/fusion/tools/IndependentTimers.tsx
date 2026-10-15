@@ -1,0 +1,13 @@
+/* FloatIsland contributors. GPL-3.0. */
+/** @file IndependentTimers.tsx @description Visible add, start, pause and resume for independent background countdowns. @author 鸡哥 */
+import {useEffect,useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {Plus,Trash2} from 'lucide-react';
+import type {IndependentTimer,TimerCommand} from '../../../../preload/types/fusionWorkspace';
+import {ToolError} from './ToolControls';
+export function IndependentTimers(){
+ const {t}=useTranslation(),[timers,setTimers]=useState<IndependentTimer[]>([]),[name,setName]=useState(''),[minutes,setMinutes]=useState(5),[error,setError]=useState('');
+ useEffect(()=>{let alive=true;const apply=(value:IndependentTimer[])=>{if(alive)setTimers(value);},off=window.api.onFusionTimers(apply);void window.api.fusionTimersGet().then(apply).catch(reason=>setError(String(reason)));return()=>{alive=false;off();};},[]);
+ const run=(command:TimerCommand)=>{setError('');void window.api.fusionTimersCommand(command).then(setTimers).catch(reason=>setError(String(reason)));};
+ return <section className="float-independent-timers"><h3>{t('fusion.enhance.timers.independent')}</h3><form className="fusion-tool-row" onSubmit={event=>{event.preventDefault();run({type:'create',name:name.trim()||t('fusion.enhance.timers.timer'),seconds:Math.round(minutes*60)});}}><input maxLength={200} aria-label={t('fusion.enhance.timers.name')} placeholder={t('fusion.enhance.timers.name')} value={name} onChange={event=>setName(event.target.value)}/><label>{t('fusion.timer.minutes')}<input type="number" min={.1} max={5999} step={.1} aria-label={t('fusion.timer.minutes')} value={minutes} onChange={event=>setMinutes(Number(event.target.value))}/></label><button type="submit"><Plus size={16}/>{t('fusion.enhance.timers.add')}</button></form><ToolError error={error}/><div className="fusion-file-list">{timers.map(timer=><div className="float-library-row" key={timer.id}><span className="float-library-title"><strong>{timer.name}</strong><small>{t('fusion.timer.'+timer.state)}</small><output>{Math.floor(timer.remaining/60).toString().padStart(2,'0')}:{(timer.remaining%60).toString().padStart(2,'0')}</output>{timer.notificationError&&<ToolError error={timer.notificationError}/>}</span><button onClick={()=>run({type:timer.state==='running'?'pause':timer.state==='paused'?'resume':'start',id:timer.id})}>{t('fusion.timer.'+(timer.state==='running'?'pause':timer.state==='paused'?'resume':'start'))}</button><button onClick={()=>run({type:'reset',id:timer.id})}>{t('fusion.timer.reset')}</button><button aria-label={t('fusion.toolbox.delete')} onClick={()=>run({type:'remove',id:timer.id})}><Trash2 size={16}/></button></div>)}</div></section>;
+}

@@ -1,0 +1,215 @@
+/* FloatIsland contributors, GPL-3.0. */
+/** @file workspaceEnhancement.css @description Shared compact layouts, legible controls and deterministic theme tokens. @author 鸡哥 */
+.fusion-tool-editors{height:auto;flex:1;min-height:0}
+.fusion-editor-pane{overflow:auto;overscroll-behavior:contain}
+.fusion-tool-result>pre{padding-bottom:0}
+.fusion-labeled-menu{display:inline-flex!important;align-items:center;justify-content:center;gap:6px;min-height:32px;padding:4px 8px;border:0;background:transparent;color:inherit;cursor:pointer;border-radius:7px}
+.fusion-labeled-menu:hover{background:var(--fi-surface-3)}
+.float-regex-highlight{white-space:pre-wrap;overflow-wrap:anywhere;max-height:180px;overflow:auto;padding:10px;border:1px solid var(--fi-line);border-radius:8px;font:12px/1.7 Consolas,monospace;flex:0 1 auto}
+.float-regex-highlight mark{background:#e9bb5555;color:inherit;border-radius:2px}
+.fusion-data-preview{max-height:190px;flex:0 1 auto}
+.fi-music-collections{flex-wrap:wrap}.fi-music-collections>button,.float-playlist-share>button{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:5px 9px;border:1px solid var(--fi-line);border-radius:7px;background:var(--fi-surface);font-size:11px;min-height:32px}
+.float-playlist-share{flex-wrap:wrap}.float-playlist-share>input{flex:1;min-width:160px}
+:is(.island-shell, .fusion-workbench) :is(button,input,select,textarea,summary):focus-visible{outline:2px solid var(--fi-accent);outline-offset:2px}
+:root[data-theme=light]{--fi-bg-top:#f5f6f8;--fi-bg-bottom:#edf0f4;--fi-surface:#f0f2f6;--fi-surface-2:#e9edf3;--fi-surface-3:#dde4ee;--fi-line:#d9dfe9;--fi-line-strong:#c5cedd;--fi-ink:#232c3b;--fi-muted:#667184;--fi-faint:#788499;--fi-accent:#426ba9;--fi-accent-2:#426ba9;--fusion-panel:#f7f8fb;--fusion-surface:#edf0f6;--fusion-ink:#232c3b;--fusion-muted:#667184;--fusion-line:#d9dfe9;--fusion-accent:#426ba9;color-scheme:light}
+:root[data-theme=light] :is(.fusion-chat,.fusion-shell,.fusion-compact,.fusion-tools-panel,.fi-music,.fusion-guide){--fusion-panel:#f7f8fb;--fusion-surface:#edf0f6;--fusion-ink:#232c3b;--fusion-muted:#667184;--fusion-line:#d9dfe9;--fusion-accent:#426ba9;color:var(--fusion-ink)!important;background:var(--fusion-panel)!important}
+:root[data-theme=light] :is(.island-shell, .fusion-workbench):is(.island-shell, .fusion-workbench){background:var(--fusion-panel)!important;box-shadow:inset 0 0 0 1px #c7cfdd}
+:root[data-theme=light] :is(.island-shell, .fusion-workbench) :is(.fusion-tool-toolbar,.fusion-chat-header,.fusion-product-tabs){border-color:var(--fi-line)!important}
+:root[data-theme=light] :is(.island-shell, .fusion-workbench) :is(.fusion-utility,.fi-music,.fusion-tool-input-actions) :is(input:not([type=checkbox]):not([type=color]):not([type=range]),select,textarea){background:var(--fi-surface)!important;color:var(--fi-ink)!important;border-color:var(--fi-line)!important}
+:root[data-theme=light] :is(.island-shell, .fusion-workbench) :is(.fusion-tool-result,.fi-music-popup,.float-function-panel,.fusion-session-popover,.float-document-reader[data-focus=true]){background:var(--fusion-panel)!important;color:var(--fi-ink)!important;border-color:var(--fi-line)!important;box-shadow:none}
+:root[data-theme=light] :is(.island-shell, .fusion-workbench) :is(.fusion-utility button,.fusion-tool-toolbar button,.fusion-island-tabs button,.fusion-tool-entry,.fi-music button){color:var(--fi-ink)!important}
+:root[data-theme=light] :is(.island-shell, .fusion-workbench) :is(button[aria-pressed=true],.fusion-tool-entry:hover,.fi-music-track:hover,.fi-music-track[data-current=true]){background:var(--fi-surface-3)!important}
+:root[data-theme=light] :is(.island-shell, .fusion-workbench) :is(.fusion-tool-hint,.fusion-tool-stats,.float-function-current,.fi-music-track-name span,.fi-music-source){color:var(--fi-muted)!important}
+:root[data-theme=light] :is(.island-shell, .fusion-workbench) .fusion-inline-error{color:#a42d3b}
+
+/* Scoped specificity keeps lazy-loaded tool styles from changing the shared UI. */
+:is(.island-shell, .fusion-workbench) {
+  --ui-bg:#1c1d20;--ui-surface:#24262b;--ui-hover:#2e323a;--ui-border:#ffffff14;
+  --ui-text:#eceff4;--ui-muted:#a0a8b6;--ui-accent:#a8c5ee;--ui-danger:#f2a0aa;
+  --ui-radius:10px;--ui-control:32px;--ui-gap:8px;
+  --fi-muted:var(--ui-muted);--fusion-muted:var(--ui-muted);
+  font-size:13px;color:var(--ui-text);color-scheme:dark;
+}
+:root[data-theme=light] :is(.island-shell, .fusion-workbench) {
+  --ui-bg:#f7f8fb;--ui-surface:#eef1f6;--ui-hover:#e0e7f1;--ui-border:#d3dae6;
+  --ui-text:#253044;--ui-muted:#606d81;--ui-accent:#385f97;--ui-danger:#a72f42;
+  color-scheme:light;
+}
+:is(.island-shell, .fusion-workbench) :is(.fusion-chat,.fusion-settings,.fi-music){color:var(--ui-text)}
+:is(.island-shell, .fusion-workbench) .fusion-chat-header{min-height:48px;padding-bottom:8px;gap:8px;border-color:var(--ui-border)}
+:is(.island-shell, .fusion-workbench) .fusion-island-tabs{border:0;background:var(--ui-surface);padding:3px;gap:2px;border-radius:12px}
+:is(.island-shell, .fusion-workbench) .fusion-island-tabs button{font-size:13px;min-height:32px;padding:5px 12px;border-radius:9px;color:var(--ui-muted)}
+:is(.island-shell, .fusion-workbench) .fusion-island-tabs button[aria-pressed=true]{color:var(--ui-text);background:var(--ui-hover);box-shadow:none;font-weight:600}
+:is(.island-shell, .fusion-workbench) :is(.fusion-tool-frame,.fi-music,.fusion-settings,.float-guide) :is(button,.fusion-file-button){
+  font-family:var(--fi-font);font-size:13px;line-height:1.4;color:inherit;
+}
+:is(.island-shell, .fusion-workbench) :is(.fusion-tool-actions,.float-reference-import,.float-download-start-footer,.fusion-settings-actions,.fi-music-collections,.float-music-page-tabs) button{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:32px;padding:5px 10px;
+  border:1px solid var(--ui-border);border-radius:8px;background:var(--ui-surface);color:var(--ui-text);
+  white-space:normal;box-shadow:none;
+}
+:is(.island-shell, .fusion-workbench) :is(.fusion-tool-actions,.float-reference-import,.float-download-start-footer,.fusion-settings-actions,.fi-music-collections,.float-music-page-tabs) button:hover:not(:disabled){background:var(--ui-hover)}
+:is(.island-shell, .fusion-workbench) :is(button,input,select,textarea,summary):focus-visible{outline:2px solid var(--ui-accent);outline-offset:2px}
+:is(.island-shell, .fusion-workbench) :is(button,input,select,textarea,summary):disabled{opacity:.45;cursor:default}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame :is(input:not([type=checkbox]):not([type=radio]):not([type=color]):not([type=range]):not([type=file]),select,textarea){
+  color:var(--ui-text);border:1px solid var(--ui-border);background:var(--ui-surface);border-radius:8px;font-size:13px;box-shadow:none;min-width:0;
+}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame :is(input,select){height:32px}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame textarea{padding:10px;line-height:1.6}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame input::placeholder,:is(.island-shell, .fusion-workbench) textarea::placeholder{color:var(--ui-muted);opacity:.85}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame :is(small,.fusion-tool-hint,.fusion-tool-stats){font-size:12px;line-height:1.5;color:var(--ui-muted)}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-inline-error{color:var(--ui-danger);padding:8px 10px;border-radius:8px;background:color-mix(in srgb,var(--ui-danger) 8%,transparent);font-size:12px;white-space:pre-wrap}
+:is(.island-shell, .fusion-workbench) .fusion-tool-toolbar{flex:none;height:40px;min-height:40px;margin:0 12px;border-color:var(--ui-border)}
+:is(.island-shell, .fusion-workbench) .float-tool-title{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+:is(.island-shell, .fusion-workbench) .fusion-tool-modes{flex:none;overflow:visible;min-width:0}
+:is(.island-shell, .fusion-workbench) .fusion-tool-toolbar>.fusion-tool-modes{width:100%}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-product-tabs{display:flex;align-items:center;flex-wrap:wrap;gap:4px;min-height:32px;margin:0;padding:0;border:0;overflow:visible;flex:none}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-product-tabs>button{display:inline-flex;align-items:center;gap:5px;min-height:32px;padding:5px 10px;color:var(--ui-muted);background:transparent;border:0;border-radius:8px;white-space:normal}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-product-tabs>button[aria-pressed=true]{color:var(--ui-text);background:var(--ui-hover);font-weight:600}
+:is(.island-shell, .fusion-workbench) .float-tool-function-row{padding:6px 12px 0}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-tool-commands{display:flex;flex-wrap:wrap;max-width:none;overflow:visible;flex:none;gap:4px;padding:6px 12px}
+:is(.island-shell, .fusion-workbench) .fusion-tool-commands:empty,:is(.island-shell, .fusion-workbench) .float-tool-function-row:empty{display:none}
+:is(.island-shell, .fusion-workbench) .fusion-tool-commands>.fusion-tool-actions:empty{display:none}
+:is(.island-shell, .fusion-workbench) .fusion-tool-commands:not(:has(button,input,select,label,[role=status])){display:none}
+:is(.island-shell, .fusion-workbench) .fusion-tool-commands .fusion-tool-actions{display:flex;gap:6px;flex-wrap:wrap;margin:0}
+:is(.island-shell, .fusion-workbench) .fusion-tool-commands .fusion-icon-button:has(span){width:auto!important;height:auto!important;display:inline-flex!important;min-width:0;padding:5px 10px!important}
+:is(.island-shell, .fusion-workbench) .fusion-tool-commands .fusion-icon-button>span{white-space:nowrap}
+:is(.island-shell, .fusion-workbench) .fusion-tool-scroll{display:flex;flex-direction:column;min-height:0;min-width:0;padding:12px;gap:8px;overscroll-behavior:contain}
+:is(.island-shell, .fusion-workbench) .fusion-tool-scroll>.fusion-utility{width:100%;min-width:0;gap:12px}
+:is(.island-shell, .fusion-workbench) .fusion-tool-result{border-color:var(--ui-border)!important;background:var(--ui-surface)!important;color:var(--ui-text)}
+:is(.island-shell, .fusion-workbench) .fusion-tool-result>.fusion-tool-actions{flex-wrap:wrap;justify-content:flex-end}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=true]>.fusion-tool-toolbar{height:auto;min-height:40px}
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory-top{position:sticky;top:-12px;z-index:5;background:var(--ui-bg);display:grid;grid-template-columns:minmax(0,1fr) minmax(160px,1fr);gap:10px;padding:12px 0;border-bottom:1px solid var(--ui-border)}
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory-top h2{font-size:18px}
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory-top p{font-size:12px;margin-top:3px}
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory-categories{grid-column:1/-1;gap:6px}
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory-categories button{font-size:12px;min-height:28px}
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory .fusion-tool-category{scroll-margin-top:128px;margin-bottom:16px}
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory .fusion-tool-entry{min-height:60px;padding:10px 12px;gap:10px}
+:is(.island-shell, .fusion-workbench) .fusion-tool-entry-text small{font-size:12px;color:var(--ui-muted)}
+:is(.island-shell, .fusion-workbench) .fusion-tool-entry-icon{background:var(--ui-surface);color:var(--ui-accent)}
+:is(.island-shell, .fusion-workbench) .float-reference-import{flex:none;gap:6px;margin:0 0 8px}
+:is(.island-shell, .fusion-workbench) .float-reference-import .fusion-tool-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+:is(.island-shell, .fusion-workbench) .float-reference-import small{font-size:12px;color:var(--ui-muted);margin:0}
+:is(.island-shell, .fusion-workbench) .float-reading-shelf{padding:0;display:flex;flex-direction:column;gap:12px}
+:is(.island-shell, .fusion-workbench) .float-reading-shelf .float-library-filter{display:flex;align-items:center;gap:8px;padding:0;flex-wrap:wrap}
+:is(.island-shell, .fusion-workbench) .float-reading-shelf .float-shelf-search{display:flex!important;flex-direction:row;align-items:center;gap:8px;flex:1 1 180px;padding:0 9px;border:1px solid var(--ui-border);border-radius:8px;background:var(--ui-surface);height:32px;min-width:0}
+:is(.island-shell, .fusion-workbench) .float-shelf-search>svg{flex:none;color:var(--ui-muted)}
+:is(.island-shell, .fusion-workbench) .float-shelf-search input{border:0!important;padding:0!important;background:transparent!important;flex:1;width:100%;height:30px!important}
+:is(.island-shell, .fusion-workbench) .float-reading-shelf select{flex:0 1 auto;max-width:160px}
+:is(.island-shell, .fusion-workbench) .float-book-grid{gap:12px}
+:is(.island-shell, .fusion-workbench) .float-book-card{background:var(--ui-surface);border-color:var(--ui-border)}
+:is(.island-shell, .fusion-workbench) .float-book-open{min-height:104px;padding:12px}
+:is(.island-shell, .fusion-workbench) .float-reading-sites{display:flex;flex-direction:column;gap:6px;padding-top:12px;border-top:1px solid var(--ui-border)}
+:is(.island-shell, .fusion-workbench) .float-reading-sites h3{font-size:13px;font-weight:600;margin:0 0 4px}
+:is(.island-shell, .fusion-workbench) .float-reading-sites>button{display:flex;align-items:center;gap:10px;text-align:left;min-height:48px;padding:8px 10px;background:var(--ui-surface);border:1px solid var(--ui-border);border-radius:8px}
+:is(.island-shell, .fusion-workbench) .float-reading-sites>button>span:first-of-type{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+:is(.island-shell, .fusion-workbench) .fusion-tool-empty{display:flex;align-items:center;justify-content:center;gap:12px;padding:16px;margin:0;color:var(--ui-muted);border:1px dashed var(--ui-border);border-radius:10px;font-size:12px}
+:is(.island-shell, .fusion-workbench) .fusion-tool-empty p{margin:0;max-width:420px}
+:is(.island-shell, .fusion-workbench) .fi-music{padding:12px;background:var(--ui-bg)!important;gap:10px;color:var(--ui-text)}
+:is(.island-shell, .fusion-workbench) .fi-music :is(.fi-music-query,.fi-music-collections,.float-music-page-tabs,.float-music-quality){margin:0;flex:none}
+:is(.island-shell, .fusion-workbench) .fi-music :is(.fi-music-query,.float-music-quality){gap:8px}
+:is(.island-shell, .fusion-workbench) .fi-music .fi-music-query form button{display:inline-flex;align-items:center;justify-content:center;gap:5px;width:auto;min-width:32px}
+:is(.island-shell, .fusion-workbench) .float-music-quality{padding:0 0 8px;border-bottom:1px solid var(--ui-border)}
+:is(.island-shell, .fusion-workbench) .fi-music-list{flex:1;min-height:0}
+:is(.island-shell, .fusion-workbench) .fi-music-empty{margin:0;min-height:100px;flex:1;padding:16px;text-align:center;color:var(--ui-muted)}
+:is(.island-shell, .fusion-workbench) .fi-music-track{min-height:48px;gap:8px}
+:is(.island-shell, .fusion-workbench) .fi-music-track:hover,:is(.island-shell, .fusion-workbench) .fi-music-track[data-current=true]{background:var(--ui-hover)}
+:is(.island-shell, .fusion-workbench) .fi-music-track-name strong{font-size:13px}
+:is(.island-shell, .fusion-workbench) .fi-music-track-name span,:is(.island-shell, .fusion-workbench) .fi-music-source{font-size:12px;color:var(--ui-muted)}
+:is(.island-shell, .fusion-workbench) .fi-music-player{margin-top:auto;border-color:var(--ui-border);padding-top:8px;background:var(--ui-bg)}
+:is(.island-shell, .fusion-workbench) .fi-music-popup{color:var(--ui-text);background:var(--ui-surface);border-color:var(--ui-border);max-width:calc(100vw - 24px);max-height:calc(100vh - 24px)}
+:is(.island-shell, .fusion-workbench) .fi-music-popup :is(button,label){font-size:13px}
+:is(.island-shell, .fusion-workbench) .fusion-tool-scroll:has(.float-download-workspace){overflow:hidden}
+:is(.island-shell, .fusion-workbench) .fusion-tool-submode:has(>.float-download-workspace){flex:1;min-height:0}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-presentation=form] .fusion-tool-submode{flex:0 0 auto}
+:is(.island-shell, .fusion-workbench) .fusion-timer-panel{margin:0 0 12px;padding:12px;gap:8px;border-radius:10px;background:var(--ui-surface);border-color:var(--ui-border);max-width:none;width:100%;box-sizing:border-box;flex:none}
+:is(.island-shell, .fusion-workbench) .fusion-timer-panel>p{margin:0;font-size:12px}
+:is(.island-shell, .fusion-workbench) .fusion-timer-clock{font-size:28px;line-height:1.2}
+:is(.island-shell, .fusion-workbench) .float-independent-timers{flex:none}
+:is(.island-shell, .fusion-workbench) .float-independent-timers h3{font-size:13px;margin:4px 0 8px}
+:is(.island-shell, .fusion-workbench) .float-independent-timers .fusion-tool-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+:is(.island-shell, .fusion-workbench) .float-independent-timers .fusion-tool-row>input:first-child{flex:1;min-width:100px}
+:is(.island-shell, .fusion-workbench) .float-independent-timers .fusion-tool-row>input[type=number]{width:72px}
+:is(.island-shell, .fusion-workbench) .float-independent-timers .fusion-tool-row>button{display:inline-flex;align-items:center;gap:5px;min-height:32px;padding:5px 10px;border:1px solid var(--ui-border);border-radius:8px;background:var(--ui-surface)}
+:is(.island-shell, .fusion-workbench) .float-download-workspace{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+:is(.island-shell, .fusion-workbench) .float-download-start{display:flex;flex-direction:column;gap:8px;flex:1;min-height:0}
+:is(.island-shell, .fusion-workbench) .float-download-start>.fusion-tool-hint{margin:0;flex:none}
+:is(.island-shell, .fusion-workbench) .float-download-start>textarea{height:80px;min-height:56px;max-height:120px;resize:none;flex:none}
+:is(.island-shell, .fusion-workbench) .float-download-start>.fusion-tool-actions{margin:0;gap:6px;flex:none;flex-wrap:wrap}
+:is(.island-shell, .fusion-workbench) .float-download-preview-list{overflow:auto;overscroll-behavior:contain;flex:1;min-height:44px;display:flex;flex-direction:column;gap:6px}
+:is(.island-shell, .fusion-workbench) .float-download-preview{padding:8px 10px;border-color:var(--ui-border);border-radius:8px;flex:none}
+:is(.island-shell, .fusion-workbench) .float-empty-hint{margin:auto;padding:12px;text-align:center;color:var(--ui-muted);font-size:12px;line-height:1.6}
+:is(.island-shell, .fusion-workbench) .float-download-start-footer{display:flex;align-items:center;gap:12px;flex:none;padding-top:8px;border-top:1px solid var(--ui-border)}
+:is(.island-shell, .fusion-workbench) .float-download-start-footer>div{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+:is(.island-shell, .fusion-workbench) .float-download-start-footer>div>button{align-self:flex-start}
+:is(.island-shell, .fusion-workbench) .float-download-start-footer small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+:is(.island-shell, .fusion-workbench) .fusion-tool-scroll:has(.float-media-workspace){overflow:hidden}
+:is(.island-shell, .fusion-workbench) .float-media-workspace{flex:1;min-height:0;height:100%;display:flex;flex-direction:column;gap:8px!important}
+:is(.island-shell, .fusion-workbench) .float-media-setup{flex:none;display:flex;flex-direction:column;gap:8px}
+:is(.island-shell, .fusion-workbench) .float-media-heading h2{font-size:18px;margin:0 0 4px}
+:is(.island-shell, .fusion-workbench) .float-media-heading p{font-size:12px;margin:0;color:var(--ui-muted);line-height:1.5}
+:is(.island-shell, .fusion-workbench) .float-media-setup textarea{height:64px;min-height:56px;resize:none;width:100%}
+:is(.island-shell, .fusion-workbench) .float-media-format{display:flex;flex-wrap:wrap;gap:8px;margin:0}
+:is(.island-shell, .fusion-workbench) .float-media-format label{display:flex;flex-direction:row;align-items:center;gap:6px;min-width:0}
+:is(.island-shell, .fusion-workbench) .float-media-format select{max-width:240px;min-width:0}
+:is(.island-shell, .fusion-workbench) .float-media-content{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:8px;overscroll-behavior:contain}
+:is(.island-shell, .fusion-workbench) .float-media-workspace>.fusion-inline-error{flex:none;max-height:54px;overflow:auto;margin:0}
+:is(.island-shell, .fusion-workbench) .fusion-tool-scroll:has(.float-library>.fusion-tool-submode:not([hidden])>.float-document-reader){overflow:hidden;padding-top:4px}
+:is(.island-shell, .fusion-workbench) .fusion-tool-scroll:has(.float-library>.fusion-tool-submode:not([hidden])>.float-document-reader)>.fusion-utility{flex:1;min-height:0}
+:is(.island-shell, .fusion-workbench) .fusion-tool-scroll:has(.float-library>.fusion-tool-submode:not([hidden])>.float-document-reader) .float-reference-import{display:none}
+:is(.island-shell, .fusion-workbench) .float-document-reader{min-height:0;flex:1;width:100%;height:100%;display:flex;flex-direction:column}
+:is(.island-shell, .fusion-workbench) .float-document-reader iframe{min-height:0;flex:1;width:100%}
+:is(.island-shell, .fusion-workbench) .float-guide{color:var(--ui-text);background:var(--ui-bg);color-scheme:inherit}
+:is(.island-shell, .fusion-workbench){color-scheme:dark}
+:root[data-theme=light] :is(.island-shell, .fusion-workbench){color-scheme:light}
+:is(.island-shell, .fusion-workbench) :is(.float-resize-se,.float-resize-sw,.float-resize-ne,.float-resize-nw){width:24px;height:24px}
+@media(max-height:460px){:is(.island-shell, .fusion-workbench) .float-media-heading h2{font-size:14px}:is(.island-shell, .fusion-workbench) .float-media-setup textarea{height:56px}:is(.island-shell, .fusion-workbench) .float-media-setup{gap:4px}:is(.island-shell, .fusion-workbench) .float-media-format select{max-width:180px}}
+:is(.island-shell, .fusion-workbench) button.float-primary-action{background:var(--ui-accent)!important;color:var(--ui-bg)!important;font-weight:600;border-color:transparent!important}
+:is(.island-shell, .fusion-workbench) .float-download-filter,:is(.island-shell, .fusion-workbench) .float-download-batch{flex-wrap:wrap}
+:is(.island-shell, .fusion-workbench) .fusion-download-task-heading{flex-wrap:wrap;gap:8px}
+:is(.island-shell, .fusion-workbench) .fusion-download-task-heading>.fusion-tool-actions{margin-left:auto}
+:is(.island-shell, .fusion-workbench) .fusion-download-task .fusion-tool-actions button:has(span){width:auto!important;padding:5px 8px!important}
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-body{gap:8px;overflow:hidden;flex:1;min-height:0;padding-top:8px}
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-feed{flex:1;min-height:0;overflow:auto;padding:4px 0}
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-context,:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-model{display:flex;flex-wrap:wrap;align-items:center;gap:6px;flex:none;font-size:12px;margin:0}
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-model select{flex:1;min-width:0}
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-composer{margin:0;border:1px solid var(--ui-border);background:var(--ui-surface);border-radius:12px;padding:8px;flex:none}
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-composer textarea{min-height:48px;max-height:90px;border:0;background:transparent;color:var(--ui-text);font-size:13px;line-height:1.6}
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-actions{margin:0;min-height:32px;gap:6px}
+:is(.island-shell, .fusion-workbench) .fusion-message--user{background:var(--ui-surface);color:var(--ui-text)}
+:is(.island-shell, .fusion-workbench) .fusion-chat-empty{font-size:13px;line-height:1.7;color:var(--ui-muted);padding:20px 8px}
+:is(.island-shell, .fusion-workbench) .fusion-focus-companion>.fusion-pet{width:128px!important;height:128px!important}
+:is(.island-shell, .fusion-workbench) .fusion-settings{color:var(--ui-text);background:var(--ui-bg)}
+:is(.island-shell, .fusion-workbench) .fusion-settings-body{padding:16px;gap:12px}
+:is(.island-shell, .fusion-workbench) .fusion-settings-body h2{font-size:18px;margin:0 0 12px}
+:is(.island-shell, .fusion-workbench) .fusion-settings-body h3{font-size:13px}
+:is(.island-shell, .fusion-workbench) .fusion-settings-body p{font-size:12px;line-height:1.6;color:var(--ui-muted)}
+:is(.island-shell, .fusion-workbench) .fusion-settings :is(input:not([type=checkbox]):not([type=range]),select){min-height:32px;border-radius:8px;color:var(--ui-text);background:var(--ui-surface);border-color:var(--ui-border)}
+:is(.island-shell, .fusion-workbench) .fusion-setting-row{padding:10px 0;border-color:var(--ui-border)}
+:is(.island-shell, .fusion-workbench) .fusion-compact-copy strong{font-size:12px;color:var(--ui-text)}
+:is(.island-shell, .fusion-workbench) .fusion-compact-open{display:grid;place-items:center;width:28px;height:28px;background:var(--ui-surface);border:0;border-radius:8px;color:var(--ui-text)}
+:is(.island-shell, .fusion-workbench) .float-guide main{min-height:0;overflow:auto}
+:is(.island-shell, .fusion-workbench) .float-guide h1{font-size:22px}
+:is(.island-shell, .fusion-workbench) .float-guide .float-guide-brand{color:var(--ui-muted)}
+:is(.island-shell, .fusion-workbench) .float-guide h1{background:none;color:var(--ui-text);-webkit-text-fill-color:var(--ui-text);text-shadow:none}
+:is(.island-shell, .fusion-workbench) .float-guide footer{flex:none;background:var(--ui-bg)}
+:is(.island-shell, .fusion-workbench) .float-guide footer button.float-guide-next{background:var(--ui-text)!important;color:var(--ui-bg)!important}
+@container fi-workspace (max-width:639px){
+  :is(.island-shell, .fusion-workbench) .fusion-island-tabs button{padding:5px 8px;font-size:13px}
+  :is(.island-shell, .fusion-workbench) .fusion-chat-header{gap:4px}
+  :is(.island-shell, .fusion-workbench) .fusion-tool-directory-top{grid-template-columns:1fr;gap:8px}
+  :is(.island-shell, .fusion-workbench) .fusion-tool-directory-top>div:first-child{display:none}
+  :is(.island-shell, .fusion-workbench) .fusion-tool-directory .fusion-tool-category{scroll-margin-top:112px}
+  :is(.island-shell, .fusion-workbench) .float-music-quality{gap:6px}
+  :is(.island-shell, .fusion-workbench) .float-music-quality select{max-width:110px}
+}
+@media(max-height:470px){
+  :is(.island-shell, .fusion-workbench) .fusion-tool-scroll,:is(.island-shell, .fusion-workbench) .fi-music{padding:8px 12px;gap:8px}
+  :is(.island-shell, .fusion-workbench) .float-download-start>textarea{height:56px}
+  :is(.island-shell, .fusion-workbench) .float-download-start-footer>div{flex-direction:row;align-items:center;gap:6px}
+  :is(.island-shell, .fusion-workbench) .float-download-start-footer small{max-width:150px}
+  :is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-composer textarea{max-height:64px}
+  :is(.island-shell, .fusion-workbench) .float-guide-companion{height:80px}
+}
+@media(prefers-reduced-motion:reduce){:is(.island-shell, .fusion-workbench) :is(button,.fusion-tool-entry){transition:none!important}}

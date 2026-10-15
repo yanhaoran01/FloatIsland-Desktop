@@ -1,0 +1,40 @@
+name: Build checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  application:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.19.0'
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Check main process types
+        run: npx tsc --noEmit -p tsconfig.node.json
+      - name: Check interface types
+        run: npx tsc --noEmit -p tsconfig.web.json
+      - run: npm run i18n:check
+      - run: npm run build
+
+  native:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check application hosts
+        run: cargo check --locked --manifest-path app/native/fusion-host/Cargo.toml
+      - name: Check shared hosts and runtime
+        run: cargo check --workspace --locked --manifest-path vendor/EchoIsland/Cargo.toml

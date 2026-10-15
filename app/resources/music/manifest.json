@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "project": "listen1/listen1_chrome_extension",
+      "version": "v2.33.0",
+      "commit": "3f24efa045125875a609dcb0f3f3f0be4edb8b37",
+      "license": "MIT",
+      "files": [
+        {
+          "path": "listen1/kugou.js",
+          "sha256": "5d6beaeea0483e70d67f7780ef32e9ed50fb60d24b070a6687e6943cfb32c313"
+        },
+        {
+          "path": "listen1/kuwo.js",
+          "sha256": "35c69195368448842d9d50c84dce37522f2b327f7a69d9da802708e5967104b1"
+        },
+        {
+          "path": "listen1/LICENSE",
+          "sha256": "ee4758baa4955dc219294851a82974ee40d2cef02248eebe6ef4a9b4bbc822ed"
+        },
+        {
+          "path": "listen1/migu.js",
+          "sha256": "409f5f0855e5d21e2be233bd19f9317942cefc0195055f1393ad8b763d84cf7e"
+        },
+        {
+          "path": "listen1/netease.js",
+          "sha256": "580b302b6d8afba5d462c0fa2970cbd4f8caeaf8be124de108275cae661d0ae8"
+        },
+        {
+          "path": "listen1/qq.js",
+          "sha256": "2c0a361f1c254850528f3e5bcd2def8026f01aacab3db0a1191907b8b21efbd3"
+        },
+        {
+          "path": "listen1/taihe.js",
+          "sha256": "612133a8459be5ec07b9f02f94a5a377ef7a3dcc79551bc284265ca77db14e32"
+        }
+      ]
+    },
+    {
+      "project": "qier222/YesPlayMusic",
+      "version": "v0.4.10",
+      "commit": "2c4aab49f1074104b396fb04cdae071bda68d40d",
+      "license": "MIT",
+      "files": [
+        {
+          "path": "yesplaymusic/LICENSE",
+          "sha256": "c33378c6fd12e6d040cedd06dc0d1bedfca74fd66bc46cc2cf10cc10e0906be6"
+        },
+        {
+          "path": "yesplaymusic/lyrics.vue",
+          "sha256": "d6b3ad5d298844a61729d4ab5e02fae3033f6b1882ecc606e04c9d7aed608ca4"
+        },
+        {
+          "path": "yesplaymusic/Player.vue",
+          "sha256": "9350bf4d5ab977337d502c37e80bc227e604240019b23b4c2c02809cf4725b60"
+        },
+        {
+          "path": "yesplaymusic/TrackListItem.vue",
+          "sha256": "9ea006ec8166454234071970fef648d07a5abfa67e114d8c27c2f50f1a22d58e"
+        }
+      ]
+    },
+    {
+      "project": "lyswhut/lx-music-desktop",
+      "version": "2026-09-19",
+      "commit": "ad95d5091c9ed689fa72b5e5c849df65f5a679ce",
+      "license": "Apache-2.0",
+      "files": [
+        {
+          "path": "lx/bd/musicSearch.js",
+          "sha256": "8f8c858170494fe23eb0db0ac309786e564d3810aeb39a6b1b1c6bb823f4834e"
+        },
+        {
+          "path": "lx/kg/musicSearch.js",
+          "sha256": "779a5a5601e9f8a7d323aacb339addd324cf26fa8bb06b45cc3c9f6b5f36a3ff"
+        },
+        {
+          "path": "lx/kw/musicSearch.js",
+          "sha256": "1dcd4b18614d63c663415966eee3278a71850f401344f9e5bce67e3a7f481daf"
+        },
+        {
+          "path": "lx/kw/util.js",
+          "sha256": "34c662cc2d0f26ddaab66d7b02153d1ecb36b3e66de96be55e2912925c5a6cc6"
+        },
+        {
+          "path": "lx/LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        {
+          "path": "lx/mg/musicSearch.js",
+          "sha256": "6ee64a00ec653d2edbac48c01731b71660c2b767c57436d6783b674b330acf74"
+        },
+        {
+          "path": "lx/NOTICE",
+          "sha256": "006d02dbc2f338cd6eb89d3f715fe642a98b4b57caf784b0682e06738baf32e9"
+        },
+        {
+          "path": "lx/tx/musicSearch.js",
+          "sha256": "a33f3096bb377bd978296b180142882d4bbe23609ed33956c1a371fd43e5d4b0"
+        },
+        {
+          "path": "lx/tx/utils/crypto.js",
+          "sha256": "03fc378361b205f22852d6f3f0963fadcadbe0d5acbd2bb2b5ca33d621daf15b"
+        },
+        {
+          "path": "lx/tx/utils/index.js",
+          "sha256": "f3464e5d81845d6c140c1725b8d286519975bfe04692a877cb91c8b3c9d1ade6"
+        },
+        {
+          "path": "lx/utils.js",
+          "sha256": "4521fb3c6c31fcac0a75113fb5d8ad11060e99bee34273a39a283fc4786410ad"
+        },
+        {
+          "path": "lx/wy/musicSearch.js",
+          "sha256": "6b3b3861749db43d9530164a24b3f34a0ab6ff8d69eea490f096ea0fcdf89168"
+        },
+        {
+          "path": "lx/wy/utils/crypto.js",
+          "sha256": "c3f2440c297640715b719d559dac3e815cd1365720b15d38864f4bf25d4cb1d3"
+        },
+        {
+          "path": "lx/wy/utils/index.js",
+          "sha256": "d514baa5ce023e386dcf8815d10c14cc8bbce8a92ddaee74b0631db178fc8e10"
+        }
+      ]
+    }
+  ],
+  "dependency": {
+    "node-forge": "1.4.0",
+    "crypto-js": "4.2.0",
+    "cheerio": "1.2.0"
+  }
+}

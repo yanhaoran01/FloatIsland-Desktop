@@ -1,0 +1,10 @@
+Genie Effect reference
+Source: https://github.com/Adi1816/genie-effect
+Pinned reference commit: 33b77d5b3723bbc384337d6277d57c4a1533d771
+Copyright: (c) 2026 Aditya Srivastava
+License: MIT (see LICENSE)
+
+FloatIsland's page snapshot capture, mesh mapping, transition lifecycle, and
+fallback are an independent TypeScript/WebGL implementation informed by the
+project's public Genie-effect approach. No source files from the reference
+project are bundled.

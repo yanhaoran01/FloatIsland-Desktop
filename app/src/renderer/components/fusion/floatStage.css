@@ -1,0 +1,520 @@
+/* FloatIsland - https://github.com/yanhaoran01/FloatIsland. Copyright (C) 2026 FloatIsland contributors. GPL-3.0. */
+/**
+ * @file floatStage.css
+ * @description FloatIsland 角色与页面样式：角色舞台、统一按钮与输入、工具目录卡片、留声机音乐页和柔和动效。
+ * @description 外壳几何仍由原生视口负责，这里只为内部元素添加透明度与位移动画。
+ * @author 鸡哥
+ */
+
+/* ===================== 令牌 ===================== */
+:is(.island-shell, .fusion-workbench) {
+  --fs-accent: #8fa7ff;
+  --fs-accent-ink: #16171a;
+  --fs-grad: #eceef2;
+  --fs-glow: 143, 167, 255;
+  --fs-surface: #ffffff07;
+  --fs-surface-2: #ffffff0d;
+  --fs-surface-3: #ffffff15;
+  --fs-line: #ffffff10;
+  --fs-line-2: #ffffff1c;
+  --fs-shadow: 0 1px 2px #0000002e;
+  --fs-ease: cubic-bezier(.22, 1, .36, 1);
+  --fs-spring: cubic-bezier(.22, 1, .36, 1);
+  --ui-accent: var(--fs-accent);
+  --fi-accent: var(--fs-accent);
+}
+:root[data-theme=light] :is(.island-shell, .fusion-workbench) {
+  --fs-accent: #4a65c8;
+  --fs-accent-ink: #ffffff;
+  --fs-grad: #1f2430;
+  --fs-glow: 74, 101, 200;
+  --fs-surface: #1b2a4a06;
+  --fs-surface-2: #1b2a4a0c;
+  --fs-surface-3: #1b2a4a14;
+  --fs-line: #1b2a4a12;
+  --fs-line-2: #1b2a4a20;
+  --fs-shadow: 0 1px 2px #1b2a4a14;
+}
+
+/* ===================== 动效 ===================== */
+@keyframes fs-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@keyframes fs-in-left { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+@keyframes fs-in-right { from { opacity: 0; transform: translateX(10px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes fs-pop { from { opacity: 0; transform: scale(.94) translateY(-4px); } to { opacity: 1; transform: none; } }
+@keyframes fs-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes fs-breathe { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: .9; transform: scale(1.06); } }
+@keyframes fs-spin { to { transform: rotate(360deg); } }
+@keyframes fs-shadow { 0%, 100% { opacity: .5; transform: scaleX(1); } 50% { opacity: .3; transform: scaleX(.82); } }
+
+/* ===================== 顶栏 ===================== */
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-header { gap: 6px; border-bottom: 1px solid var(--fs-line); box-shadow: none; }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-island-tabs { margin-left: 2px; padding: 3px; gap: 0; border-radius: 13px; background: var(--fs-surface); box-shadow: inset 0 0 0 1px var(--fs-line); }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-island-tabs button { min-height: 30px; padding: 4px 13px; border-radius: 10px; font-size: 12.5px; font-weight: 500; color: var(--ui-muted) !important; background: transparent !important; transition: color .25s var(--fs-ease) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-island-tabs button:hover { color: var(--ui-text) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-island-tabs button[aria-pressed=true] { color: var(--ui-text) !important; font-weight: 500; }
+:is(.island-shell, .fusion-workbench) .fusion-island-tabs::before { border-radius: 10px !important; background: var(--fs-surface-3) !important; box-shadow: inset 0 1px 0 #ffffff14, 0 4px 12px #0000002e !important; }
+:is(.island-shell, .fusion-workbench) .fusion-island-tabs[data-indicator=ready]::before { transition: transform .22s var(--fs-ease), width .22s var(--fs-ease), height .22s var(--fs-ease), opacity .2s !important; }
+:is(.island-shell, .fusion-workbench) .fusion-island-tabs:not([data-indicator=ready]) button[aria-pressed=true] { background: var(--fs-surface-3) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-header > .fusion-icon-button,
+:is(.island-shell, .fusion-workbench) .fusion-session-menu > .fusion-icon-button { width: 30px; height: 30px; border-radius: 9px; color: var(--ui-muted); transition: background .2s, color .2s; }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-header > .fusion-icon-button:hover,
+:is(.island-shell, .fusion-workbench) .fusion-session-menu > .fusion-icon-button:hover,
+:is(.island-shell, .fusion-workbench) .fusion-session-menu > .fusion-icon-button[aria-expanded=true] { color: var(--ui-text); background: var(--fs-surface-2); }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-header > .fusion-icon-button > svg,
+:is(.island-shell, .fusion-workbench) .fusion-session-menu > .fusion-icon-button > svg { width: 16px; height: 16px; transition: transform .35s var(--fs-spring); }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-header > .fusion-icon-button:active > svg { transform: scale(.86); }
+:is(.island-shell, .fusion-workbench) .fusion-session-popover { border: 1px solid var(--fs-line-2) !important; border-radius: 14px !important; background: color-mix(in srgb, var(--ui-bg) 94%, transparent) !important; backdrop-filter: blur(18px) saturate(1.2); box-shadow: 0 18px 44px #00000066 !important; transform-origin: top right; animation: fs-pop .28s var(--fs-ease) both !important; }
+
+/* ===================== 角色舞台（对话页主角） ===================== */
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-body { display: flex; flex-direction: column; }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-body > :is(.fusion-chat-context, .fusion-chat-model) { display: none; }
+:is(.island-shell, .fusion-workbench) .float-stage { position: relative; isolation: isolate; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; flex: 1 1 auto; min-height: 0; padding: 4px 0 8px; animation: fs-in .5s var(--fs-ease) both; }
+:is(.island-shell, .fusion-workbench) .float-stage-actor { position: relative; display: grid; place-items: center; width: clamp(108px, 30vh, 176px); aspect-ratio: 1; flex: none; }
+:is(.island-shell, .fusion-workbench) .float-stage-actor > .fusion-pet { position: relative; z-index: 1; width: 100% !important; height: 100% !important; animation: fs-float 4.8s ease-in-out infinite; }
+:is(.island-shell, .fusion-workbench) .float-stage-actor::after {
+  content: ""; position: absolute; inset: -2%; z-index: 0; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: conic-gradient(from 0deg, transparent 0 62%, rgba(var(--fs-glow), .55) 90%, transparent 100%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+  transition: opacity .4s var(--fs-ease);
+}
+:is(.island-shell, .fusion-workbench) .float-stage:is([data-mood=working], [data-mood=thinking], [data-mood=listening]) .float-stage-actor::after { opacity: 1; animation: fs-spin 2.6s linear infinite; }
+:is(.island-shell, .fusion-workbench) .float-stage-halo { position: absolute; inset: 6%; z-index: -1; border-radius: 50%; background: radial-gradient(circle, #ffffff0d 0%, transparent 68%); filter: blur(12px); animation: fs-breathe 6s ease-in-out infinite; transition: background .6s var(--fs-ease); }
+:is(.island-shell, .fusion-workbench) .float-stage[data-mood=waiting] .float-stage-halo { background: radial-gradient(circle, #f2c87924 0%, transparent 70%); animation-duration: 2.4s; }
+:is(.island-shell, .fusion-workbench) .float-stage[data-mood=error] .float-stage-halo { background: radial-gradient(circle, #f0918b22 0%, transparent 70%); }
+:is(.island-shell, .fusion-workbench) .float-stage[data-mood=finished] .float-stage-halo { background: radial-gradient(circle, #8fe3d222 0%, transparent 70%); }
+:is(.island-shell, .fusion-workbench) .float-stage[data-drop=true] .float-stage-halo { background: radial-gradient(circle, rgba(var(--fs-glow), .22) 0%, transparent 72%); animation-duration: 1.4s; }
+:is(.island-shell, .fusion-workbench) .float-stage-floor { position: absolute; bottom: -2%; left: 28%; right: 28%; height: 10px; border-radius: 50%; background: radial-gradient(#00000059, transparent 70%); animation: fs-shadow 4.8s ease-in-out infinite; }
+:root[data-theme=light] :is(.island-shell, .fusion-workbench) .float-stage-floor { background: radial-gradient(#1b2a4a33, transparent 70%); }
+:is(.island-shell, .fusion-workbench) .float-stage-bubble { display: flex; flex-direction: column; align-items: center; gap: 6px; max-width: min(400px, 90%); text-align: center; animation: fs-in .5s .06s var(--fs-ease) both; }
+:is(.island-shell, .fusion-workbench) .float-stage-bubble > strong { font-size: 15px; font-weight: 600; letter-spacing: .01em; color: var(--ui-text); }
+:is(.island-shell, .fusion-workbench) .float-stage-bubble > span { display: -webkit-box; max-width: 100%; overflow: hidden; font-size: 12px; line-height: 1.6; color: var(--ui-muted); -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow-wrap: anywhere; font-size: 12.5px; }
+:is(.island-shell, .fusion-workbench) .float-stage-start { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; min-height: 32px; padding: 6px 16px; border: 0; border-radius: 10px; font: inherit; font-size: 12.5px; font-weight: 600; color: var(--fs-accent-ink); background: var(--fs-grad); box-shadow: none; cursor: pointer; transition: transform .3s var(--fs-spring), box-shadow .3s var(--fs-ease), opacity .2s; }
+:is(.island-shell, .fusion-workbench) .float-stage-start:hover:not(:disabled) {  box-shadow: none; }
+:is(.island-shell, .fusion-workbench) .float-stage-start:active:not(:disabled) { transform: scale(.96); }
+
+/* 有消息后：角色收为左上陪伴，气泡改为横向状态条。 */
+:is(.island-shell, .fusion-workbench) .float-stage[data-docked=true] { flex: 0 0 auto; flex-direction: row; justify-content: flex-start; gap: 10px; padding: 2px 0 4px; animation: fs-in-left .45s var(--fs-ease) both; }
+:is(.island-shell, .fusion-workbench) .float-stage[data-docked=true] .float-stage-actor { width: 40px; }
+:is(.island-shell, .fusion-workbench) .float-stage[data-docked=true] .float-stage-actor > .fusion-pet { animation-duration: 3.6s; }
+:is(.island-shell, .fusion-workbench) .float-stage[data-docked=true] .float-stage-floor { display: none; }
+:is(.island-shell, .fusion-workbench) .float-stage[data-docked=true] .float-stage-halo { inset: -8%; filter: blur(8px); }
+:is(.island-shell, .fusion-workbench) .float-stage[data-docked=true] .float-stage-bubble { flex-direction: row; align-items: baseline; gap: 8px; max-width: none; flex: 0 1 auto; min-width: 0; text-align: left; animation: fs-in-left .35s var(--fs-ease) both; }
+:is(.island-shell, .fusion-workbench) .float-stage[data-docked=true] .float-stage-bubble > strong { flex: none; font-size: 12.5px; }
+:is(.island-shell, .fusion-workbench) .float-stage[data-docked=true] .float-stage-bubble > span { -webkit-line-clamp: 1; font-size: 11.5px; }
+:is(.island-shell, .fusion-workbench) .float-stage[data-docked=true][data-mood=idle] .float-stage-bubble > span { display: none; }
+
+/* ===================== 消息流 ===================== */
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-feed { padding: 6px 2px; -webkit-mask: linear-gradient(transparent, #000 10px, #000 calc(100% - 8px), transparent); mask: linear-gradient(transparent, #000 10px, #000 calc(100% - 8px), transparent); }
+:is(.island-shell, .fusion-workbench) .fusion-chat-feed-content { display: flex; flex-direction: column; gap: 10px; }
+:is(.island-shell, .fusion-workbench) .fusion-message { animation: fs-in .38s var(--fs-ease) both; font-size: 13px; line-height: 1.65; }
+:is(.island-shell, .fusion-workbench) .fusion-message--user { padding: 9px 14px; border: 0 !important; border-radius: 16px 16px 5px 16px !important; color: var(--ui-text) !important; background: var(--fs-surface-3) !important; box-shadow: none; }
+:is(.island-shell, .fusion-workbench) .fusion-message--assistant { padding: 2px 2px; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none; }
+:is(.island-shell, .fusion-workbench) .fusion-message--tool { border-radius: 10px !important; border-color: var(--fs-line) !important; background: var(--fs-surface) !important; font-size: 11.5px; }
+:is(.island-shell, .fusion-workbench) .fusion-chat-error { margin: 0; padding: 8px 12px; border-radius: 10px; font-size: 12px; color: var(--ui-danger); background: color-mix(in srgb, var(--ui-danger) 10%, transparent); animation: fs-in .3s var(--fs-ease) both; }
+:is(.island-shell, .fusion-workbench) .fusion-message--user :is(p, span, a, code) { color: inherit; }
+
+/* ===================== 输入框 ===================== */
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-composer { position: relative; padding: 8px 8px 6px 14px; border: 0 !important; border-radius: 18px !important; background: var(--fs-surface) !important; box-shadow: inset 0 0 0 1px var(--fs-line); transition: box-shadow .2s var(--fs-ease), background .2s var(--fs-ease); }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-composer:focus-within { background: var(--fs-surface-2) !important; box-shadow: inset 0 0 0 1px var(--fs-line-2); }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-composer textarea { min-height: 40px; padding: 4px 0; outline: 0 !important; box-shadow: none !important; resize: none; }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-composer textarea:focus-visible { outline: 0; }
+:is(.island-shell, .fusion-workbench) .fusion-chat-actions .fusion-icon-button { width: 32px; height: 32px; border-radius: 50%; color: var(--ui-muted); transition: background .2s, color .2s, transform .3s var(--fs-spring); }
+:is(.island-shell, .fusion-workbench) .fusion-chat-actions .fusion-icon-button:hover:not(:disabled) { color: var(--ui-text); background: var(--fs-surface-2); }
+:is(.island-shell, .fusion-workbench) .fusion-chat-actions .fusion-icon-button:active:not(:disabled) { transform: scale(.88); }
+:is(.island-shell, .fusion-workbench) .fusion-chat-actions .fusion-icon-button.is-recording { color: var(--fs-accent-ink); background: var(--fs-grad); box-shadow: 0 0 0 4px #ffffff10; }
+:is(.island-shell, .fusion-workbench) .fusion-chat-actions .fusion-send { display: grid; place-items: center; width: 34px; height: 34px; padding: 0; border: 0; border-radius: 50%; color: var(--fs-accent-ink); background: var(--fs-grad); box-shadow: none; cursor: pointer; transition: transform .3s var(--fs-spring), box-shadow .3s var(--fs-ease), opacity .2s, filter .2s; }
+:is(.island-shell, .fusion-workbench) .fusion-chat-actions .fusion-send:hover:not(:disabled) { filter: brightness(1.08); }
+:is(.island-shell, .fusion-workbench) .fusion-chat-actions .fusion-send:active:not(:disabled) { transform: scale(.9); }
+:is(.island-shell, .fusion-workbench) .fusion-chat-actions .fusion-send:disabled { opacity: 1; background: var(--fs-surface-3); color: var(--ui-muted); box-shadow: none; cursor: default; }
+:is(.island-shell, .fusion-workbench) .fusion-chat-attachments:not(:empty) { display: flex; flex-wrap: wrap; gap: 6px; }
+:is(.island-shell, .fusion-workbench) .fusion-chat-attachments button { display: inline-flex; align-items: center; gap: 6px; min-height: 26px; padding: 3px 10px; border: 0; border-radius: 99px; font-size: 11.5px; color: var(--ui-text); background: var(--fs-surface-2); animation: fs-pop .25s var(--fs-ease) both; cursor: pointer; }
+:is(.island-shell, .fusion-workbench) .fusion-chat-attachments button:hover { background: var(--fs-surface-3); }
+:is(.island-shell, .fusion-workbench) .fusion-inline-notice { border-radius: 12px; padding: 10px 12px; background: var(--fs-surface); box-shadow: inset 0 0 0 1px var(--fs-line); animation: fs-in .3s var(--fs-ease) both; }
+
+/* 语音聚焦页沿用同一舞台语言。 */
+:is(.island-shell, .fusion-workbench) .fusion-focus-companion > .fusion-pet { width: clamp(110px, 30vh, 180px) !important; height: clamp(110px, 30vh, 180px) !important; animation: fs-float 4.2s ease-in-out infinite !important; }
+:is(.island-shell, .fusion-workbench) .fusion-focus-input { border: 0 !important; border-radius: 18px !important; background: var(--fs-surface) !important; box-shadow: inset 0 0 0 1px var(--fs-line) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-focus-input:focus-within { box-shadow: inset 0 0 0 1px var(--fs-line-2) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-voice-focus .fusion-focus-mic { width: 40px; height: 40px; border-radius: 50% !important; transition: transform .3s var(--fs-spring), background .2s !important; }
+:is(.island-shell, .fusion-workbench) .fusion-voice-focus[data-phase=recording] .fusion-focus-mic { color: var(--fs-accent-ink) !important; background: var(--fs-grad) !important; box-shadow: 0 0 0 4px #ffffff10 !important; }
+:is(.island-shell, .fusion-workbench) .fusion-companion-listening span { background: var(--fs-grad) !important; border-radius: 99px; transition: height .12s linear; }
+/* ===================== 工具目录：无框列表、宽松分组 ===================== */
+:is(.island-shell, .fusion-workbench) .fusion-island-tools:not([hidden]) > .fusion-tools-panel > .fusion-tool-directory:not([hidden]) { animation: fs-in .35s var(--fs-ease) both; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory-panel .fusion-tool-directory { padding: 0 12px 16px !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory-top { top: 0 !important; max-width: none !important; margin: 0 0 8px !important; padding: 12px 0 8px !important; gap: 14px 16px !important; align-items: end; background: var(--ui-bg) !important; border-bottom: 0 !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory-top h2 { font-size: 18px !important; font-weight: 650; letter-spacing: -.01em; line-height: 1.2 !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory-top p { margin-top: 6px !important; font-size: 12.5px !important; color: var(--ui-muted); }
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory-search { height: 36px; border: 0 !important; border-radius: 10px !important; background: var(--fs-surface-2) !important; box-shadow: none; transition: box-shadow .2s var(--fs-ease), background .2s; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory-search:focus-within { background: var(--fs-surface-2) !important; box-shadow: inset 0 0 0 1px var(--fs-line-2) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory-search input:focus-visible { outline: 0 !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory-categories { gap: 4px !important; margin-top: 2px; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory-categories button { min-height: 28px !important; padding: 4px 10px !important; border: 0 !important; border-radius: 8px !important; font-size: 12.5px !important; color: var(--ui-muted) !important; background: transparent !important; transition: background .2s, color .2s !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory-categories button:hover { color: var(--ui-text) !important; background: var(--fs-surface-2) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory .fusion-tool-category { max-width: none !important; margin: 0 0 16px !important; scroll-margin-top: 140px !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-category-heading { min-height: 24px; padding: 0 2px 10px !important; gap: 6px; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-category-heading > svg { width: 13px; height: 13px; opacity: .5; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-category-heading strong { font-size: 12px !important; font-weight: 600 !important; letter-spacing: .06em; color: var(--ui-muted); }
+:is(.island-shell, .fusion-workbench) .fusion-tool-category-heading > span { font-size: 11.5px !important; color: var(--ui-muted); opacity: .7; background: none; padding: 0; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 2px 12px !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory .fusion-tool-entry {
+  min-height: 58px !important; padding: 10px 10px !important; gap: 12px !important; border: 0 !important; border-radius: 12px !important;
+  background: transparent !important; box-shadow: none !important; transition: background .18s var(--fs-ease) !important;
+}
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory .fusion-tool-entry:hover { background: var(--fs-surface-2) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory .fusion-tool-entry:active { background: var(--fs-surface-3) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-entry-icon { width: 36px !important; height: 36px !important; flex-basis: 36px !important; border-radius: 10px !important; color: var(--ui-text) !important; background: var(--fs-surface-2) !important; box-shadow: inset 0 0 0 1px var(--fs-line); transition: color .18s, background .18s; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-entry-icon > svg { width: 18px; height: 18px; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory .fusion-tool-entry:hover .fusion-tool-entry-icon { background: var(--fs-surface-3) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-entry-text { gap: 3px !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-entry-text strong { font-size: 13px !important; font-weight: 550 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-entry-text small { font-size: 11.5px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; overflow-wrap: normal !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-entry-arrow { display: none; }
+@media (max-width: 560px) { :is(.island-shell, .fusion-workbench) .fusion-tool-directory-panel .fusion-tool-directory { padding: 0 16px 28px !important; } :is(.island-shell, .fusion-workbench) .fusion-tool-directory-top { padding-top: 18px !important; } }
+
+/* ===================== 工具详情框架 ===================== */
+:is(.island-shell, .fusion-workbench) .fusion-tool-content:not([hidden]) > .fusion-tool-frame { animation: fs-in .38s var(--fs-ease) both; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-toolbar { height: 46px !important; min-height: 46px !important; gap: 10px; border-bottom: 1px solid var(--fs-line) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-toolbar > .fusion-icon-button { width: 30px !important; height: 30px !important; flex-basis: 30px !important; border-radius: 10px !important; background: var(--fs-surface) !important; box-shadow: inset 0 0 0 1px var(--fs-line) !important; transition: background .2s, transform .35s var(--fs-spring) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-toolbar > .fusion-icon-button:hover { background: var(--fs-surface-3) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-toolbar > .fusion-icon-button:hover > svg { transform: translateX(-2px); }
+:is(.island-shell, .fusion-workbench) .fusion-tool-toolbar > .fusion-icon-button > svg { transition: transform .3s var(--fs-ease); }
+:is(.island-shell, .fusion-workbench) .fusion-tool-toolbar > .fusion-icon-button:active { transform: scale(.9); }
+:is(.island-shell, .fusion-workbench) .float-tool-title { font-size: 14px !important; font-weight: 650 !important; letter-spacing: -.005em; }
+
+/* 子功能：胶囊分段控件。 */
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-product-tabs { display: inline-flex !important; flex-wrap: wrap; align-self: flex-start; max-width: 100%; gap: 2px !important; padding: 3px !important; border-radius: 12px; background: var(--fs-surface); box-shadow: inset 0 0 0 1px var(--fs-line); }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-product-tabs > button { min-height: 28px !important; height: 28px !important; padding: 0 12px !important; border: 0 !important; border-radius: 9px !important; font-size: 12px !important; color: var(--ui-muted) !important; background: transparent !important; box-shadow: none !important; transition: color .2s, background .25s var(--fs-ease), box-shadow .25s !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-product-tabs > button:hover { color: var(--ui-text) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-product-tabs > button[aria-pressed=true] { color: var(--ui-text) !important; font-weight: 500; background: var(--fs-surface-3); box-shadow: inset 0 1px 0 #ffffff12, 0 3px 10px #0000002e; }
+:root[data-theme=light] :is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-product-tabs > button[aria-pressed=true] { background: #ffffff; box-shadow: 0 1px 4px #1b2a4a24; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-product-tabs > :is(.fi-music-more, details) { display: inline-flex; }
+
+/* 统一按钮：柔和次级、渐变主操作、按压回弹。 */
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame :is(.fusion-tool-actions, .fusion-tool-row, .fusion-tool-input-actions, .float-library-inline, .float-book-actions, .float-download-start-footer, .float-reference-import, .fi-music-collections, .float-music-page-tabs) > button:not(.fusion-icon-button),
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-file-button,
+:is(.island-shell, .fusion-workbench) .fusion-settings-body button:not(.fusion-icon-button) {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 32px; padding: 5px 12px !important;
+  border: 0 !important; border-radius: 10px !important; font-size: 12.5px; font-weight: 500; color: var(--ui-text) !important;
+  background: var(--fs-surface-2) !important; box-shadow: inset 0 0 0 1px var(--fs-line) !important;
+  transition: background .2s var(--fs-ease), box-shadow .2s, transform .3s var(--fs-spring) !important;
+}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame :is(.fusion-tool-actions, .fusion-tool-row, .fusion-tool-input-actions, .float-library-inline, .float-book-actions, .float-download-start-footer, .float-reference-import, .fi-music-collections, .float-music-page-tabs) > button:not(.fusion-icon-button):hover:not(:disabled),
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-file-button:hover,
+:is(.island-shell, .fusion-workbench) .fusion-settings-body button:not(.fusion-icon-button):hover:not(:disabled) { background: var(--fs-surface-3) !important; box-shadow: inset 0 0 0 1px var(--fs-line-2) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame :is(.fusion-tool-actions, .fusion-tool-row, .fusion-tool-input-actions, .float-library-inline, .float-book-actions, .float-download-start-footer, .float-reference-import, .fi-music-collections, .float-music-page-tabs) > button:not(.fusion-icon-button):active:not(:disabled),
+:is(.island-shell, .fusion-workbench) .fusion-settings-body button:not(.fusion-icon-button):active:not(:disabled) { transform: scale(.96) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame :is(.fusion-tool-actions, .float-music-page-tabs) > button[aria-pressed=true]:not(.fusion-icon-button) { background: var(--fs-surface-3) !important; box-shadow: inset 0 0 0 1px rgba(var(--fs-glow), .35) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame :is(button.float-primary-action, button.fusion-tool-primary, form > .fusion-tool-actions > button[type=submit], .fusion-form-focus form button[type=submit]) {
+  color: var(--fs-accent-ink) !important; font-weight: 600 !important; background: var(--fs-grad) !important; box-shadow: none !important;
+}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame :is(button.float-primary-action, button.fusion-tool-primary):hover:not(:disabled) { filter: brightness(1.06); box-shadow: none !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame :is(.fusion-tool-actions, .fusion-tool-row) > .fusion-icon-button { width: 32px; height: 32px; border-radius: 10px !important; transition: background .2s, transform .3s var(--fs-spring) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame :is(.fusion-tool-actions, .fusion-tool-row) > .fusion-icon-button:hover:not(:disabled) { background: var(--fs-surface-2) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame :is(.fusion-tool-actions, .fusion-tool-row) > .fusion-icon-button:active:not(:disabled) { transform: scale(.88) !important; }
+/* 统一输入：同高、柔边、聚焦光晕。 */
+:is(.island-shell, .fusion-workbench) :is(.fusion-tool-frame, .fi-music, .fusion-settings) :where(input:not([type=checkbox]):not([type=radio]):not([type=color]):not([type=range]):not([type=file]), select, textarea) {
+  border: 0 !important; border-radius: 10px !important; background-color: var(--fs-surface) !important; color: var(--ui-text) !important;
+  box-shadow: inset 0 0 0 1px var(--fs-line) !important; transition: box-shadow .22s var(--fs-ease), background .22s !important;
+}
+:is(.island-shell, .fusion-workbench) :is(.fusion-tool-frame, .fi-music, .fusion-settings) :where(input:not([type=checkbox]):not([type=radio]):not([type=color]):not([type=range]):not([type=file]), select, textarea):hover { background-color: var(--fs-surface-2) !important; }
+:is(.island-shell, .fusion-workbench) :is(.fusion-tool-frame, .fi-music, .fusion-settings) :where(input:not([type=checkbox]):not([type=radio]):not([type=color]):not([type=range]):not([type=file]), select, textarea):focus-visible {
+  outline: 0 !important; background-color: var(--fs-surface-2) !important; box-shadow: inset 0 0 0 1px rgba(var(--fs-glow), .55) !important;
+}
+:is(.island-shell, .fusion-workbench) :is(.fusion-tool-frame, .fi-music, .fusion-settings) :is(input:not([type=checkbox]):not([type=radio]):not([type=color]):not([type=range]):not([type=file]), select) { padding: 0 10px; }
+:is(.island-shell, .fusion-workbench) :is(.fusion-tool-frame, .fi-music) select { padding-right: 26px !important; appearance: none; background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%) !important; background-position: calc(100% - 14px) 50%, calc(100% - 10px) 50% !important; background-size: 4px 4px !important; background-repeat: no-repeat !important; }
+:is(.island-shell, .fusion-workbench) :is(.fusion-tool-frame, .fi-music, .fusion-settings) select option { color: #1c1d20; background: #f4f5f8; }
+:is(.island-shell, .fusion-workbench) :is(.fusion-tool-frame, .fi-music, .fusion-settings, .fusion-chat) :is(input[type=checkbox], input[type=radio], input[type=range], progress) { accent-color: var(--fs-accent); }
+:is(.island-shell, .fusion-workbench) .fusion-tool-result { border: 0 !important; border-radius: 14px !important; background: var(--fs-surface) !important; box-shadow: inset 0 0 0 1px var(--fs-line); animation: fi-fade .16s var(--fs-ease) both; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-result > pre { font: 12.5px/1.7 "Cascadia Code", Consolas, monospace; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-result > .fusion-tool-actions > button { min-height: 28px !important; border-radius: 8px !important; background: transparent !important; box-shadow: none !important; color: var(--ui-muted) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-result > .fusion-tool-actions > button:hover { color: var(--ui-text) !important; background: var(--fs-surface-2) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-inline-error, :is(.island-shell, .fusion-workbench) .fusion-inline-error { border-radius: 10px !important; animation: fs-in .3s var(--fs-ease) both; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-empty, :is(.island-shell, .fusion-workbench) .fi-music-empty, :is(.island-shell, .fusion-workbench) .float-empty-hint { border: 0 !important; border-radius: 16px; background: transparent; animation: fs-in .45s var(--fs-ease) both; }
+:is(.island-shell, .fusion-workbench) .fi-music-empty > svg, :is(.island-shell, .fusion-workbench) .fusion-tool-empty > svg { color: var(--ui-muted); opacity: .7; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-input-actions > button { border: 0 !important; border-radius: 99px !important; }
+/* The full-width placeholder stays still; only its fixed-size ring rotates. */
+:is(.island-shell, .fusion-workbench) .fusion-tool-loading { display: grid; place-items: center; flex: none; width: 100%; height: 80px; min-height: 80px; margin: 0 auto; border: 0; animation: none; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-loading::after { content: ""; display: block; box-sizing: border-box; width: 22px; height: 22px; border: 2px solid var(--fs-line-2); border-top-color: var(--fs-accent); border-radius: 50%; animation: fs-spin .8s linear infinite; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-busy { box-sizing: border-box; flex: none; align-self: center; width: 14px; min-width: 14px; max-width: 14px; height: 14px; min-height: 14px; max-height: 14px; border-radius: 50%; background: none !important; border: 2px solid var(--fs-line-2); border-top-color: var(--fs-accent); opacity: 1 !important; animation: fs-spin .8s linear infinite; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-scroll::-webkit-scrollbar, :is(.island-shell, .fusion-workbench) .fi-music-list::-webkit-scrollbar, :is(.island-shell, .fusion-workbench) .fusion-chat-feed::-webkit-scrollbar { width: 6px; }
+:is(.island-shell, .fusion-workbench) :is(.fusion-tool-scroll, .fi-music-list, .fusion-chat-feed, .fusion-tool-directory)::-webkit-scrollbar-thumb { border-radius: 99px; background: var(--fs-surface-3); }
+/* ===================== 工具详情布局：单列对齐、模式与主操作同行 ===================== */
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=false] {
+  --col: 640px; --gutter: 16px;
+  display: grid !important; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto minmax(0, 1fr);
+  grid-template-areas: "bar bar" "modes cmds" "scroll scroll";
+}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-presentation=form][data-standalone=false] { --col: 520px; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-presentation=media][data-standalone=false] { --gutter: 16px; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-presentation=editor][data-standalone=false], :is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-presentation=canvas][data-standalone=false] { --col: 960px; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=false] > .fusion-tool-toolbar { grid-area: bar; margin: 0 !important; padding: 0 16px; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=false] > .float-tool-function-row { grid-area: modes; min-width: 0; padding: 8px 0 0 var(--gutter) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=false] > .fusion-tool-commands { grid-area: cmds; align-self: end; justify-content: flex-end; padding: 8px var(--gutter) 0 8px !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=false] > .float-tool-function-row:is(:empty, :not(:has(button))) + .fusion-tool-commands { grid-column: 1 / -1; justify-content: flex-start; padding-left: var(--gutter) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=false] > .fusion-tool-scroll { grid-area: scroll; padding: 8px var(--gutter) 12px !important; gap: 8px !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-presentation=media][data-standalone=false] > .fusion-tool-scroll { padding: 12px var(--gutter) 16px !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=false] > .float-tool-function-row:empty { display: block !important; padding: 0 !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-commands .fusion-tool-actions > button:first-child:not(.fusion-icon-button):not([aria-pressed]) { color: var(--fs-accent-ink) !important; font-weight: 600 !important; background: var(--fs-grad) !important; box-shadow: none !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-commands .fusion-tool-actions > button:first-child:not(.fusion-icon-button):not([aria-pressed]):hover:not(:disabled) { filter: brightness(1.08); }
+:is(.island-shell, .fusion-workbench) .fusion-tool-commands .fusion-tool-actions > button:not(.fusion-icon-button) { min-height: 30px !important; padding: 4px 14px !important; }
+
+/* 表单类：标签安静、输入加高、文件提示沉到底部。 */
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-form-focus { width: 100% !important; max-width: none; margin: 0 !important; gap: 10px !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-form-focus label { gap: 8px !important; font-size: 12px; font-weight: 500; color: var(--ui-muted); }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-form-focus :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]), select) { height: 32px !important; min-height: 32px !important; padding: 0 10px; font-size: 13px !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame details > summary { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ui-muted); cursor: pointer; list-style: none; transition: color .2s; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame details > summary::-webkit-details-marker { display: none; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame details > summary::before { content: ""; width: 5px; height: 5px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); transition: transform .25s var(--fs-ease); }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame details[open] > summary::before { transform: rotate(45deg); }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame details > summary:hover { color: var(--ui-text); }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-presentation=form] .fusion-tool-input-actions { order: 9; margin: auto 0 0 !important; padding-top: 16px; border-top: 1px dashed var(--fs-line-2); }
+:is(.island-shell, .fusion-workbench) .fusion-tool-input-actions { gap: 10px !important; font-size: 11.5px !important; color: var(--ui-muted) !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-input-actions > button { min-height: 28px !important; padding: 3px 12px !important; background: transparent !important; box-shadow: inset 0 0 0 1px var(--fs-line-2) !important; }
+
+/* ===================== 音乐：留声机正在播放 ===================== */
+:is(.island-shell, .fusion-workbench) .fi-music { gap: 10px; }
+:is(.island-shell, .fusion-workbench) .fi-music-now { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr) !important; gap: 24px !important; align-items: center; padding: 6px 4px !important; animation: fs-in .45s var(--fs-ease) both; }
+:is(.island-shell, .fusion-workbench) .fi-music-album { gap: 10px !important; overflow: visible !important; padding-right: 34px; }
+:is(.island-shell, .fusion-workbench) .fi-music-album > .fi-deck { --deck: clamp(150px, min(38vh, 30vw), 230px); margin-bottom: 8px; }
+:is(.island-shell, .fusion-workbench) .fi-music-album .fi-record-label > .fi-music-artwork { width: 100% !important; height: 100%; max-height: none !important; aspect-ratio: 1; border-radius: 50% !important; box-shadow: none !important; background: radial-gradient(circle, #3a3f52, #1d2030) !important; }
+:is(.island-shell, .fusion-workbench) .fi-music-album .fi-record-label > .fi-music-artwork > svg { width: 38%; height: 38%; color: #c8d1f0; }
+:is(.island-shell, .fusion-workbench) .fi-music-album .fi-record-label > .fi-music-artwork > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .5s ease; }
+:is(.island-shell, .fusion-workbench) .fi-music-album .fi-record-label { inset: 31%; }
+:is(.island-shell, .fusion-workbench) .fi-music-album > strong { font-size: 17px !important; font-weight: 650 !important; letter-spacing: -.005em; }
+:is(.island-shell, .fusion-workbench) .fi-music-album > span { font-size: 12.5px !important; }
+:is(.island-shell, .fusion-workbench) .fi-music-album > small { padding: 2px 9px; border-radius: 99px; font-size: 10.5px !important; letter-spacing: .03em; color: var(--ui-muted) !important; background: var(--fs-surface); }
+:is(.island-shell, .fusion-workbench) .fi-music-pane-tabs { display: inline-flex !important; align-self: flex-start; padding: 3px; gap: 2px !important; border-radius: 11px; background: var(--fs-surface); box-shadow: inset 0 0 0 1px var(--fs-line); }
+:is(.island-shell, .fusion-workbench) .fi-music-pane-tabs button { min-height: 26px; padding: 3px 12px !important; border-radius: 8px !important; transition: background .25s var(--fs-ease), color .2s; }
+:is(.island-shell, .fusion-workbench) .fi-music-pane-tabs button[aria-pressed=true] { background: var(--fs-surface-3) !important; color: var(--ui-text) !important; }
+:is(.island-shell, .fusion-workbench) .fi-music-lyrics { -webkit-mask: linear-gradient(transparent, #000 22%, #000 78%, transparent); mask: linear-gradient(transparent, #000 22%, #000 78%, transparent); padding: 24px 0 !important; scrollbar-width: none; scroll-behavior: smooth; }
+:is(.island-shell, .fusion-workbench) .fi-music-lyrics::-webkit-scrollbar { display: none; }
+:is(.island-shell, .fusion-workbench) .fi-music-lyrics p { font-size: 16px !important; color: var(--ui-muted) !important; opacity: .45; transform-origin: left center; transition: opacity .5s ease, transform .6s var(--fs-ease), color .5s ease !important; }
+:is(.island-shell, .fusion-workbench) .fi-music-lyrics p[data-current=true] { opacity: 1; color: var(--ui-text) !important; font-weight: 600;  }
+
+/* 迷你播放条：浮起卡片 + 渐变播放键。 */
+:is(.island-shell, .fusion-workbench) .fi-music-player { margin-top: auto; padding: 8px 10px 6px !important; border: 0 !important; border-radius: 16px; background: var(--fs-surface) !important; box-shadow: inset 0 0 0 1px var(--fs-line), var(--fs-shadow); animation: fs-in .4s var(--fs-ease) both; }
+:is(.island-shell, .fusion-workbench) .fi-music-seek { font-variant-numeric: tabular-nums; }
+:is(.island-shell, .fusion-workbench) .fi-music-controls { gap: 4px !important; }
+:is(.island-shell, .fusion-workbench) .fi-music-controls .fusion-icon-button { width: 32px !important; height: 32px !important; border-radius: 50% !important; color: var(--ui-muted) !important; transition: background .2s, color .2s, transform .3s var(--fs-spring) !important; }
+:is(.island-shell, .fusion-workbench) .fi-music-controls .fusion-icon-button:hover:not(:disabled) { color: var(--ui-text) !important; background: var(--fs-surface-2) !important; }
+:is(.island-shell, .fusion-workbench) .fi-music-controls .fusion-icon-button[aria-pressed=true] { color: var(--fs-accent) !important; background: rgba(var(--fs-glow), .12) !important; }
+:is(.island-shell, .fusion-workbench) .fi-music-controls .fusion-icon-button:active:not(:disabled) { transform: scale(.86) !important; }
+:is(.island-shell, .fusion-workbench) .fi-music-controls > .fusion-icon-button:nth-child(3) { width: 40px !important; height: 40px !important; color: var(--fs-accent-ink) !important; background: var(--fs-grad) !important; box-shadow: none; }
+:is(.island-shell, .fusion-workbench) .fi-music-controls > .fusion-icon-button:nth-child(3):hover:not(:disabled) { transform: scale(1.06) !important; color: var(--fs-accent-ink) !important; }
+:is(.island-shell, .fusion-workbench) .fi-music-track { border-radius: 12px !important; transition: background .2s var(--fs-ease); }
+:is(.island-shell, .fusion-workbench) .fi-music-track[data-current=true] { background: rgba(var(--fs-glow), .1) !important; box-shadow: inset 2px 0 0 var(--fs-accent); }
+:is(.island-shell, .fusion-workbench) .fi-music-track-play { border-radius: 9px !important; box-shadow: 0 3px 10px #00000040; }
+:is(.island-shell, .fusion-workbench) .fi-music[data-narrow=true] .fi-music-now { display: flex !important; }
+:is(.island-shell, .fusion-workbench) .fi-music[data-narrow=true] .fi-music-album { display: grid !important; grid-template-columns: 84px minmax(0, 1fr); padding-right: 0; }
+:is(.island-shell, .fusion-workbench) .fi-music[data-narrow=true] .fi-music-album > .fi-deck { --deck: 84px; grid-row: 1 / 4; margin: 0; }
+:is(.island-shell, .fusion-workbench) .fi-music[data-narrow=true] .fi-music-album .fi-tonearm { display: none; }
+:is(.island-shell, .fusion-workbench) .fi-music[data-narrow=true] .fi-music-lyrics { padding: 20px 0 !important; }
+/* 播放条：左侧迷你黑胶随播放旋转，点击进入正在播放。 */
+:is(.island-shell, .fusion-workbench) .fi-music-player { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "now controls" "seek seek"; align-items: center; column-gap: 12px; row-gap: 4px; }
+:is(.island-shell, .fusion-workbench) .fi-music-player > .fi-music-seek { grid-area: seek; }
+:is(.island-shell, .fusion-workbench) .fi-music-player > .fi-music-controls { grid-area: controls; }
+:is(.island-shell, .fusion-workbench) .fi-music-player:not(:has(> .fi-music-nowbar)) > .fi-music-controls { grid-column: 1 / -1; }
+:is(.island-shell, .fusion-workbench) .fi-music-player > .fi-music-loading { grid-column: 1 / -1; position: static; transform: none; }
+:is(.island-shell, .fusion-workbench) .fi-music-nowbar { grid-area: now; display: flex; align-items: center; gap: 10px; min-width: 0; padding: 2px 8px 2px 2px; border: 0; border-radius: 99px; background: transparent; text-align: left; cursor: pointer; transition: background .2s; }
+:is(.island-shell, .fusion-workbench) .fi-music-nowbar:hover { background: var(--fs-surface-2); }
+:is(.island-shell, .fusion-workbench) .fi-music-minidisc { position: relative; flex: none; width: 38px; height: 38px; border-radius: 50%; overflow: hidden; background: repeating-radial-gradient(circle, #ffffff0a 0 1px, transparent 1px 2.5px), radial-gradient(circle, #1b1c21 0 30%, #0b0b0d 31% 100%); box-shadow: 0 2px 8px #0000004d, 0 0 0 1px #ffffff12; animation: fs-spin 4.2s linear infinite; animation-play-state: paused; }
+:is(.island-shell, .fusion-workbench) .fi-music-player[data-playing=true] .fi-music-minidisc { animation-play-state: running; }
+:is(.island-shell, .fusion-workbench) .fi-music-minidisc > .fi-music-artwork { position: absolute; inset: 30%; width: auto !important; height: auto !important; display: grid; place-items: center; border-radius: 50%; overflow: hidden; background: #2a2d38; }
+:is(.island-shell, .fusion-workbench) .fi-music-minidisc > .fi-music-artwork > svg { width: 60%; height: 60%; color: #c8cdd5; }
+:is(.island-shell, .fusion-workbench) .fi-music-minidisc > .fi-music-artwork > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+:is(.island-shell, .fusion-workbench) .fi-music-minidisc::after { content: ""; position: absolute; left: 50%; top: 50%; width: 4px; height: 4px; margin: -2px; border-radius: 50%; background: #d9dde6; }
+:is(.island-shell, .fusion-workbench) .fi-music-nowbar-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+:is(.island-shell, .fusion-workbench) .fi-music-nowbar-text :is(strong, small) { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+:is(.island-shell, .fusion-workbench) .fi-music-nowbar-text strong { font-size: 13px; font-weight: 600; }
+:is(.island-shell, .fusion-workbench) .fi-music-nowbar-text small { font-size: 11.5px; color: var(--ui-muted); }
+:is(.island-shell, .fusion-workbench) .fi-music[data-narrow=true] .fi-music-player { grid-template-areas: "now now" "controls controls" "seek seek"; }
+:is(.island-shell, .fusion-workbench) .fi-music[data-narrow=true] .fi-music-player > .fi-music-controls { grid-column: 1 / -1; }
+
+/* ===================== 阅读：实体书封面 ===================== */
+:is(.island-shell, .fusion-workbench) .float-book-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)) !important; gap: 14px !important; perspective: 900px; }
+:is(.island-shell, .fusion-workbench) .float-book-card { border: 0 !important; border-radius: 14px !important; background: var(--fs-surface) !important; box-shadow: inset 0 0 0 1px var(--fs-line); transition: background .25s var(--fs-ease); animation: fs-in .4s var(--fs-ease) both; }
+:is(.island-shell, .fusion-workbench) .float-book-card:hover { background: var(--fs-surface-2) !important; }
+:is(.island-shell, .fusion-workbench) .float-book-open { gap: 14px !important; padding: 14px !important; min-height: 116px; }
+:is(.island-shell, .fusion-workbench) .float-book-cover { position: relative; width: 62px !important; height: 88px !important; border-radius: 3px 7px 7px 3px !important; box-shadow: 0 6px 14px #00000059, 0 1px 2px #00000040; transform-origin: left center; transition: transform .45s var(--fs-ease), box-shadow .45s var(--fs-ease); }
+:is(.island-shell, .fusion-workbench) .float-book-cover::before { content: ""; position: absolute; inset: 0 auto 0 0; z-index: 1; width: 7px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #00000059, #ffffff1f 55%, transparent); pointer-events: none; }
+:is(.island-shell, .fusion-workbench) .float-book-cover-empty { color: #e8ebf2 !important; background: linear-gradient(160deg, #4a5068, #2b2f3d) !important; }
+:is(.island-shell, .fusion-workbench) .float-book-cover-empty small { font-size: 9.5px !important; letter-spacing: .08em; opacity: .7; }
+:is(.island-shell, .fusion-workbench) .float-book-card:hover .float-book-cover { transform: rotateY(-16deg) translateX(2px); box-shadow: 10px 10px 18px #00000066, 0 1px 2px #00000040; }
+:is(.island-shell, .fusion-workbench) .float-book-open strong { font-size: 13.5px !important; font-weight: 600; line-height: 1.45; }
+:is(.island-shell, .fusion-workbench) .float-book-open progress { height: 3px !important; border-radius: 99px; overflow: hidden; appearance: none; background: var(--fs-surface-3); }
+:is(.island-shell, .fusion-workbench) .float-book-open progress::-webkit-progress-bar { background: var(--fs-surface-3); }
+:is(.island-shell, .fusion-workbench) .float-book-open progress::-webkit-progress-value { background: var(--ui-text); border-radius: 99px; }
+:is(.island-shell, .fusion-workbench) .float-book-actions { padding: 0 10px 10px !important; }
+:is(.island-shell, .fusion-workbench) .float-book-actions button { min-height: 26px; padding: 3px 9px !important; border-radius: 8px !important; color: var(--ui-muted) !important; transition: background .2s, color .2s; }
+:is(.island-shell, .fusion-workbench) .float-book-actions button:hover { color: var(--ui-text) !important; background: var(--fs-surface-2) !important; }
+
+/* ===================== 下载：任务卡与细进度条 ===================== */
+:is(.island-shell, .fusion-workbench) .fusion-download-task { padding: 12px 14px; border: 0 !important; border-radius: 14px; background: var(--fs-surface) !important; box-shadow: inset 0 0 0 1px var(--fs-line); animation: fs-in .35s var(--fs-ease) both; }
+:is(.island-shell, .fusion-workbench) .fusion-download-task + .fusion-download-task { margin-top: 8px; }
+:is(.island-shell, .fusion-workbench) :is(.fusion-tool-frame, .fi-music) progress { height: 4px; border: 0; border-radius: 99px; overflow: hidden; appearance: none; background: var(--fs-surface-3); }
+:is(.island-shell, .fusion-workbench) :is(.fusion-tool-frame, .fi-music) progress::-webkit-progress-bar { background: var(--fs-surface-3); border-radius: 99px; }
+:is(.island-shell, .fusion-workbench) :is(.fusion-tool-frame, .fi-music) progress::-webkit-progress-value { background: var(--ui-text); border-radius: 99px; transition: width .3s var(--fs-ease); }
+:is(.island-shell, .fusion-workbench) :is(.fusion-tool-frame, .fi-music) progress:indeterminate { background: linear-gradient(90deg, var(--fs-surface-3) 0 30%, var(--ui-muted) 50%, var(--fs-surface-3) 70% 100%) 0 0 / 300% 100%; animation: fs-scan 1.4s linear infinite; }
+@keyframes fs-scan { from { background-position: 100% 0; } to { background-position: 0 0; } }
+:is(.island-shell, .fusion-workbench) .float-download-start > textarea, :is(.island-shell, .fusion-workbench) .float-torrent-drop textarea { border-radius: 14px !important; background-color: transparent !important; box-shadow: inset 0 0 0 1.5px var(--fs-line-2) !important; background-image: none !important; }
+:is(.island-shell, .fusion-workbench) .float-download-start > textarea:focus-visible, :is(.island-shell, .fusion-workbench) .float-torrent-drop textarea:focus-visible { box-shadow: inset 0 0 0 1.5px rgba(var(--fs-glow), .6) !important; }
+:is(.island-shell, .fusion-workbench) .float-download-preview { border: 0 !important; border-radius: 12px !important; background: var(--fs-surface); box-shadow: inset 0 0 0 1px var(--fs-line); animation: fs-in .3s var(--fs-ease) both; }
+
+/* 新建下载：没有预览时输入框占满空间，提示与占位重复的文字隐藏，底栏单行。 */
+:is(.island-shell, .fusion-workbench) .float-download-start > .fusion-tool-hint { display: none !important; }
+:is(.island-shell, .fusion-workbench) .float-download-start > textarea { flex: 0 0 auto; height: clamp(64px, 18cqh, 100px); max-height: 100px; }
+:is(.island-shell, .fusion-workbench) .float-download-start > textarea { padding: 14px 16px !important; font-size: 13px; line-height: 1.6 !important; }
+:is(.island-shell, .fusion-workbench) .float-download-start-footer { padding-top: 12px !important; border-top: 1px solid var(--fs-line) !important; }
+:is(.island-shell, .fusion-workbench) .float-download-start-footer > div { flex-direction: row !important; align-items: center; gap: 10px !important; }
+:is(.island-shell, .fusion-workbench) .float-download-start-footer > div > button { align-self: center !important; }
+:is(.island-shell, .fusion-workbench) .float-download-start-footer small { font-size: 12px; color: var(--ui-muted); }
+
+/* ===================== 收起态与侧栏 ===================== */
+:is(.island-shell, .fusion-workbench) .fusion-compact:not(.float-side-dock) { gap: 10px; }
+:is(.island-shell, .fusion-workbench) .fusion-compact-open { width: 26px !important; height: 26px !important; border-radius: 8px !important; color: var(--ui-muted) !important; background: transparent !important; transition: background .2s, color .2s; }
+:is(.island-shell, .fusion-workbench) .fusion-compact-open:hover { color: var(--ui-text) !important; background: var(--fs-surface-2) !important; }
+:is(.island-shell, .fusion-workbench) .float-sidebar-button { border-radius: 10px !important; transition: background .2s, color .2s !important; }
+:is(.island-shell, .fusion-workbench) .float-side-state[data-active=true] { background: var(--fs-accent) !important; box-shadow: none !important; }
+
+/* ===================== 对话输入：单行起步、随内容增高，操作内联 ===================== */
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-composer { display: flex; align-items: flex-end; gap: 4px; padding: 6px 6px 6px 14px !important; border-radius: 22px !important; }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-composer textarea { flex: 1; min-width: 0; min-height: 22px !important; max-height: 120px !important; height: auto; padding: 7px 0 !important; field-sizing: content; line-height: 1.55 !important; }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-actions { display: contents; }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-actions > .fusion-chat-spacer { display: none; }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-actions > :is(.fusion-icon-button, .fusion-send) { flex: none; }
+:is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-chat-actions > .fusion-voice-state { align-self: center; font-size: 11px; color: var(--ui-muted); white-space: nowrap; }
+:is(.island-shell, .fusion-workbench) .float-stage-start { margin-top: 14px !important; }
+
+/* 不再出现解释性引导文字：标题、按钮本身已说明用途。 */
+:is(.island-shell, .fusion-workbench) .fusion-tool-directory-top p,
+:is(.island-shell, .fusion-workbench) .fusion-tool-empty:not(:has(button)),
+:is(.island-shell, .fusion-workbench) .fi-music-empty > p,
+:is(.island-shell, .fusion-workbench) .float-reference-import > small:empty { display: none !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-category-heading { padding-left: 2px !important; }
+
+/* 视口调整错误：贴底居中的小提示，而非裸文字。 */
+:is(.island-shell, .fusion-workbench) .float-resize-error { left: 50% !important; bottom: 16px !important; transform: translateX(-50%); padding: 6px 12px; border-radius: 8px; font-size: 12px !important; color: var(--ui-text) !important; background: var(--fs-surface-3) !important; backdrop-filter: blur(12px); box-shadow: 0 6px 20px #0000004d; animation: fs-in .25s var(--fs-ease) both; }
+
+/* ===================== 独立页（音乐/阅读/下载）：标签贴左，操作贴右，同一行 ===================== */
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=true] { display: grid !important; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "bar cmds" "scroll scroll"; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=true] > .fusion-tool-toolbar { grid-area: bar; min-width: 0; height: 40px !important; min-height: 40px !important; margin: 0 !important; padding: 0 0 0 16px !important; border-bottom: 0 !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=true] > .fusion-tool-commands { grid-area: cmds; align-self: center; justify-content: flex-end; padding: 0 16px 0 8px !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=true] > .fusion-tool-scroll { grid-area: scroll; padding: 12px 16px 16px !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=true] > .fusion-tool-commands .fusion-tool-actions > button:not(.fusion-icon-button) { min-height: 30px !important; padding: 4px 10px !important; color: var(--ui-muted) !important; background: transparent !important; box-shadow: none !important; font-weight: 500 !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=true] > .fusion-tool-commands .fusion-tool-actions > button:not(.fusion-icon-button):hover:not(:disabled) { color: var(--ui-text) !important; background: var(--fs-surface-2) !important; filter: none; }
+
+/* 标签永不换行，空间不足时横向滚动。 */
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-product-tabs { flex-wrap: nowrap !important; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; max-width: 100%; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-product-tabs::-webkit-scrollbar { display: none; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .fusion-product-tabs > button { flex: none !important; white-space: nowrap !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=true] > .fusion-tool-toolbar > .fusion-tool-modes { min-width: 0; overflow: hidden; }
+
+/* 窄窗口：操作收成方形图标按钮，文字转为悬停提示。 */
+@container (max-width: 620px) {
+  :is(.island-shell, .fusion-workbench) .fusion-tool-frame > .fusion-tool-commands .fusion-tool-actions > :is(button, label):not(.fusion-icon-button):has(svg) { width: 32px !important; min-width: 32px !important; height: 32px !important; padding: 0 !important; gap: 0 !important; font-size: 0 !important; justify-content: center; }
+  :is(.island-shell, .fusion-workbench) .fusion-tool-frame > .fusion-tool-commands .fusion-tool-actions > :is(button, label):not(.fusion-icon-button):has(svg) > svg { width: 16px; height: 16px; }
+  :is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=true] > .fusion-tool-commands { padding-right: 12px !important; }
+  :is(.island-shell, .fusion-workbench) .fusion-tool-frame[data-standalone=true] > .fusion-tool-toolbar { padding-left: 12px !important; }
+}
+:is(.island-shell, .fusion-workbench) .fusion-island-tabs button { display: inline-flex; align-items: center; gap: 6px; }
+:is(.island-shell, .fusion-workbench) .fusion-island-tabs button > svg { display: none; flex: none; }
+@container fi-workspace (max-width: 560px) {
+  :is(.island-shell, .fusion-workbench) .fusion-chat--compact .fusion-island-tabs button { width: auto; padding: 4px 8px !important; justify-content: center; }
+  :is(.island-shell, .fusion-workbench) .fusion-island-tabs button > svg { display: none; }
+  :is(.island-shell, .fusion-workbench) .fusion-island-tabs button > span { position: static; width: auto; height: auto; white-space: nowrap; }
+}
+
+/* 单行搜索胶囊：前置图标、输入、尾部提交。 */
+:is(.island-shell, .fusion-workbench) .float-search-field { display: flex !important; align-items: center; gap: 8px !important; height: 38px; padding: 0 4px 0 12px !important; border-radius: 11px; background: var(--fs-surface); box-shadow: inset 0 0 0 1px var(--fs-line); color: var(--ui-muted); transition: box-shadow .2s, background .2s; }
+:is(.island-shell, .fusion-workbench) .float-search-field:focus-within { background: var(--fs-surface-2); box-shadow: inset 0 0 0 1px rgba(var(--fs-glow), .5); }
+:is(.island-shell, .fusion-workbench) .float-search-field > svg { flex: none; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .float-search-field > input { flex: 1; min-width: 0; height: 100% !important; min-height: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; background-color: transparent !important; box-shadow: none !important; font-size: 13px; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .float-search-field > button.fusion-icon-button { flex: none; width: 30px !important; height: 30px !important; min-height: 0 !important; border-radius: 8px !important; color: var(--fs-accent-ink) !important; background: var(--fs-grad) !important; transition: opacity .2s, filter .2s !important; }
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame .float-search-field > button.fusion-icon-button:disabled { color: var(--ui-muted) !important; background: transparent !important; opacity: .5; }
+
+/* ===================== 音乐顶部：标签贴左、搜索合一 ===================== */
+:is(.island-shell, .fusion-workbench) .fi-music > .float-tool-function-row, :is(.island-shell, .fusion-workbench) .fi-music > .fusion-tool-tabs { justify-content: flex-start !important; margin: 0 !important; padding: 0 !important; }
+:is(.island-shell, .fusion-workbench) .fi-music-query { display: flex; align-items: center; gap: 0 !important; height: 36px; padding: 0 4px 0 0; border-radius: 10px; background: var(--fs-surface); box-shadow: inset 0 0 0 1px var(--fs-line); transition: box-shadow .2s, background .2s; }
+:is(.island-shell, .fusion-workbench) .fi-music-query:focus-within { background: var(--fs-surface-2); box-shadow: inset 0 0 0 1px rgba(var(--fs-glow), .5); }
+:is(.island-shell, .fusion-workbench) .fi-music-query > select { flex: none; height: 100% !important; min-height: 0 !important; padding: 0 26px 0 12px !important; border: 0 !important; border-radius: 10px 0 0 10px !important; background-color: transparent !important; box-shadow: none !important; font-size: 12.5px; color: var(--ui-muted); }
+:is(.island-shell, .fusion-workbench) .fi-music-query > select + form { border-left: 1px solid var(--fs-line); }
+:is(.island-shell, .fusion-workbench) .fi-music-query > form, :is(.island-shell, .fusion-workbench) .fi-music-query > input { display: flex; align-items: center; flex: 1; min-width: 0; height: 100%; }
+:is(.island-shell, .fusion-workbench) .fi-music-query input { flex: 1; min-width: 0; height: 100% !important; min-height: 0 !important; padding: 0 12px !important; border: 0 !important; background: transparent !important; box-shadow: none !important; font-size: 13px; }
+:is(.island-shell, .fusion-workbench) .fi-music-query form > button { display: grid; place-items: center; flex: none; width: 28px !important; height: 28px !important; min-height: 0 !important; padding: 0 !important; border: 0; border-radius: 7px; color: var(--ui-muted); background: transparent !important; transition: background .2s, color .2s; }
+:is(.island-shell, .fusion-workbench) .fi-music-query form > button:not(:disabled):hover { color: var(--ui-text); background: var(--fs-surface-3) !important; }
+:is(.island-shell, .fusion-workbench) .fi-music-query form > button:disabled { opacity: .35; }
+:is(.island-shell, .fusion-workbench) .fi-music .fi-music-query :is(input, input:hover, input:focus-visible) { background-color: transparent !important; box-shadow: none !important; border-radius: 0 !important; }
+:is(.island-shell, .fusion-workbench) .fi-music:has(> .fi-music-source-setup) > .fi-music-list:not(:has(.fi-music-track)) { flex: 0 0 auto; }
+:is(.island-shell, .fusion-workbench) .fi-music-source-setup { align-self: center; margin: auto 0; }
+
+/* 弹出菜单：标签在左、控件在右，行高统一。 */
+:is(.island-shell, .fusion-workbench) .fi-music-popup { padding: 6px !important; border-radius: 12px !important; box-shadow: 0 12px 32px #00000066, 0 0 0 1px var(--fs-line) !important; border: 0 !important; }
+:is(.island-shell, .fusion-workbench) .fi-music-popup > label { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 32px; padding: 0 8px; border-radius: 7px; font-size: 12.5px; color: var(--ui-muted); }
+:is(.island-shell, .fusion-workbench) .fi-music-popup > label:hover { background: var(--fs-surface-2); color: var(--ui-text); }
+:is(.island-shell, .fusion-workbench) .fi-music-popup > label > select { height: 26px !important; min-height: 0 !important; padding: 0 22px 0 8px !important; border: 0 !important; border-radius: 6px !important; font-size: 12px; background-color: var(--fs-surface-2) !important; box-shadow: none !important; }
+:is(.island-shell, .fusion-workbench) .fi-music-popup > label:has(input[type=checkbox]) { justify-content: flex-start; flex-direction: row-reverse; }
+:is(.island-shell, .fusion-workbench) .fi-music-popup > label:has(input[type=checkbox]) > input { margin-left: auto; }
+:is(.island-shell, .fusion-workbench) .fi-music-popup > :is(label, button) + button { margin-top: 4px; border-top: 1px solid var(--fs-line); border-radius: 0 0 7px 7px; }
+
+/* ===================== 滑块：细轨、实心进度、按需出现的拇指 ===================== */
+:is(.island-shell, .fusion-workbench) input[type=range] { --p: 50%; -webkit-appearance: none; appearance: none; height: 16px; margin: 0; padding: 0; border: 0; background: transparent; cursor: pointer; }
+:is(.island-shell, .fusion-workbench) input[type=range]::-webkit-slider-runnable-track { height: 3px; border-radius: 99px; background: linear-gradient(90deg, var(--ui-text) 0 var(--p), var(--fs-surface-3) var(--p) 100%); transition: height .2s var(--fs-ease); }
+:is(.island-shell, .fusion-workbench) input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; margin-top: -4.5px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px #00000066; transform: scale(0); transition: transform .2s var(--fs-ease); }
+:is(.island-shell, .fusion-workbench) input[type=range]:is(:hover, :focus-visible, :active)::-webkit-slider-runnable-track { height: 5px; }
+:is(.island-shell, .fusion-workbench) input[type=range]:is(:hover, :focus-visible, :active)::-webkit-slider-thumb { margin-top: -3.5px; transform: scale(1); }
+:is(.island-shell, .fusion-workbench) input[type=range]:active::-webkit-slider-thumb { transform: scale(1.15); }
+:is(.island-shell, .fusion-workbench) input[type=range]:focus-visible { outline: none; }
+:is(.island-shell, .fusion-workbench) input[type=range]:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px rgba(var(--fs-glow), .45); }
+:is(.island-shell, .fusion-workbench) input[type=range]:disabled { opacity: .4; cursor: default; }
+:root[data-theme=light] :is(.island-shell, .fusion-workbench) input[type=range]::-webkit-slider-thumb { background: var(--ui-text); }
+
+/* ===================== 减少动效 ===================== */
+:root[data-fi-reduced-motion=true] :is(.island-shell, .fusion-workbench) :is(.float-stage, .float-stage *, .fi-music-minidisc, .fusion-tool-entry, .fusion-message, .float-book-cover) { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+@media (prefers-reduced-motion: reduce) {
+  :is(.island-shell, .fusion-workbench) :is(.float-stage, .float-stage *, .fi-music-minidisc, .fusion-tool-entry, .fusion-message, .float-book-cover, .fi-music-lyrics p) { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+}
+
+/* 所有工具页沿用同一条内容栅格，媒体画面继续占满可用区域。 */
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame:not([data-presentation=media]):not([data-tool-id=browser]):not([data-tool-id=video]) > .fusion-tool-scroll {
+  box-sizing: border-box;
+  padding: 12px 16px 16px !important;
+  gap: 12px !important;
+}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame:not([data-presentation=media]):not([data-tool-id=browser]):not([data-tool-id=video]) .fusion-tool-scroll > :not(.fusion-tool-busy) {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1040px;
+  min-width: 0;
+  margin-inline: auto;
+}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame:not([data-presentation=media]):not([data-tool-id=browser]):not([data-tool-id=video]) .fusion-utility {
+  width: 100%;
+  min-width: 0;
+  gap: 14px !important;
+}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame:not([data-presentation=media]):not([data-tool-id=browser]):not([data-tool-id=video]) .fusion-tool-columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 12px;
+}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame:not([data-presentation=media]):not([data-tool-id=browser]):not([data-tool-id=video]) .fusion-tool-columns > label,
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame:not([data-presentation=media]):not([data-tool-id=browser]):not([data-tool-id=video]) .fusion-utility > label {
+  min-width: 0;
+}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame:not([data-presentation=media]):not([data-tool-id=browser]):not([data-tool-id=video]) :is(.fusion-tool-row, .fusion-tool-actions, .float-library-inline, .float-book-actions, .float-download-start-footer) {
+  align-items: center;
+  gap: 8px 10px;
+}
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame:not([data-presentation=media]):not([data-tool-id=browser]):not([data-tool-id=video]) .fusion-tool-empty,
+:is(.island-shell, .fusion-workbench) .fusion-tool-frame:not([data-presentation=media]):not([data-tool-id=browser]):not([data-tool-id=video]) .float-empty-hint {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 180px;
+  margin-inline: auto;
+}
+@container (max-width: 620px) {
+  :is(.island-shell, .fusion-workbench) .fusion-tool-frame:not([data-presentation=media]):not([data-tool-id=browser]):not([data-tool-id=video]) .fusion-tool-columns:not(.fusion-diff) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

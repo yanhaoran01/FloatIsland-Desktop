@@ -1,0 +1,177 @@
+{
+  "project": "Coucou",
+  "revision": "30edad4c5c0b6c3d16a2092a35cddeb9018a0016",
+  "use": "personal FusionIsland build",
+  "assets": [
+    {
+      "source": "NotchBuddy/Resources/sounds/annoyed.wav",
+      "destination": "src/renderer/public/coucou/sounds/annoyed.wav",
+      "sha256": "774e5a4992c66427ff7acecab02ad40f646603f338cf21e61c3b6bb530c24246"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/approval.wav",
+      "destination": "src/renderer/public/coucou/sounds/approval.wav",
+      "sha256": "7ce5bbf283c5f1d855cae0e9274c83122049b966a72947ffbf2f228f47dbd058"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/approve.wav",
+      "destination": "src/renderer/public/coucou/sounds/approve.wav",
+      "sha256": "8f1b7aadd5b8f0fd980aa14275a6c76bbc534ade2da613672ab3fabbe3d71972"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/attach.wav",
+      "destination": "src/renderer/public/coucou/sounds/attach.wav",
+      "sha256": "4046650da7d580999e45db1de3e7b1a7cba4770a09d3298a0658f62739d64b02"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/blip.wav",
+      "destination": "src/renderer/public/coucou/sounds/blip.wav",
+      "sha256": "feeead0bfa0e6e343f91697ec3b6c2eba232d0b6c09590f90b118e2017235443"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/close.wav",
+      "destination": "src/renderer/public/coucou/sounds/close.wav",
+      "sha256": "4158a0333730b951d1e72ea2a798a5e938f09c9d6b5e12019723a5a43754497a"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/dizzy.wav",
+      "destination": "src/renderer/public/coucou/sounds/dizzy.wav",
+      "sha256": "d408de78c9b25cf2cf1e78cb5e4299d15de6019f2a00137194bc9e302e02d767"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/error.wav",
+      "destination": "src/renderer/public/coucou/sounds/error.wav",
+      "sha256": "d16871a2611ae9a33319763db828d08649c48324ac874dac34dcf5c371225b1e"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/finish.wav",
+      "destination": "src/renderer/public/coucou/sounds/finish.wav",
+      "sha256": "37222d2a586c913e40a47e8cce026406825ecb1264f08cce53326f0b6e168b57"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/greet.wav",
+      "destination": "src/renderer/public/coucou/sounds/greet.wav",
+      "sha256": "087d8861631da9b0ceb283dd3212c7c2bc556937ca1f3e7608e22968ef97ccc9"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/greeting.wav",
+      "destination": "src/renderer/public/coucou/sounds/greeting.wav",
+      "sha256": "4a717314073a443f5c77a5f1e8c4199b05bce8e231d6d2c03c573169df5e7c74"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/gulp.wav",
+      "destination": "src/renderer/public/coucou/sounds/gulp.wav",
+      "sha256": "e97ac001725f898dafcb256bbd233d8bc8394bb21cd3f7ff1c2bea3e547d445c"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/hover.wav",
+      "destination": "src/renderer/public/coucou/sounds/hover.wav",
+      "sha256": "108d79577948daa5434f90bc773db22d420ecd0f42f82d9a6f86ebeaf2b8b8e7"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/love.wav",
+      "destination": "src/renderer/public/coucou/sounds/love.wav",
+      "sha256": "0c495f9d7c6dbce4a1448601e48a919f172091b83b5a3fc741a7a2e44b1c465f"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/open.wav",
+      "destination": "src/renderer/public/coucou/sounds/open.wav",
+      "sha256": "3194552eafad8f458c7f2984b52f1c55e5059e25f6d08d6a4e07d895aab20fe4"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/peek.wav",
+      "destination": "src/renderer/public/coucou/sounds/peek.wav",
+      "sha256": "757e986c74670ce8cbf6f95170c74dac98834b4354aa4cd2f2af834ec55eb553"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/pop.wav",
+      "destination": "src/renderer/public/coucou/sounds/pop.wav",
+      "sha256": "89f8d512ccc80b071fd84b3d01d8b321a2f6f7de1b64bab797adcb7ef1367452"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/proud.wav",
+      "destination": "src/renderer/public/coucou/sounds/proud.wav",
+      "sha256": "bcfbf07d16f96980e078d4a45fb1cb8851a85e8457c04c0cee9bd869c7d4c10f"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/question.wav",
+      "destination": "src/renderer/public/coucou/sounds/question.wav",
+      "sha256": "5ae240f4a4e198107ae6e87d8b578a647ba362415e2163c22bd0a38c3b5afdcd"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/rate.wav",
+      "destination": "src/renderer/public/coucou/sounds/rate.wav",
+      "sha256": "fabc07f5cefc0ba45abb3405af57b3fbd72ea37bc0f03c6e87790b64217f05e6"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/search.wav",
+      "destination": "src/renderer/public/coucou/sounds/search.wav",
+      "sha256": "cbd16c26d8f83924e128afc273c97928339eb86a4475953e6753d77f72467d57"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/send.wav",
+      "destination": "src/renderer/public/coucou/sounds/send.wav",
+      "sha256": "12d7b2476f008857c56d6c8e84e10c77d1610ca04d40e57a298a2ae36100012d"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/slap.wav",
+      "destination": "src/renderer/public/coucou/sounds/slap.wav",
+      "sha256": "e7155971ddf5f53f67a53f843c671ba25c00172460f4a130b8f6731e90b02ee0"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/sleep.wav",
+      "destination": "src/renderer/public/coucou/sounds/sleep.wav",
+      "sha256": "9f1fbd58014c1889f15822abdbed455507c99cc72ee16635d9d9bd3c6bd1da6d"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/think.wav",
+      "destination": "src/renderer/public/coucou/sounds/think.wav",
+      "sha256": "86343b887924d5ed05414e3df903d1b5d69255f471780e4dd1b2fab082993b4b"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/tick.wav",
+      "destination": "src/renderer/public/coucou/sounds/tick.wav",
+      "sha256": "0376278de4d328f05341a9b64ea9039ed89a583edd164aaade695f6eb26521ba"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/wink.wav",
+      "destination": "src/renderer/public/coucou/sounds/wink.wav",
+      "sha256": "e772038ae6d8f49a572bf1ae7a567f834a225ac50c35146a4abd9dc6d43b8a21"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/work.wav",
+      "destination": "src/renderer/public/coucou/sounds/work.wav",
+      "sha256": "12aca82cde94f19f050646a806c30e048579fd503c803d25af3dc43c845c2904"
+    },
+    {
+      "source": "NotchBuddy/Resources/sounds/yawn.wav",
+      "destination": "src/renderer/public/coucou/sounds/yawn.wav",
+      "sha256": "01a4e4f2910d3a1a4bef1a9ae1c6911be81c5dc92f3e79df6db03e55fb42472a"
+    },
+    {
+      "source": "windows/src-tauri/icons/128x128.png",
+      "destination": "src/renderer/public/coucou/icons/128x128.png",
+      "sha256": "3c5ade44cb0c4b36313bd978fd6d28056889d1a56d73335dc31122310616a4d8"
+    },
+    {
+      "source": "windows/src-tauri/icons/128x128@2x.png",
+      "destination": "src/renderer/public/coucou/icons/128x128@2x.png",
+      "sha256": "874a4a9f9da5b52673a4ef68b64af31dc646c8019ee1a101d45137c0471ca73b"
+    },
+    {
+      "source": "windows/src-tauri/icons/32x32.png",
+      "destination": "src/renderer/public/coucou/icons/32x32.png",
+      "sha256": "ce4b98d8b5b60880dce15ade7580be0754f9ce5468ede77e37caecd787405ddc"
+    },
+    {
+      "source": "windows/src-tauri/icons/icon.ico",
+      "destination": "src/renderer/public/coucou/icons/icon.ico",
+      "sha256": "b2b0267981c6966c80e57e1c4495eb2eb54919126e88e0662dc1b8f88cab8481"
+    },
+    {
+      "source": "windows/src-tauri/icons/icon.png",
+      "destination": "src/renderer/public/coucou/icons/icon.png",
+      "sha256": "18b0bc3a9eef3ff4a6125f5056386df207253610c4cada116619bad732ae6d1b"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+* text=auto
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.wav binary
+*.exe binary
+*.dll binary
+*.woff2 binary
+*.wasm binary
+
+vendor/** linguist-vendored
+app/vendor/** linguist-vendored
+app/resources/licenses/** linguist-vendored
+app/src/renderer/vendor/** linguist-vendored
+app/src/renderer/public/reader/** linguist-vendored
