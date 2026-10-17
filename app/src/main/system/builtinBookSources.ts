@@ -5,11 +5,10 @@ import type {BookSource,SourceBook,BookChapter} from '../../preload/types/manage
 export const BUILTIN_BOOK_SOURCES:readonly BookSource[]=[
  {id:'builtin-wikisource-zh',name:'中文维基文库',kind:'wikisource',url:'https://zh.wikisource.org/w/api.php',enabled:true,order:0,updated:0,builtin:true,capabilities:['search','chapters','content'],health:{status:'unverified'}},
  {id:'builtin-gutenberg',name:'Project Gutenberg',kind:'opds',url:'https://www.gutenberg.org/ebooks/search.opds/',enabled:true,order:1,updated:0,builtin:true,capabilities:['search','browse','download'],health:{status:'unverified'}},
- {id:'builtin-zlibrary',name:'Z-Library',kind:'website',url:'',enabled:false,order:2,updated:0,builtin:true,capabilities:['browse','download'],health:{status:'unverified'},verification:{status:'unverified',checkedAt:Date.parse('2026-10-11T02:15:00Z'),sources:['https://x.com/Z_Lib_official/with_replies','https://t.me/s/zlibrary_official'],error:'official-announcement-unavailable'}},
 ];
 /** Seed each preset once. Disabled/deleted presets and imported identities survive upgrades. */
 export function seedBookSources(sources:BookSource[],seeded:string[]=[]):{sources:BookSource[];seeded:string[]}{
- const result=structuredClone(sources),seen=new Set(seeded);
+ const result=structuredClone(sources).filter(source=>source.id!=='builtin-zlibrary'||Boolean(source.url)),seen=new Set(seeded);
  for(const preset of BUILTIN_BOOK_SOURCES){if(!seen.has(preset.id)&&!result.some(s=>s.id===preset.id||Boolean(preset.url)&&s.url===preset.url))result.push({...structuredClone(preset),order:result.length});seen.add(preset.id);}
  return {sources:result,seeded:[...seen]};
 }

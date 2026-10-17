@@ -31,6 +31,7 @@ const operation=(id:string)=>({id,signal:controllers.get(id)!.signal,deadlineAt:
 async function initialize(code:string):Promise<Raw>{
   if(typeof code!=='string'||code.length>2_000_000)throw Error('music-plugin-invalid');
   providers.clear();events.clear();exportValue={};kind='';
+  lx.currentScriptInfo={name:code.match(/@name\s+([^\r\n]+)/)?.[1]?.trim()??'',version:code.match(/@version\s+([^\r\n]+)/)?.[1]?.trim()??'',rawScript:code};
   const module:{exports:unknown}={exports:{}};
   // Only executed inside the dedicated browser Worker; host CSP forbids any network.
   new Function('module','exports','require',code)(module,module.exports,requireModule);
@@ -44,11 +45,19 @@ async function initialize(code:string):Promise<Raw>{
     const caps=new Set<string>();for(const p of providers.values()){const tracks=object(p.tracks);if(typeof tracks.search==='function')caps.add('search');if(typeof tracks.resolve==='function')caps.add('resolve');if(typeof tracks.lyrics==='function')caps.add('lyrics');if(typeof object(p.playlists).get==='function')caps.add('playlist');}
     return {protocol:kind,name:manifest.name??manifest.id,version:manifest.version,author:manifest.author,platforms:[...providers.keys()],capabilities:[...caps]};
   }
-  if(exportValue.protocol==='lx')kind='lx';else{exportValue=object(exported);kind=typeof exportValue.musicUrl==='function'?'ceru-v1':'musicfree';}
+  // LX scripts may fetch configuration before sending their inited event.
+  if(!Object.keys(object(exported)).length&&exportValue.protocol!=='lx'){
+    const deadline=Date.now()+10000;
+    while(exportValue.protocol!=='lx'&&Date.now()<deadline)await new Promise(resolve=>setTimeout(resolve,20));
+  }
+  if(exportValue.protocol==='lx'){if(exportValue.status===false)throw Error(String(exportValue.message||'music-plugin-invalid'));kind='lx';}else{exportValue=object(exported);kind=typeof exportValue.musicUrl==='function'?'ceru-v1':'musicfree';}
   const caps:string[]=[];
   if(kind==='musicfree'){for(const [cap,key] of [['search','search'],['resolve','getMediaSource'],['lyrics','getLyric'],['details','getMusicInfo'],['playlist','importMusicSheet']])if(typeof exportValue[key]==='function')caps.push(cap);if(typeof exportValue.getRecommendSheetsByTag==='function')caps.push('playlist-discover');if(typeof exportValue.getMusicSheetInfo==='function')caps.push('playlist-details');if(!caps.includes('resolve'))throw Error('music-plugin-invalid');return {protocol:kind,name:exportValue.platform,version:exportValue.version,author:exportValue.author,platforms:[exportValue.platform],capabilities:caps};}
   if(!events.has('request')&&kind==='lx')throw Error('music-plugin-invalid');const sources=object(exportValue.sources);if(!Object.keys(sources).length)throw Error('music-plugin-invalid');
-  caps.push('resolve');if(typeof exportValue.getLyric==='function')caps.push('lyrics');return {protocol:kind,name:object(exportValue.pluginInfo).name??String(code.match(/@name\s+([^\r\n]+)/)?.[1]??'Source').trim(),version:object(exportValue.pluginInfo).version??code.match(/@version\s+([^\r\n]+)/)?.[1]??'',author:object(exportValue.pluginInfo).author??code.match(/@author\s+([^\r\n]+)/)?.[1]??'',platforms:Object.keys(sources),capabilities:caps};
+  const platforms=Object.keys(sources).filter(key=>kind!=='lx'||(Array.isArray(object(sources[key]).actions)&&(object(sources[key]).actions as unknown[]).includes('musicUrl')));
+  if(!platforms.length)throw Error('music-plugin-invalid');
+  const qualities=Object.fromEntries(platforms.map(key=>{const declared=object(sources[key]).qualitys;return [key,Array.isArray(declared)?declared.filter(value=>['128k','320k','flac','flac24bit'].includes(String(value))):[]];}));
+  caps.push('resolve');if(typeof exportValue.getLyric==='function')caps.push('lyrics');return {protocol:kind,name:object(exportValue.pluginInfo).name??String(code.match(/@name\s+([^\r\n]+)/)?.[1]??'Source').trim(),version:object(exportValue.pluginInfo).version??code.match(/@version\s+([^\r\n]+)/)?.[1]??'',author:object(exportValue.pluginInfo).author??code.match(/@author\s+([^\r\n]+)/)?.[1]??'',platforms,qualities,capabilities:caps};
 }
 async function invoke(action:string,args:unknown[],id:string):Promise<unknown>{
   if(action==='init')return initialize(String(args[0]));

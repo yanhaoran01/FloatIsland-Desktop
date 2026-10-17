@@ -112,7 +112,11 @@ export function createDshService(options: { getMainWindow: () => BrowserWindow |
       return adapter === native ? native.loadModels() : [];
     },
     ensureStarted: async (): Promise<void> => { await (await choose()).ensureStarted(); },
-    loadSessions: async () => (await choose()).loadSessions(),
+    loadSessions: async () => {
+      const adapter = await choose(); const sessions = await adapter.loadSessions();
+      for (const session of sessions) if (!owners.has(session.id)) owners.set(session.id, adapter === native ? 'native' : 'acp');
+      publish(); return sessions;
+    },
     createSession: async (cwd: string) => {
       const adapter = await choose(); const result = await adapter.createSession(cwd);
       owners.set(result.id, adapter === native ? 'native' : 'acp'); publish(); return result;

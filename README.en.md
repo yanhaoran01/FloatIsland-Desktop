@@ -8,7 +8,7 @@ FloatIsland is a dockable desktop workspace for Windows. It brings chat, utility
 
 ## Install
 
-Windows 10 or 11, x64. Download `FloatIsland-1.3.3-Setup.exe` for installation, or `FloatIsland-1.3.3-portable.exe` to run without installing. Node.js and Python are not required to use either package.
+Windows 10 or 11, x64. Download `FloatIsland-1.3.4-Setup.exe` for installation, or `FloatIsland-1.3.4-portable.exe` to run without installing. Node.js and Python are not required to use either package.
 
 The portable build uses the normal application data directory. Settings are not stored beside the executable. Close the previous version before upgrading; uninstalling keeps user data by default. The executables are unsigned, so Windows may show an unknown-publisher prompt.
 

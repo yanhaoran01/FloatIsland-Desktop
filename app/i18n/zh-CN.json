@@ -709,7 +709,8 @@
         "import-no-folders": "尚未导入文件夹，请先选择文件夹",
         "invalid-json-path": "无效的 JSON 路径；请使用界面提示的路径格式。",
         "invalid-base64": "Base64 格式无效，请检查内容和填充字符。",
-        "invalid-timezone": "时区无效，请选择列表中的时区。"
+        "invalid-timezone": "时区无效，请选择列表中的时区。",
+        "music-download-not-allowed": "该作品允许播放，但作者未开放免费下载。"
       },
       "groupNavigation": "工具分组 · 滚轮切页",
       "previousPage": "上一页",
@@ -1410,7 +1411,9 @@
         "local": "本地音乐",
         "kuwo": "酷我",
         "kugou": "酷狗",
-        "qianqian": "千千"
+        "qianqian": "千千",
+        "archive": "Internet Archive · 免费音乐",
+        "audius": "Audius"
       },
       "sources": {
         "title": "音源管理",

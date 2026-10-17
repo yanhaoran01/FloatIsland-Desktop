@@ -12,9 +12,9 @@ FloatIsland 是 Windows 桌面的贴边工作台，将对话、实用工具、�
 
 | 发布文件 | 用途 |
 | --- | --- |
-| `FloatIsland-1.3.3-Setup.exe` | 安装版，可选择安装目录，适合日常使用 |
-| `FloatIsland-1.3.3-portable.exe` | 免安装版，直接运行 |
-| `FloatIsland-1.3.3-source.zip` | 对应版本的完整源码与构建资料 |
+| `FloatIsland-1.3.4-Setup.exe` | 安装版，可选择安装目录，适合日常使用 |
+| `FloatIsland-1.3.4-portable.exe` | 免安装版，直接运行 |
+| `FloatIsland-1.3.4-source.zip` | 对应版本的完整源码与构建资料 |
 | `SHA256SUMS.txt` | 发布文件的 SHA-256 校验值 |
 
 从 [GitHub Releases](https://github.com/yanhaoran01/FloatIsland-Desktop/releases) 下载。升级前退出正在运行的旧版本，再安装或替换程序。便携版同样使用应用配置目录，用户数据不会自动保存在 EXE 旁。卸载默认保留用户数据。
@@ -43,7 +43,9 @@ FloatIsland 是 Windows 桌面的贴边工作台，将对话、实用工具、�
 
 截图 OCR 默认在本机使用随附的中文、英文模型，无需账号。文本翻译会将文本提交给所选服务；云端图片排版翻译单独配置。
 
-模型、在线音源、书源及网站下载需要网络和相应服务。搜索、播放、歌单与下载是分别提供的能力，以所选来源的状态为准。第三方音源脚本需自行导入。请求无损或 Hi-Res 不会提升原文件的实际音质。
+模型、在线音源、书源及网站下载需要网络和相应服务。搜索、播放、歌单与下载是分别提供的能力，以所选来源的状态为准。在音乐的“音源”页面导入落雪等兼容脚本或订阅链接；落雪脚本会关联对应平台的搜索目录。自动音质从脚本支持的最高档开始尝试，播放器显示实测格式、采样率与位深。请求无损或 Hi-Res 不会提升原文件的实际音质，也不能据此确认母带来源。
+
+Internet Archive 与 Audius 默认启用，可直接搜索免费音乐。Internet Archive 搜索具有 Creative Commons 声明的 netlabel 作品，并优先使用可用的无损文件；Audius 只列出无需解锁的可播放作品，下载取决于作者开放的权限。各来源独立查询，部分接口失败时仍显示其他来源的结果。
 
 阅读支持 EPUB、MOBI、AZW3、FB2、CBZ、TXT、PDF、Word 和 Excel，定位方式随格式而异。加密、DRM、损坏文件及部分复杂排版可能无法正常读取。网站登录、地区限制、验证和链接有效期也会影响下载。完整操作与排错见[使用说明](docs/USER_GUIDE.md)。
 

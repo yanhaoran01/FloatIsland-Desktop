@@ -9,6 +9,7 @@ import {request as requestHttp} from 'http';
 import {request as requestHttps} from 'https';
 import {Readable} from 'stream';
 import {createBrotliDecompress,createUnzip} from 'zlib';
+import {HttpsProxyAgent} from 'https-proxy-agent';
 type Raw=Record<string,unknown>;
 const raw=(value:unknown):Raw=>value&&typeof value==='object'&&!Array.isArray(value)?value as Raw:{};
 /** Rejects internal, mapped, multicast, link-local and documentation networks before following redirects. */
@@ -26,21 +27,34 @@ export async function publicMusicUrl(value:string):Promise<string>{
 /** Checks the DNS result used by the actual socket, preventing validation/connection rebinding. */
 export async function publicMusicRequest(value:string,options:RequestInit={}):Promise<Response>{
   const url=new URL(await publicMusicUrl(value));
+  let agent:HttpsProxyAgent<string>|undefined;
+  const proxyRules=await session.defaultSession.resolveProxy(url.href);
+  const proxy=proxyRules.split(';')[0].trim().match(/^(PROXY|HTTPS)\s+([\w.:[\]-]+)$/i);
+  if(proxy){
+    const hostname=url.hostname.replace(/^\[|\]$/g,''),addresses=isIP(hostname)?[{address:hostname}]:await lookup(hostname,{all:true});
+    if(!addresses.length||addresses.some(item=>!publicMusicAddress(item.address)))throw Error('music-plugin-private-network');
+    const address=addresses.find(item=>isIP(item.address)===4)?.address??addresses[0].address;
+    agent=new HttpsProxyAgent((proxy[1].toUpperCase()==='HTTPS'?'https://':'http://')+proxy[2]);
+    const connect=agent.connect.bind(agent);
+    // CONNECT uses the validated IP; TLS still authenticates the original hostname.
+    agent.connect=(request,settings)=>connect(request,Object.assign({},settings,{host:address,servername:hostname}));
+  }
   return new Promise((resolve,reject)=>{
     const headers=musicPluginHeaders(Object.fromEntries(new Headers(options.headers)));
     headers['Accept-Encoding']='identity';
-    const request=(url.protocol==='https:'?requestHttps:requestHttp)(url,{method:options.method??'GET',headers,signal:options.signal??undefined,lookup:(hostname,settings,callback)=>{
+    const request=(url.protocol==='https:'?requestHttps:requestHttp)(url,{agent,method:options.method??'GET',headers,signal:options.signal??undefined,lookup:(hostname,settings,callback)=>{
       void lookup(hostname,{all:true}).then(addresses=>{
         if(!addresses.length||addresses.some(item=>!publicMusicAddress(item.address))){callback(Error('music-plugin-private-network'),'',4);return;}
         if(settings.all)callback(null,addresses);else callback(null,addresses[0].address,addresses[0].family);
       }).catch(error=>callback(error instanceof Error?error:Error('music-invalid-source'),'',4));
     }},response=>{
+      response.once('close',()=>agent?.destroy());
       const status=response.statusCode??502,responseHeaders=new Headers();for(const [name,value] of Object.entries(response.headers)){if(value!==undefined)responseHeaders.set(name,Array.isArray(value)?value.join(', '):value);}
       if(options.method==='HEAD'||status===204||status===304){response.resume();resolve(new Response(null,{status,headers:responseHeaders}));return;}
       const encoding=responseHeaders.get('content-encoding'),body=encoding==='br'?response.pipe(createBrotliDecompress()):encoding==='gzip'||encoding==='deflate'?response.pipe(createUnzip()):response;
       if(body!==response){responseHeaders.delete('content-encoding');responseHeaders.delete('content-length');}
       resolve(new Response(Readable.toWeb(body) as ReadableStream<Uint8Array>,{status,headers:responseHeaders}));
-    });request.once('error',reject);if(options.body!==undefined&&options.body!==null){if(typeof options.body!=='string'){request.destroy(Error('music-plugin-request-denied'));return;}request.write(options.body);}request.end();
+    });request.once('error',error=>{agent?.destroy();reject(error);});if(options.body!==undefined&&options.body!==null){if(typeof options.body!=='string'){request.destroy(Error('music-plugin-request-denied'));return;}request.write(options.body);}request.end();
   });
 }
 /** Drops credentials, connection controls and unsafe response headers. */
@@ -76,8 +90,9 @@ export class MusicPluginHost {
   }
   /** Initializes capability declarations before any search or playback request. */
   call(action:string,args:unknown[],signal:AbortSignal):Promise<unknown>{
-    const execute=async()=>{signal.throwIfAborted();if(!this.initialized){const metadata=await this.request('init',[this.code],signal);this.initialized=true;if(action==='init')return metadata;}return this.request(action,args,signal);};const result=this.tail.then(execute,execute);this.tail=result.catch(()=>{});return result;
+    const execute=async()=>{signal.throwIfAborted();if(!this.initialized){this.metadata=await this.request('init',[this.code],signal);this.initialized=true;}if(action==='init')return this.metadata;return this.request(action,args,signal);};const result=this.tail.then(execute,execute);this.tail=result.catch(()=>{});return result;
   }
+  private metadata:unknown;
   private async http(id:string,value:string,optionsInput:unknown):Promise<unknown>{
     const pending=this.pending;if(!pending||pending.id!==id||typeof value!=='string'||value.length>8192||++pending.requests>40)throw Error('music-plugin-request-denied');const options=raw(optionsInput),controller=new AbortController();pending.controllers.add(controller);const timer=setTimeout(()=>controller.abort(),10000);
     try{

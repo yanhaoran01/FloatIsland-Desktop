@@ -218,6 +218,12 @@ export function FusionChat({ compact = false, visible = true }: { compact?: bool
     try { await action(); } catch (reason) { setError(reason instanceof Error ? reason.message : String(reason)); }
     finally { setBusy(false); }
   };
+  useEffect(() => {
+    if (!visible || !sessionId || (provider !== 'codex' && provider !== 'dsh')) return;
+    let active = true;
+    void adapter.resume(sessionId).catch(reason => { if (active) setError(String(reason)); });
+    return () => { active = false; };
+  }, [adapter, provider, sessionId, visible]);
   const createSession = (): Promise<void> => run(async () => {
     let cwd = draft.value.project;
     if (provider === 'codex' || provider === 'dsh') {

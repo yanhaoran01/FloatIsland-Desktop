@@ -7,7 +7,7 @@ export const emptyMusicLibrary=():MusicLibrary=>({version:2,revision:0,tracks:[]
 export function normalizeMusicTrack(input:unknown):MusicTrack|null {
   if(!input||typeof input!=='object')return null;
   const v=input as Record<string,unknown>;
-  if(typeof v.id!=='string'||!v.id||v.id.length>240||!(/^(netease|qq|migu|kuwo|kugou|qianqian|local)$/.test(String(v.provider))||/^plugin:[a-zA-Z0-9_.:-]{1,180}$/.test(String(v.provider)))||typeof v.title!=='string')return null;
+  if(typeof v.id!=='string'||!v.id||v.id.length>240||!(/^(netease|qq|migu|kuwo|kugou|qianqian|archive|audius|local)$/.test(String(v.provider))||/^plugin:[a-zA-Z0-9_.:-]{1,180}$/.test(String(v.provider)))||typeof v.title!=='string')return null;
   const text=(x:unknown)=>typeof x==='string'?x.slice(0,1000):'';
   const safeUrl=(x:unknown)=>{try{const u=new URL(text(x));return /^https?:$/.test(u.protocol)&&!u.username&&!u.password?u.href:'';}catch{return '';}};
   const extra=v.extra&&typeof v.extra==='object'?v.extra as Record<string,unknown>:{};

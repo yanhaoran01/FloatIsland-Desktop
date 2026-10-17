@@ -709,7 +709,8 @@
         "import-no-folders": "No imported folders yet; select a folder first",
         "invalid-json-path": "Invalid JSON path. Use one of the displayed path formats.",
         "invalid-base64": "Invalid Base64. Check the content and padding.",
-        "invalid-timezone": "Invalid time zone. Choose a zone from the list."
+        "invalid-timezone": "Invalid time zone. Choose a zone from the list.",
+        "music-download-not-allowed": "This track can be streamed, but its creator has not enabled free downloads."
       },
       "groupNavigation": "Tool groups · scroll to switch",
       "previousPage": "Previous page",
@@ -1410,7 +1411,9 @@
         "local": "Local music",
         "kuwo": "Kuwo",
         "kugou": "Kugou",
-        "qianqian": "Qianqian"
+        "qianqian": "Qianqian",
+        "archive": "Internet Archive · Free music",
+        "audius": "Audius"
       },
       "sources": {
         "title": "Music sources",

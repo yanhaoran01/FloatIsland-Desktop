@@ -12,7 +12,7 @@ import {normalizeMusicTrack} from './fusionMusicModel';
 type Online=BuiltinMusicProvider;
 type Raw=Record<string,unknown>;
 type Adapter={show_playlist:(url:string)=>{success:(fn:(value:Raw)=>void)=>void};get_playlist:(url:string)=>{success:(fn:(value:Raw)=>void)=>void};get_playlist_filters:()=>Raw|{success:(fn:(value:Raw)=>void)=>void};search:(url:string)=>{success:(fn:(value:Raw)=>void)=>void};bootstrap_track:(track:Raw,success:(value:Raw)=>void,failure:()=>void)=>void;lyric:(url:string)=>{success:(fn:(value:Raw)=>void)=>void};ne_ensure_cookie?:(callback:()=>void)=>void;htmlDecode?:(value:string)=>string;};
-export interface MusicStream {url:string;format:string;bitrate:number|null;headers?:Record<string,string>;sourceId?:string;track?:MusicTrack;}
+export interface MusicStream {url:string;format:string;bitrate:number|null;headers?:Record<string,string>;sourceId?:string;track?:MusicTrack;publicNetwork?:boolean;downloadAllowed?:boolean;}
 /** Only official API/CDN hosts returned by fixed provider modules may be requested. */
 export function musicRemoteUrl(raw:string):string {
   const url=new URL(raw.startsWith('//')?'https:'+raw:raw);

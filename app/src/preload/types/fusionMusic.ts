@@ -1,12 +1,13 @@
 /* FloatIsland - https://github.com/yanhaoran01/FloatIsland; Copyright (C) 2026 contributors. GPL-3.0. */
 /** @file fusionMusic.ts @description Restricted music catalog, library and persistent player contract. @author 鸡哥 */
 export type BuiltinMusicProvider = 'netease'|'qq'|'migu'|'kuwo'|'kugou'|'qianqian';
-export type MusicProvider = BuiltinMusicProvider|'local'|`plugin:${string}`;
+export type MusicProvider = BuiltinMusicProvider|'archive'|'audius'|'local'|`plugin:${string}`;
 export type MusicJson = null|boolean|number|string|MusicJson[]|{[key:string]:MusicJson};
 export type MusicCapability = 'search'|'resolve'|'lyrics'|'details'|'playlist'|'playlist-discover'|'playlist-details';
 export interface MusicSource {
   id:string;name:string;protocol:'builtin'|'musicfree'|'lx'|'ceru-v1'|'ceru-v2';version:string;author:string;
   enabled:boolean;priority:number;platforms:string[];capabilities:MusicCapability[];
+  qualities?:Record<string,string[]>;
   health:{search:'unknown'|'passed'|'failed';playback:'unknown'|'passed'|'failed';lyrics:'unknown'|'passed'|'failed';playlist?:'unknown'|'passed'|'failed';download?:'unknown'|'passed'|'failed';error:string};
   origin:string;sha256:string;license:string;updatedAt:number;
 }

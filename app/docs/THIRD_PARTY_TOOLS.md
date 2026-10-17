@@ -1822,6 +1822,7 @@ See [`resources/music/README.md`](../resources/music/README.md) and the SHA256 m
 
 ## Local OCR and anonymous translation
 
+- https-proxy-agent 7.0.6 (MIT): system HTTP/HTTPS proxy transport for public book and music-source requests. Original license: `resources/licenses/https-proxy-agent-LICENSE`.
 - Tesseract.js / Tesseract.js-core 7.0.0 (Apache-2.0): existing OCR runtime reused with an unpacked Node worker. No CDN model fetch, account or API key is used.
 - Official tessdata_fast English and Simplified Chinese models, commit `87416418657359cb625c412a48b6e1d6d41c29bd` (Apache-2.0). Original LICENSE and SHA256/source manifest are in `resources/ocr`. Models are copied into the installation resources.
 - MyMemory public translation API: anonymous HTTPS service adapter, no service source code redistributed. Service availability and free quotas apply; translation requires connectivity. Screenshot translation recognizes locally and sends text rather than an image. The original screenshot remains unchanged. https://mymemory.translated.net/doc/spec.php

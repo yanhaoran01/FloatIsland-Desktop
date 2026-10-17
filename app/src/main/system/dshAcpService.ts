@@ -16,7 +16,8 @@
  */
 
 import { broadcastFusion } from './fusionWindows';
-import { spawn, type ChildProcessWithoutNullStreams } from 'child_process';
+import { type ChildProcessWithoutNullStreams } from 'child_process';
+import { resolveAgentExecutable, spawnAgent, stopAgent } from './agentExecutable';
 import { createInterface, type Interface as ReadlineInterface } from 'readline';
 import type { BrowserWindow } from 'electron';
 import type {
@@ -64,6 +65,8 @@ export function createDshAcpService(options: DshAcpServiceOptions) {
   let snapshot: FusionDshSnapshot = structuredClone(EMPTY_SNAPSHOT);
   type SessionState = Pick<FusionDshSnapshot, 'messages' | 'working' | 'activeCwd' | 'error'>;
   const states = new Map<string, SessionState>();
+  const loadedSessions = new Set<string>();
+  const resumes = new Map<string, Promise<FusionDshSession>>();
   let routing = false;
   const saveSession = (): void => {
     if (snapshot.activeSessionId) states.set(snapshot.activeSessionId, {
@@ -246,10 +249,9 @@ export function createDshAcpService(options: DshAcpServiceOptions) {
     if (startPromise) return startPromise;
     startPromise = (async () => {
       patch({ state: 'starting', error: null });
-      const child = spawn(process.platform === 'win32' ? 'cmd.exe' : 'dsh',
-        process.platform === 'win32' ? ['/d', '/s', '/c', '"dsh --profile acp"'] : ['--profile', 'acp'],
-        { windowsHide: true, windowsVerbatimArguments: process.platform === 'win32', stdio: 'pipe' });
+      const child = spawnAgent(resolveAgentExecutable('dsh', process.env.FUSION_DSH_EXECUTABLE), ['--profile', 'acp']);
       processHandle = child;
+      loadedSessions.clear();
       reader = createInterface({ input: child.stdout, crlfDelay: Infinity });
       reader.on('line', receive);
       child.stderr.on('data', (chunk: Buffer) => {
@@ -260,17 +262,22 @@ export function createDshAcpService(options: DshAcpServiceOptions) {
         }
       });
       child.once('error', (error) => {
+        if (processHandle !== child) return;
         initialized = false;
         patch({ state: 'error', working: false, error: error.message });
         rejectWaiters(error);
       });
       child.once('exit', (code, signal) => {
+        if (processHandle !== child) return;
         initialized = false;
+        loadedSessions.clear();
+        for (const state of states.values()) state.working = false;
+        requestIds.clear();
         processHandle = null;
         reader?.close();
         reader = null;
         const error = code === 0 ? null : `dsh ACP stopped (${signal || code || 'unknown'}).`;
-        patch({ state: error ? 'error' : 'stopped', working: false, error });
+        patch({ state: error ? 'error' : 'stopped', working: false, pendingRequests: [], error });
         rejectWaiters(new Error(error || 'dsh ACP stopped.'));
       });
       const result = asRecord(await request('initialize', {
@@ -279,11 +286,16 @@ export function createDshAcpService(options: DshAcpServiceOptions) {
         clientCapabilities: {},
       }, 30000));
       if (!result.agentInfo) throw new Error('The installed dsh ACP profile returned an invalid initialize response.');
+      if (processHandle !== child) throw new Error('dsh connection was closed during startup.');
       write({ jsonrpc: '2.0', method: 'initialized', params: {} });
       initialized = true;
       patch({ state: 'ready', error: null });
-    })().catch((error: unknown) => {
+    })().catch(async (error: unknown) => {
       const message = error instanceof Error ? error.message : String(error);
+      const child = processHandle; processHandle = null;
+      reader?.close(); reader = null; initialized = false;
+      await stopAgent(child);
+      rejectWaiters(new Error(message));
       patch({ state: 'error', error: message, working: false });
       throw error;
     }).finally(() => {
@@ -311,21 +323,28 @@ export function createDshAcpService(options: DshAcpServiceOptions) {
       const result = asRecord(await request('session/new', { cwd, mcpServers: [] }));
       const session = parseSession({ sessionId: result.sessionId, cwd });
       if (!session) throw new Error('dsh did not return a session identifier.');
+      loadedSessions.add(session.id);
       selectSession(session.id);
       patch({ activeSessionId: session.id, activeCwd: cwd, working: false, messages: [], error: null, sessions: [session, ...snapshot.sessions.filter((item) => item.id !== session.id)] });
       return session;
     },
-    resumeSession: async (sessionId: string): Promise<FusionDshSession> => {
+    resumeSession: (sessionId: string): Promise<FusionDshSession> => {
+      const pending = resumes.get(sessionId); if (pending) return pending;
+      const task = (async () => {
       await ensureStarted();
-      const session = snapshot.sessions.find((item) => item.id === sessionId);
+      let session = snapshot.sessions.find((item) => item.id === sessionId);
+      if (!session) session = (await loadSessions()).find(item => item.id === sessionId);
       if (!session) throw new Error('The dsh session is no longer available. Refresh the session list and try again.');
-      if (states.has(sessionId)) { selectSession(sessionId); publish(); return session; }
+      if (loadedSessions.has(sessionId)) { selectSession(sessionId); publish(); return session; }
       selectSession(sessionId);
       // ACP can start streaming updates as part of session/resume. Select the
       // target first so its history is accepted instead of discarded as stale.
       patch({ activeSessionId: session.id, activeCwd: session.cwd, working: false, messages: [], error: null });
       await request('session/resume', { sessionId, cwd: session.cwd, mcpServers: [] });
+      loadedSessions.add(sessionId);
       return session;
+      })().finally(() => { resumes.delete(sessionId); });
+      resumes.set(sessionId, task); return task;
     },
     prompt: async (sessionId: string, text: string): Promise<void> => {
       await ensureStarted();
@@ -362,8 +381,9 @@ export function createDshAcpService(options: DshAcpServiceOptions) {
       reader = null;
       const child = processHandle;
       processHandle = null;
-      if (child && !child.killed) child.kill();
+      await stopAgent(child);
       rejectWaiters(new Error('dsh ACP stopped.'));
+      loadedSessions.clear(); states.clear(); requestIds.clear();
       patch({ ...EMPTY_SNAPSHOT });
     },
   };

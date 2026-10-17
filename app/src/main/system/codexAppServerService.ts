@@ -16,10 +16,9 @@
  */
 
 import { broadcastFusion } from './fusionWindows';
-import { spawn, type ChildProcessWithoutNullStreams } from 'child_process';
+import { type ChildProcessWithoutNullStreams } from 'child_process';
 import { createInterface, type Interface as ReadlineInterface } from 'readline';
-import { existsSync } from 'fs';
-import { join } from 'path';
+import { resolveAgentExecutable, spawnAgent, stopAgent } from './agentExecutable';
 import type { BrowserWindow } from 'electron';
 import type {
   FusionCodexDecision,
@@ -68,6 +67,9 @@ export function createCodexAppServerService(_options: CodexAppServerServiceOptio
   let reader: ReadlineInterface | null = null;
   let sequence = 0;
   let initialized = false;
+  let startPromise: Promise<void> | null = null;
+  const loadedThreads = new Set<string>();
+  const resumes = new Map<string, Promise<FusionCodexThread>>();
   let snapshot: FusionCodexSnapshot = structuredClone(EMPTY_SNAPSHOT);
   type ThreadState = Pick<FusionCodexSnapshot, 'messages' | 'working' | 'activeTurnId' | 'error'>;
   const threadStates = new Map<string, ThreadState>();
@@ -287,39 +289,13 @@ export function createCodexAppServerService(_options: CodexAppServerServiceOptio
 
   const ensureStarted = async (): Promise<void> => {
     if (initialized && processHandle) return;
-    if (snapshot.state === 'starting') {
-      await new Promise<void>((resolve, reject) => {
-        const startedAt = Date.now();
-        const poll = (): void => {
-          if (initialized) resolve();
-          else if (snapshot.state === 'error' || Date.now() - startedAt > 30000) reject(new Error(snapshot.error || 'Codex did not start in time.'));
-          else setTimeout(poll, 50);
-        };
-        poll();
-      });
-      return;
-    }
-
+    if (startPromise) return startPromise;
+    startPromise = (async () => {
     patch({ state: 'starting', error: null });
-    const executable = process.env.FUSION_CODEX_EXECUTABLE || 'codex';
-    const spawnOptions = {
-      cwd: process.cwd(),
-      windowsHide: true,
-      windowsVerbatimArguments: process.platform === 'win32',
-      stdio: 'pipe' as const,
-    };
-    let child: ChildProcessWithoutNullStreams;
-    if (process.platform === 'win32') {
-      if (/[&|<>^%!\r\n"]/.test(executable)) throw new Error('FUSION_CODEX_EXECUTABLE contains unsupported command characters.');
-      const nativeExecutable = executable.toLowerCase().endsWith('.exe') ? executable :
-        executable === 'codex' ? (process.env.PATH || '').split(';').map(directory => join(directory.replace(/^"|"$/g, ''), 'codex.exe')).find(file => existsSync(file)) : undefined;
-      child = nativeExecutable
-        ? spawn(nativeExecutable, ['app-server', '--listen', 'stdio://'], { ...spawnOptions, windowsVerbatimArguments: false })
-        : spawn(process.env.ComSpec || 'cmd.exe', ['/d', '/s', '/c', `""${executable}" app-server --listen stdio://"`], spawnOptions);
-    } else {
-      child = spawn(executable, ['app-server', '--listen', 'stdio://'], spawnOptions);
-    }
+    const executable = resolveAgentExecutable('codex', process.env.FUSION_CODEX_EXECUTABLE);
+    const child = spawnAgent(executable, ['app-server', '--listen', 'stdio://']);
     processHandle = child;
+    loadedThreads.clear();
     let startupStderr = '';
     reader = createInterface({ input: child.stdout, crlfDelay: Infinity });
     reader.on('line', receive);
@@ -329,12 +305,15 @@ export function createCodexAppServerService(_options: CodexAppServerServiceOptio
       if (text) console.info('[FusionIsland:Codex]', text.slice(0, 500));
     });
     child.once('error', (error) => {
+      if (processHandle !== child) return;
       initialized = false;
       patch({ state: 'error', working: false, error: error.message });
       rejectWaiters(error);
     });
     child.once('exit', (code, signal) => {
+      if (processHandle !== child) return;
       initialized = false;
+      loadedThreads.clear();
       processHandle = null;
       reader?.close();
       reader = null;
@@ -356,6 +335,7 @@ export function createCodexAppServerService(_options: CodexAppServerServiceOptio
         clientInfo: { name: 'fusionisland', title: 'FusionIsland', version: '1.1.0' },
         capabilities: { experimentalApi: true },
       }, 30000).then(() => {
+        if (processHandle !== child) throw new Error('Codex connection was closed during startup.');
         write({ method: 'initialized' });
         initialized = true;
         clearTimeout(failTimer);
@@ -366,11 +346,19 @@ export function createCodexAppServerService(_options: CodexAppServerServiceOptio
         clearTimeout(failTimer);
         reject(error instanceof Error ? error : new Error(String(error)));
       });
-    }).catch((error: unknown) => {
+    });
+    })().catch(async (error: unknown) => {
       const message = error instanceof Error ? error.message : String(error);
+      const child = processHandle;
+      processHandle = null;
+      reader?.close(); reader = null;
+      initialized = false; loadedThreads.clear();
+      await stopAgent(child);
+      rejectWaiters(new Error(message));
       patch({ state: 'error', error: message });
       throw error;
-    });
+    }).finally(() => { startPromise = null; });
+    return startPromise;
   };
 
   const loadThreads = async (): Promise<FusionCodexThread[]> => {
@@ -384,10 +372,19 @@ export function createCodexAppServerService(_options: CodexAppServerServiceOptio
   };
 
   const loadMessages = async (threadId: string): Promise<FusionCodexMessage[]> => {
-    const result = asRecord(await request('thread/turns/list', { threadId, limit: 30, sortDirection: 'asc', itemsView: 'full' }));
+    let turns: unknown[];
+    try {
+      const result = asRecord(await request('thread/turns/list', { threadId, limit: 30, sortDirection: 'desc', itemsView: 'full' }));
+      turns = Array.isArray(result.data) ? [...result.data].reverse() : [];
+    } catch (error) {
+      if (!/unknown (?:method|variant)|method not found|unsupported.method/i.test(String(error))) throw error;
+      const result = asRecord(await request('thread/read', { threadId, includeTurns: true }));
+      const thread = asRecord(result.thread);
+      turns = Array.isArray(thread.turns) ? thread.turns : [];
+    }
     const messages: FusionCodexMessage[] = [];
-    if (Array.isArray(result.data)) {
-      for (const turnValue of result.data) {
+    {
+      for (const turnValue of turns) {
         const turn = asRecord(turnValue);
         if (!Array.isArray(turn.items)) continue;
         for (const itemValue of turn.items) {
@@ -429,22 +426,28 @@ export function createCodexAppServerService(_options: CodexAppServerServiceOptio
       const result = asRecord(await request('thread/start', { cwd, approvalPolicy: 'on-request', sandbox: 'workspace-write' }));
       const thread = parseThread(asRecord(result.thread));
       if (!thread) throw new Error('Codex did not return a session identifier.');
+      loadedThreads.add(thread.id);
       selectThread(thread.id);
       patch({ activeThreadId: thread.id, activeTurnId: null, working: false, messages: [], error: null, threads: [thread, ...snapshot.threads.filter((item) => item.id !== thread.id)] });
       return thread;
     },
-    resumeThread: async (threadId: string): Promise<FusionCodexThread> => {
+    resumeThread: (threadId: string): Promise<FusionCodexThread> => {
+      const pending = resumes.get(threadId); if (pending) return pending;
+      const task = (async () => {
       await ensureStarted();
       const known = snapshot.threads.find((thread) => thread.id === threadId);
-      if (known && threadStates.has(threadId)) { selectThread(threadId); publish(); return known; }
+      if (known && loadedThreads.has(threadId)) { selectThread(threadId); publish(); return known; }
       const result = asRecord(await request('thread/resume', { threadId }));
       const thread = parseThread(asRecord(result.thread));
       if (!thread) throw new Error('Codex could not restore this session.');
       const messages = await loadMessages(threadId);
+      loadedThreads.add(threadId);
       selectThread(thread.id);
-      if (!snapshot.working) patch({ messages, error: null });
+      if (!snapshot.working) patch({ messages, error: null, threads: [thread, ...snapshot.threads.filter(item => item.id !== thread.id)] });
       else publish();
       return thread;
+      })().finally(() => { resumes.delete(threadId); });
+      resumes.set(threadId, task); return task;
     },
     sendMessage: async (threadId: string, text: string, model?: import('../../preload/types/fusionWorkspace').FusionModel): Promise<void> => {
       await ensureStarted();
@@ -490,8 +493,10 @@ export function createCodexAppServerService(_options: CodexAppServerServiceOptio
       reader = null;
       const child = processHandle;
       processHandle = null;
-      if (child && !child.killed) child.kill();
+      await stopAgent(child);
       rejectWaiters(new Error('Codex App Server stopped.'));
+      loadedThreads.clear(); threadStates.clear();
+      requestMethods.clear(); requestRpcIds.clear(); submittedRequests.clear();
       patch({ ...EMPTY_SNAPSHOT });
     },
   };

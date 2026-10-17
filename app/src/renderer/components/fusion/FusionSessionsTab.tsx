@@ -53,18 +53,18 @@ export function FusionSessionsTab(): JSX.Element {
   const muted = useFusionPreferences((state) => state.value.muted);
   const setMuted = (update: (value: boolean) => boolean): void => { void useFusionPreferences.getState().save({ muted: update(muted) }); };
 
-  const refresh = useCallback(async (): Promise<void> => {
+  const refresh = useCallback(async (connect = false): Promise<void> => {
     setBusy(true);
     setError(null);
     const results = await Promise.allSettled([
-      window.api.fusionCodexSnapshot(),
-      window.api.fusionDshSnapshot(),
+      (connect ? window.api.fusionCodexThreadsList() : Promise.resolve()).then(() => window.api.fusionCodexSnapshot()),
+      (connect ? window.api.fusionDshSessionsList() : Promise.resolve()).then(() => window.api.fusionDshSnapshot()),
       window.api.fusionEchoCodexSessions(true).then(echo => useFusionActivity.setState({ echo })),
     ]);
     if (results[0].status === 'fulfilled') setCodex(results[0].value);
     if (results[1].status === 'fulfilled') setDsh(results[1].value);
     const failed = results.filter((result) => result.status === 'rejected');
-    if (failed.length === results.length) setError(t('fusion.overview.unavailable'));
+    if (failed.length) setError(failed.map(result => result.status === 'rejected' ? String(result.reason) : '').join('\n'));
     setBusy(false);
   }, [t]);
 
@@ -173,7 +173,7 @@ export function FusionSessionsTab(): JSX.Element {
           <button className="fusion-icon-button" type="button" onClick={() => setMuted((value) => !value)} aria-label={muted ? t('fusion.sound.on') : t('fusion.sound.off')} title={muted ? t('fusion.sound.on') : t('fusion.sound.off')}>
             {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
           </button>
-          <button className="fusion-icon-button" type="button" onClick={() => void refresh()} disabled={busy} aria-label={t('fusion.overview.refresh')} title={t('fusion.overview.refresh')}>
+          <button className="fusion-icon-button" type="button" onClick={() => void refresh(true)} disabled={busy} aria-label={t('fusion.overview.refresh')} title={t('fusion.overview.refresh')}>
             <RefreshCw size={15} className={busy ? 'fusion-refresh-spinning' : ''} />
           </button>
         </div>
