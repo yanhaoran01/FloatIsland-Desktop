@@ -15,7 +15,8 @@
  * @author 鸡哥
  */
 
-import { broadcastFusion } from './fusionWindows';
+import { reportAgentCompletion, broadcastFusion } from './fusionWindows';
+import {recordCodexUsage,recordCodexLimits} from './agentHudUsage';
 import { type ChildProcessWithoutNullStreams } from 'child_process';
 import { createInterface, type Interface as ReadlineInterface } from 'readline';
 import { resolveAgentExecutable, spawnAgent, stopAgent } from './agentExecutable';
@@ -222,6 +223,8 @@ export function createCodexAppServerService(_options: CodexAppServerServiceOptio
   };
 
   const handleNotification = (method: string, params: Record<string, unknown>): void => {
+    if(method==='account/rateLimits/updated'){recordCodexLimits(params);return;}
+    if(method==='thread/tokenUsage/updated'&&typeof params.threadId==='string')recordCodexUsage(params.threadId,asRecord(params.tokenUsage),Date.now());
     const threadId = typeof params.threadId === 'string' ? params.threadId : asRecord(params.thread).id;
     if (typeof threadId === 'string' && threadId !== snapshot.activeThreadId) {
       forThread(threadId, () => handleThreadNotification(method, params));
@@ -259,6 +262,10 @@ export function createCodexAppServerService(_options: CodexAppServerServiceOptio
     }
     if (method === 'item/completed') {
       const item = asRecord(params.item);
+      if(item.type==='agentMessage'&&typeof item.text==='string'){
+        const message={id:String(item.id),role:'assistant' as const,text:item.text,status:'completed'};
+        patch({messages:snapshot.messages.some(m=>m.id===message.id)?snapshot.messages.map(m=>m.id===message.id?message:m):[...snapshot.messages,message]});return;
+      }
       const messages = snapshot.messages.map((entry) => entry.id === item.id
         ? { ...entry, status: String(item.status || 'completed') }
         : entry);
@@ -268,6 +275,7 @@ export function createCodexAppServerService(_options: CodexAppServerServiceOptio
     if (method === 'turn/completed') {
       const turn = asRecord(params.turn);
       const error = asRecord(turn.error);
+      if(turn.status==='completed'&&!error.message)reportAgentCompletion('codex',snapshot.activeThreadId!,[...snapshot.messages].reverse().find(m=>m.role==='assistant'));
       patch({
         activeTurnId: null,
         working: false,
@@ -338,6 +346,7 @@ export function createCodexAppServerService(_options: CodexAppServerServiceOptio
         if (processHandle !== child) throw new Error('Codex connection was closed during startup.');
         write({ method: 'initialized' });
         initialized = true;
+        void request('account/rateLimits/read',{}).then(value=>recordCodexLimits(asRecord(value))).catch(()=>{});
         clearTimeout(failTimer);
         child.removeListener('error', onStartError);
         patch({ state: 'ready', error: null });

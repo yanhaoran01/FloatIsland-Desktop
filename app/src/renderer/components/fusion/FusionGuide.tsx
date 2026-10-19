@@ -78,7 +78,7 @@ export function FusionGuide(): JSX.Element {
       </>}
       {step === 1 && <>
         <div className="float-guide-copy"><h1>{t('fusion.ui.customizeDock')}</h1></div>
-        <div ref={edges} className="float-guide-edges float-guide-segmented fi-segmented" role="group" aria-label={t('fusion.dock.edge')}>{(['top','left','right'] as const).map(edge => <button key={edge} type="button" aria-pressed={state?.edge === edge} onClick={() => update({edge})}>{t('fusion.dock.' + edge)}</button>)}</div>
+        <div ref={edges} className="float-guide-edges float-guide-segmented fi-segmented" role="group" aria-label={t('fusion.dock.edge')}>{(['top','bottom','left','right'] as const).map(edge => <button key={edge} type="button" aria-pressed={state?.edge === edge} onClick={() => update({edge})}>{t('fusion.dock.' + edge)}</button>)}</div>
         <div className="float-guide-shortcuts">
           {shortcut(t('fusion.dock.shortcut'), state?.recallShortcut ?? '', recallShortcut => update({recallShortcut}))}
           {shortcut(t('fusion.product.hotkey'), state?.searchShortcut ?? '', searchShortcut => update({searchShortcut}))}

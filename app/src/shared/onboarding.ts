@@ -4,7 +4,7 @@ export interface OnboardingState {
   version: 1;
   status: 'pending' | 'completed' | 'skipped';
   step: 0 | 1 | 2;
-  edge?: 'top' | 'left' | 'right';
+  edge?: 'top' | 'bottom' | 'left' | 'right';
   recallShortcut?: string;
   searchShortcut?: string;
 }
@@ -15,7 +15,7 @@ export function onboardingPatch(value: unknown): OnboardingPatch {
   const patch: OnboardingPatch = {};
   for (const [key, item] of Object.entries(value)) {
     if (key === 'step' && (item === 0 || item === 1 || item === 2)) patch.step = item;
-    else if (key === 'edge' && (item === 'top' || item === 'left' || item === 'right')) patch.edge = item;
+    else if (key === 'edge' && (item === 'top' || item === 'bottom' || item === 'left' || item === 'right')) patch.edge = item;
     else if ((key === 'recallShortcut' || key === 'searchShortcut') && typeof item === 'string' && item.length <= 100) patch[key] = item;
     else throw Error('invalid-onboarding');
   }

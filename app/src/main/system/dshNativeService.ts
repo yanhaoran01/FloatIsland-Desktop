@@ -5,6 +5,7 @@
  */
 
 /** @file dshNativeService.ts @description Authenticated client for the installed dsh Cordis host. @author 鸡哥 */
+import { reportAgentCompletion } from './fusionWindows';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
@@ -109,7 +110,8 @@ export function createDshNativeService(changed: () => void, connectionFile = pro
     }
     return true;
   };
-  const acceptEvent = (id: string, event: Raw): boolean => {
+  const cancelled = new Set<string>();
+  const acceptEvent = (id: string, event: Raw, live = false): boolean => {
     if (typeof event.seq === 'number') {
       if (event.seq <= (cursors.get(id) ?? -1)) return false;
       cursors.set(id, event.seq);
@@ -120,6 +122,8 @@ export function createDshNativeService(changed: () => void, connectionFile = pro
       const working = event.type === 'turn/start';
       dirty = session(id).working !== working;
       session(id).working = working;
+      if(working)cancelled.delete(id);
+      else if(live&&!cancelled.has(id)&&!data.error&&!/cancel|abort|interrupt|fail/i.test(String(data.reason||data.status||'')))reportAgentCompletion('dsh',id,[...session(id).messages].reverse().find(m=>m.role==='assistant'));
     }
     if (['user/message', 'assistant/message', 'assistant/attempt'].includes(event.type)) {
       const message = record(data.message || data);
@@ -176,7 +180,7 @@ export function createDshNativeService(changed: () => void, connectionFile = pro
           }
         }
       }
-    } else if (frame.type === 'event') dirty = acceptEvent(id, record(frame.event));
+    } else if (frame.type === 'event') dirty = acceptEvent(id, record(frame.event), true);
     else if (frame.type === 'assistant-stream') {
       const part = record(frame.frame);
       if (part.type === 'start') streams.set(id, { attempt: String(part.attemptId), index: 0, text: '' });
@@ -328,7 +332,7 @@ export function createDshNativeService(changed: () => void, connectionFile = pro
       catch (error) { session(id).working = false; session(id).error = String(error); update(); throw error; }
       finally { sending.delete(id); }
     },
-    cancel: async (id = snapshot.activeSessionId): Promise<void> => { if (id) await rpc('cancel', { sessionId: id }); },
+    cancel: async (id = snapshot.activeSessionId): Promise<void> => { if (id) {cancelled.add(id);try{await rpc('cancel', { sessionId: id });}catch(error){cancelled.delete(id);throw error;}} },
     answerPermission: async (id: string, value: string | null): Promise<void> => {
       if (!clientId || !requestFrames.has(id)) throw new Error('request-expired');
       if (submitted.has(id)) throw new Error('request-already-submitted');

@@ -16,7 +16,7 @@ import {registerProductSharing} from './productSharing';
 import {registerProductRecorder} from './productRecorder';
 import { registerFusionProduct } from './fusionProductService';
 import { FusionDraftStore } from './fusionDraftStore';
-import { broadcastFusion, isFusionView } from './fusionWindows';
+import { reportAgentCompletion, broadcastFusion, isFusionView } from './fusionWindows';
 import { openStandaloneWindow, getWorkspaceTarget } from '../window/standaloneWindow';
 import type { createLocalAssistantService } from './localAssistantService';
 import type { AssistantConversation, FusionDraft, WorkspaceTarget } from '../../preload/types/fusionWorkspace';
@@ -135,7 +135,7 @@ export function registerFusionWorkspace(service: ReturnType<typeof createLocalAs
     void service.send(event => {
       if (event.chunk) reply.text += event.chunk;
       if (event.error) next.error = event.error;
-      if (event.done) { next.working = false; persist(); }
+      if (event.done) { next.working = false; if(!event.cancelled&&!next.error)reportAgentCompletion(key.split(':')[0] as FusionAssistantProvider,key.split(':').slice(1).join(':'),reply); persist(); }
       publish(next);
     }, {
       requestId, provider: key.split(':')[0] as FusionAssistantProvider,

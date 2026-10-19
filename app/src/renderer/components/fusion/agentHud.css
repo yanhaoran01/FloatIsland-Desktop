@@ -1,0 +1,350 @@
+/* FloatIsland contributors. GPL-3.0. */
+/** @file agentHud.css @description Matte edge HUD with keyboard and reduced motion support. @author 鸡哥 */
+:root[data-fusion-hud-mode='simple']
+  .island-shell:is(
+    [data-island-state='idle'],
+    [data-island-state='hover'],
+    [data-island-state='expanded']
+  ),
+:root[data-fusion-hud-mode='simple'][data-fusion-hud-panel='true'] .island-shell {
+  width: 100vw !important;
+  height: 100vh !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  border: 1px solid #ffffff12 !important;
+  background: #1c1d20 !important;
+  overflow: hidden !important;
+}
+:root[data-fusion-hud-mode='simple'][data-fusion-hud-panel='true'] .island-shell > :not(.agent-hud) {
+  display: none !important;
+}
+.island-shell[data-dock-edge='bottom'] {
+  border-radius: 14px 14px 0 0 !important;
+}
+.island-shell[data-dock-edge='bottom']
+  :is(.float-resize-s, .float-resize-se, .float-resize-sw) {
+  display: none;
+}
+.fusion-dock-handle[data-edge='bottom'] {
+  top: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  border-radius: 6px 6px 0 0;
+}
+.island-shell[data-dock-preview='bottom'] {
+  border-bottom: 2px solid #b9c5d4 !important;
+}
+.agent-hud {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  color: #d5d8df;
+  background: #1c1d20;
+  font:
+    12px/1.5 system-ui,
+    sans-serif;
+  isolation: isolate;
+  box-sizing: border-box;
+}
+.agent-hud-strip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  height: 42px;
+  width: 100%;
+  padding: 4px 5px;
+  box-sizing: border-box;
+  cursor: grab;
+  touch-action: none;
+}
+.agent-hud-grip {
+  color: #666c77;
+  user-select: none;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+.agent-hud-agents,
+.agent-hud-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+.agent-hud-agents {
+  overflow: auto;
+  scrollbar-width: none;
+  flex: 1;
+}
+.agent-hud-actions {
+  flex-shrink: 0;
+}
+.agent-hud button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  padding: 6px;
+  font: inherit;
+}
+.agent-hud button:hover {
+  background: #ffffff0b;
+  color: #fff;
+}
+.agent-hud button:focus-visible {
+  outline: 1px solid #bdc8da;
+  outline-offset: -1px;
+}
+.agent-hud button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.agent-hud-actions > button {
+  width: 25px;
+  height: 30px;
+  padding: 4px;
+}
+.agent-hud .agent-hud-agent {
+  position: relative;
+  width: 28px;
+  height: 32px;
+  padding: 0;
+}
+.agent-hud-agent svg {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  inset: 2px 0;
+  transform: rotate(-90deg);
+}
+.agent-hud-agent circle {
+  fill: none;
+  stroke-width: 1.6;
+}
+.agent-hud-ring-track {
+  stroke: #ffffff18;
+}
+.agent-hud-ring-fill {
+  stroke: #bcc9db;
+  transition: stroke-dashoffset 180ms linear;
+}
+.agent-hud-agent > span {
+  font-size: 9px;
+  letter-spacing: -0.3px;
+}
+.agent-hud-agent > i {
+  position: absolute;
+  right: 0;
+  bottom: 1px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #707985;
+}
+.agent-hud-agent[data-status='working'] > i {
+  background: #aac3df;
+}
+.agent-hud-agent[data-status='waiting'] > i {
+  background: #d5b77b;
+}
+.agent-hud-agent[data-status='error'] > i {
+  background: #dd9a99;
+}
+.agent-hud-agent[data-stale='true'] {
+  opacity: 0.6;
+}
+.agent-hud-pending {
+  color: #e7c788 !important;
+  font-weight: 600 !important;
+}
+.agent-hud-empty {
+  white-space: nowrap;
+  font-size: 11px !important;
+}
+.agent-hud[data-vertical='true'] .agent-hud-strip {
+  height: 100%;
+  width: 42px;
+  flex-direction: column;
+  padding: 4px;
+  gap: 3px;
+}
+.agent-hud[data-vertical='true'] :is(.agent-hud-agents, .agent-hud-actions) {
+  flex-direction: column;
+  width: 100%;
+}
+.agent-hud[data-vertical='true'] .agent-hud-agents {
+  min-height: 0;
+  overflow-y: auto;
+}
+.agent-hud[data-vertical='true'] .agent-hud-grip {
+  height: 10px;
+  line-height: 10px;
+  transform: rotate(90deg);
+}
+.agent-hud-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 6px 15px 16px;
+  cursor: default;
+  scrollbar-width: thin;
+  scrollbar-color: #424650 transparent;
+}
+.agent-hud-scroll header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.agent-hud-scroll strong {
+  font-weight: 550;
+}
+.agent-hud-scroll small,
+.agent-hud-note {
+  display: block;
+  color: #9199a7;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.agent-hud-quota {
+  margin: 14px 0;
+}
+.agent-hud-quota > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.agent-hud-quota progress {
+  width: 100%;
+  height: 4px;
+  appearance: none;
+  margin: 9px 0;
+  display: block;
+}
+.agent-hud-quota progress::-webkit-progress-bar {
+  background: #ffffff12;
+  border-radius: 2px;
+}
+.agent-hud-quota progress::-webkit-progress-value {
+  background: #aebed1;
+  border-radius: 2px;
+}
+.agent-hud-metrics {
+  display: flex;
+  gap: 40px;
+  margin: 20px 0 8px;
+}
+.agent-hud-metrics strong {
+  font-size: 22px;
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+}
+.agent-hud-chart {
+  display: block;
+  width: 100%;
+  height: 64px;
+  margin: 14px 0;
+  fill: #93a7bf;
+}
+.agent-hud-note {
+  margin: 12px 0;
+}
+.agent-hud-reply > div {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.8;
+}
+.agent-hud .fusion-pending-card {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  font-size: 12px;
+}
+.agent-hud .fusion-pending-card > strong {
+  display: block;
+  overflow-wrap: anywhere;
+  color: #9ca6b5;
+  font-size: 11px;
+}
+.agent-hud .fusion-pending-card pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font:
+    11px/1.6 Consolas,
+    monospace;
+  color: #aeb6c3;
+  max-height: 140px;
+  overflow: auto;
+}
+.agent-hud .fusion-request-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.agent-hud .fusion-request-actions > button,
+.agent-hud-details > button,
+.agent-hud-reply > button {
+  border: 1px solid #ffffff18;
+  padding: 6px 10px;
+}
+.agent-hud .fusion-questions textarea {
+  width: 100%;
+  min-height: 60px;
+  box-sizing: border-box;
+  background: #14161a;
+  color: #d5d8df;
+  border: 1px solid #ffffff20;
+  border-radius: 5px;
+}
+.agent-hud .fusion-questions fieldset {
+  min-width: 0;
+  border: 0;
+  padding: 8px 0;
+}
+.agent-hud .fusion-questions label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 0;
+}
+.agent-hud [role='alert'] {
+  color: #e6b2ae;
+}
+@media (prefers-reduced-motion: reduce) {
+  .agent-hud-ring-fill {
+    transition: none;
+  }
+}
+
+:root[data-fusion-hud-mode='simple']
+  .island-shell:is(
+    [data-island-state='idle'],
+    [data-island-state='hover'],
+    [data-island-state='expanded']
+  )::before,
+:root[data-fusion-hud-mode='simple']
+  .island-shell:is(
+    [data-island-state='idle'],
+    [data-island-state='hover'],
+    [data-island-state='expanded']
+  )::after,
+:root[data-fusion-hud-mode='simple'][data-fusion-hud-panel='true'] .island-shell::before,
+:root[data-fusion-hud-mode='simple'][data-fusion-hud-panel='true'] .island-shell::after {
+  display: none !important;
+}

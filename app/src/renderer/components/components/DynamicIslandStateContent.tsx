@@ -55,6 +55,7 @@ import type { IslandState } from '../hooks/useDynamicIslandShell';
 
 interface DynamicIslandStateContentProps {
   state: IslandState;
+  compactHud?: boolean;
   timeStr: string;
   dayStr: string;
   weather: WeatherData;
@@ -129,6 +130,6 @@ export function DynamicIslandStateContent(props: DynamicIslandStateContentProps)
     <div className="fusion-retained-workspace" hidden={props.state !== 'maxExpand'}>
       {(opened || props.state === 'maxExpand') && <FusionChat compact visible={props.state === 'maxExpand'} />}
     </div>
-    {props.state !== 'maxExpand' && (media && ['idle', 'hover', 'expanded'].includes(props.state) ? <MediaBar collapsed /> : <TransientStateContent {...props} />)}
+    {props.state !== 'maxExpand' && !(props.compactHud && ['idle','hover','expanded'].includes(props.state)) && (media && ['idle', 'hover', 'expanded'].includes(props.state) ? <MediaBar collapsed /> : <TransientStateContent {...props} />)}
   </>;
 }

@@ -2,15 +2,17 @@
 
 [简体中文](README.md)
 
-FloatIsland is a dockable desktop workspace for Windows. It brings chat, utility tools, music, reading and downloads into a window that collapses to the top, left or right edge of the screen.
+FloatIsland is a dockable desktop workspace for Windows. It brings chat, utility tools, music, reading and downloads into a window that collapses to the top, bottom, left or right edge of the screen.
 
 [Download](https://github.com/yanhaoran01/FloatIsland-Desktop/releases/latest) · [User guide](docs/USER_GUIDE.md) · [Build instructions](docs/BUILD.md) · [Changelog](CHANGELOG.md)
 
 ## Install
 
-Windows 10 or 11, x64. Download `FloatIsland-1.3.4-Setup.exe` for installation, or `FloatIsland-1.3.4-portable.exe` to run without installing. Node.js and Python are not required to use either package.
+Windows 10 or 11, x64. Download `FloatIsland-1.3.5-Setup.exe` for installation, or `FloatIsland-1.3.5-portable.exe` to run without installing. Node.js and Python are not required to use either package.
 
 The portable build uses the normal application data directory. Settings are not stored beside the executable. Close the previous version before upgrading; uninstalling keeps user data by default. The executables are unsigned, so Windows may show an unknown-publisher prompt.
+
+The original island remains the default interface. Enable the optional Agent HUD in dock settings for a quiet Agent strip without a glow. Hover an Agent for its quotas, or click for observed Token usage over the past 24 hours and recent consumption rates. Approval cards open without taking keyboard focus; closing a card leaves the request pending. Drag an empty part of the strip to dock at any screen edge.
 
 ## Features
 

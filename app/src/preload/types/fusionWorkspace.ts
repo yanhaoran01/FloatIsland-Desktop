@@ -1,4 +1,5 @@
 import type {GenieApi} from './genie';
+import type {AgentHudApi} from './agentHud';
 import type { AvatarConfig } from '../../shared/avatarConfig';
 /*
  * FusionIsland - https://github.com/JNTMTMTM/eIsland
@@ -46,12 +47,12 @@ export interface SpeechStatus {
   maxAudioBytes: number;
   maxDurationSeconds: number;
 }
-export interface FusionDockConfig { edge: 'top' | 'left' | 'right'; position: number; autoHide: boolean; delayMs: number; shortcut: string; displayId: string; }
+export interface FusionDockConfig { edge: 'top' | 'bottom' | 'left' | 'right'; position: number; autoHide: boolean; delayMs: number; shortcut: string; displayId: string; mode:'simple'|'island'; quotaDisplay:'ring'|'number'|'both'; }
 export interface FusionDockState { config: FusionDockConfig; strip: boolean; preview: string | null; shortcutError: string; }
 export type ResizeEdge = 'n'|'s'|'e'|'w'|'ne'|'nw'|'se'|'sw';
 export interface ViewportState { preferred:{width:number;height:number}; actual:{width:number;height:number}; revision:number; adjusting:boolean; token:string|null; }
 export interface WorkBuddyConfig { version:1; edition:'cn'|'intl'; executable:string; configDir:string; candidates:string[]; }
-export interface FusionWorkspaceApi extends FusionToolsApi, GenieApi {
+export interface FusionWorkspaceApi extends FusionToolsApi, GenieApi, AgentHudApi {
   fusionWorkBuddyGet:()=>Promise<WorkBuddyConfig>;
   fusionWorkBuddySave:(config:WorkBuddyConfig)=>Promise<WorkBuddyConfig>;
   fusionViewportGet:()=>Promise<ViewportState>;
@@ -68,7 +69,7 @@ export interface FusionWorkspaceApi extends FusionToolsApi, GenieApi {
   fusionDockReset: () => Promise<FusionDockState>;
   fusionDockReveal: () => Promise<FusionDockState>;
   fusionDockActivity: (expanded: boolean, keepVisible?: boolean) => Promise<void>;
-  fusionDockDrag: (action: 'start'|'move'|'end') => Promise<boolean|void>;
+  fusionDockDrag: (action: 'start'|'move'|'end'|'cancel') => Promise<boolean|void>;
   onFusionDock: (callback: (state:FusionDockState)=>void) => ()=>void;
   onFusionReveal: (callback: ()=>void) => ()=>void;
   onFusionVoiceHidden: (callback: (reason:string)=>void) => ()=>void;

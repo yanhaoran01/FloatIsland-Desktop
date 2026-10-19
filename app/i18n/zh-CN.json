@@ -378,7 +378,8 @@
       "shortcutConflict": "快捷键已被占用或格式无效，请换一个组合。",
       "reset": "恢复主屏顶部",
       "hint": "悬停边缘小条显示胶囊，点击展开。展开期间保持打开，拖动标题空白处可调整停靠位置。",
-      "legacyPosition": "原位置偏移（高级）"
+      "legacyPosition": "原位置偏移（高级）",
+      "bottom": "底边"
     },
     "toolbox": {
       "subtitle": "常用工具分组 · 滚轮切页",
@@ -1850,6 +1851,39 @@
         "thanks": "谢谢你",
         "surprised": "有新发现"
       }
+    },
+    "hud": {
+      "mode": "显示模式",
+      "mode_simple": "Agent HUD",
+      "mode_island": "原灵动岛",
+      "display": "额度显示",
+      "display_ring": "圆环",
+      "display_number": "数字",
+      "display_both": "圆环和数字",
+      "openSession": "进入原会话",
+      "openSessions": "打开会话",
+      "idle": "空闲",
+      "working": "处理中",
+      "waiting": "等待批准",
+      "offline": "未连接",
+      "error": "连接异常",
+      "stale": "数据已过期",
+      "used": "已使用 {{percent}}%",
+      "window": "{{hours}} 小时额度",
+      "shared": "账户共享额度",
+      "reset": "重置：{{time}}",
+      "updated": "更新：{{time}}",
+      "quotaRate": "消耗速率：{{rate}} 个百分点/小时",
+      "noQuota": "额度：—（接口未提供）",
+      "tokens24": "过去 24 小时 Token",
+      "tokenRate": "最近 5 分钟 · Token/分钟",
+      "tokenBreakdown": "输入 {{input}} · 输出 {{output}}；其中缓存 {{cached}}、推理 {{reasoning}}（不重复计入总量）",
+      "coverage": "当前统计记录始于 {{time}}。",
+      "observedOnly": "仅统计已观测的会话，不代表账户全部用量；Token 不换算为订阅额度。",
+      "drag": "拖动到任意屏幕边缘",
+      "configure": "配置 Agent",
+      "record": "录音与录屏",
+      "approval": "待处理请求"
     }
   },
   "standalone": {

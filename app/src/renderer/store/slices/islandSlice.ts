@@ -74,14 +74,15 @@ export const createIslandSlice: StateCreator<
   animationSpeed: 'medium' as const,
   shapeMode: 'notch' as const,
 
-  setIdle: (force?: boolean) => set((prev) => {
-    if (prev.uiStateLocked && prev.state !== 'idle') return prev;
-    if (!force && (prev.state === 'expanded' || prev.state === 'maxExpand' || prev.state === 'guide' || prev.state === 'login' || prev.state === 'register' || prev.state === 'resetPassword' || prev.state === 'setPassword' || prev.state === 'bindOAuth' || prev.state === 'bindEmail' || prev.state === 'payment' || prev.state === 'announcement' || prev.state === 'questionnaire' || prev.state === 'musicProvidersLogin')) return prev;
-    if(prev.state==='maxExpand'&&typeof window.api?.fusionGenie==='function'){transitionIsland('collapse',()=>{window.api?.collapseWindow(0);window.api?.enableMousePassthrough();set({state:'idle',authReturnState:null});});return prev;}
+  setIdle: (force?: boolean) => {
+    const prev = get();
+    if (prev.uiStateLocked && prev.state !== 'idle') return;
+    if (!force && (prev.state === 'expanded' || prev.state === 'maxExpand' || prev.state === 'guide' || prev.state === 'login' || prev.state === 'register' || prev.state === 'resetPassword' || prev.state === 'setPassword' || prev.state === 'bindOAuth' || prev.state === 'bindEmail' || prev.state === 'payment' || prev.state === 'announcement' || prev.state === 'questionnaire' || prev.state === 'musicProvidersLogin')) return;
+    if(prev.state==='maxExpand'&&typeof window.api?.fusionGenie==='function'){transitionIsland('collapse',()=>{window.api?.collapseWindow(0);window.api?.enableMousePassthrough();set({state:'idle',authReturnState:null});});return;}
     window.api?.collapseWindow(getIslandWindowShrinkDelay(prev.state, 'idle', prev.animationSpeed));
     window.api?.enableMousePassthrough();
-    return { state: 'idle' as const, authReturnState: null };
-  }),
+    set({ state: 'idle', authReturnState: null });
+  },
 
   setHover: () => set((prev) => {
     if (prev.state === 'maxExpand') return prev;

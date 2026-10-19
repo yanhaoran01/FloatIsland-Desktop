@@ -29,7 +29,7 @@ export function FusionCompact({ overview = false }: { overview?: boolean }): JSX
   const { t } = useTranslation();
   useEffect(()=>{const timer=setTimeout(prepareIslandTransition,350);return()=>clearTimeout(timer);},[]);
   const press=useRef<{x:number;y:number}|null>(null);
-  const [edge,setEdge]=useState<'top'|'left'|'right'>('top');
+  const [edge,setEdge]=useState<'top'|'bottom'|'left'|'right'>('top');
   useEffect(()=>{let active=true;void window.api.fusionDockGet().then(value=>{if(active)setEdge(value.config.edge);});const off=window.api.onFusionDock(value=>setEdge(value.config.edge));return()=>{active=false;off();};},[]);
   const { codex, dsh, echo, assistants } = useFusionActivity();
   const record=useProductStore(s=>s.record);
@@ -58,7 +58,7 @@ export function FusionCompact({ overview = false }: { overview?: boolean }): JSX
     useIslandStore.getState().setMaxExpand();
     if(view==='chat'||view==='tools')window.dispatchEvent(new CustomEvent('fusion-navigate-peer',{detail:view==='chat'?'chat':'tools'}));
   };
-  if(edge!=='top')return <div className="fusion-compact float-side-dock" data-side={edge}>
+  if(edge!=='top'&&edge!=='bottom')return <div className="fusion-compact float-side-dock" data-side={edge}>
     <SidebarHeader><FusionPet mood={mood} muted={muted} label={t('fusion.pet.'+mood)}/></SidebarHeader>
     <SidebarMenu>{([{id:'chat',icon:MessageSquare,key:'fusion.navigation.aiChat'},{id:'tools',icon:Grid2X2,key:'fusion.navigation.toolbox'},{id:'search',icon:Search,key:'fusion.product.search'},{id:'settings',icon:Settings,key:'fusion.navigation.settings'}] as const).map(item=><li key={item.id}><SidebarMenuButton title={t(item.key)} aria-label={t(item.key)} onClick={event=>{event.stopPropagation();open(item.id);}}><item.icon size={20} strokeWidth={1.6}/></SidebarMenuButton></li>)}</SidebarMenu>
     {recording?<div className="float-side-record"><button type="button" className="fusion-icon-button" aria-label={t('fusion.product.record.stop')} onClick={event=>{event.stopPropagation();void window.api.fusionProductRecordControl('stop').then(value=>useProductStore.getState().set({record:value}));}}><span>{Math.floor(record.elapsed/60).toString().padStart(2,'0')+':'+Math.floor(record.elapsed%60).toString().padStart(2,'0')}</span><Square size={10}/></button></div>:<span className="float-side-state" data-active={pending>0||active>0}/>}

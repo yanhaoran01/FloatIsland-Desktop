@@ -14,7 +14,7 @@ export const genieTransitionActive=():boolean=>active;
  * @param getDock - Returns the active dock edge and position.
  * @returns No value.
  */
-export function registerFusionGenie(getWindow:()=>BrowserWindow|null,getDock:()=>{edge:'top'|'left'|'right';position:number}):void {
+export function registerFusionGenie(getWindow:()=>BrowserWindow|null,getDock:()=>{edge:'top'|'bottom'|'left'|'right';position:number}):void {
  let cover:BrowserWindow|undefined;
  const removeCover=()=>{if(cover&&!cover.isDestroyed())cover.destroy();cover=undefined;};
  const finish=()=>{clearTimeout(timer);active=false;const win=getWindow();if(win&&!win.isDestroyed())win.setOpacity(1);removeCover();};
@@ -34,7 +34,7 @@ export function registerFusionGenie(getWindow:()=>BrowserWindow|null,getDock:()=
  ipcMain.handle('fusion:genie',async(event,command:string,value:{direction?:string;revision?:number;image?:string}):Promise<GenieSnapshot|null>=>{
   const win=getWindow();if(!win||win.isDestroyed()||event.sender!==win.webContents||event.senderFrame!==event.sender.mainFrame)throw Error('untrusted-view');
   if(command==='prepare'){
-   const edge=getDock().edge,bounds=win.getContentBounds(),size=edge==='top'?{width:260,height:42}:{width:48,height:260};
+   const edge=getDock().edge,bounds=win.getContentBounds(),size=(edge==='top'||edge==='bottom')?{width:260,height:42}:{width:48,height:260};
    if(!active&&Math.abs(bounds.width-size.width)<=1&&Math.abs(bounds.height-size.height)<=1){const version=revision,image=await win.webContents.capturePage();if(!active&&version===revision&&!image.isEmpty())compactImage={edge,image:image.resize({...size,quality:'good'}).toDataURL()};}
    return null;
   }
@@ -44,7 +44,7 @@ export function registerFusionGenie(getWindow:()=>BrowserWindow|null,getDock:()=
    active=true;revision++;clearTimeout(timer);timer=setTimeout(cancel,5000);
    if(value.direction==='expand'){
     // Refresh the actual capsule before resizing; an idle cache can contain an old theme or status.
-    const version=revision,edge=getDock().edge,bounds=win.getContentBounds(),size=edge==='top'?{width:260,height:42}:{width:48,height:260};
+    const version=revision,edge=getDock().edge,bounds=win.getContentBounds(),size=(edge==='top'||edge==='bottom')?{width:260,height:42}:{width:48,height:260};
     if(Math.abs(bounds.width-size.width)<=1&&Math.abs(bounds.height-size.height)<=1){
      let image:Electron.NativeImage;
      try{image=await win.webContents.capturePage();}catch(error){cancel();throw error;}
@@ -58,7 +58,7 @@ export function registerFusionGenie(getWindow:()=>BrowserWindow|null,getDock:()=
   else if(!active||value?.revision!==revision)throw Error('stale-transition');
   if(command==='handoff'){
    if(typeof value.image!=='string'||value.image.length>8_000_000||!/^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(value.image))throw Error('invalid-transition-image');
-   const bounds=win.getContentBounds(),dock=getDock(),area=screen.getDisplayMatching(bounds).workArea,size=dock.edge==='top'?{width:260,height:42}:{width:48,height:260};
+   const bounds=win.getContentBounds(),dock=getDock(),area=screen.getDisplayMatching(bounds).workArea,size=(dock.edge==='top'||dock.edge==='bottom')?{width:260,height:42}:{width:48,height:260};
    await showCover(value.image,dockRect(area,size,dock.edge,dock.position,false));win.setOpacity(0);return null;
   }
   if(command==='finish'||command==='show'){
@@ -68,7 +68,7 @@ export function registerFusionGenie(getWindow:()=>BrowserWindow|null,getDock:()=
    return null;
   }
   if(command!=='begin'&&command!=='capture')throw Error('invalid-transition');
-  const version=revision,bounds=win.getContentBounds(),dock=getDock(),area=screen.getDisplayMatching(bounds).workArea,size=dock.edge==='top'?{width:260,height:42}:{width:48,height:260},compact=dockRect(area,size,dock.edge,dock.position,false);
+  const version=revision,bounds=win.getContentBounds(),dock=getDock(),area=screen.getDisplayMatching(bounds).workArea,size=(dock.edge==='top'||dock.edge==='bottom')?{width:260,height:42}:{width:48,height:260},compact=dockRect(area,size,dock.edge,dock.position,false);
   const result:GenieSnapshot={revision:version,edge:dock.edge,width:bounds.width,height:bounds.height,compact:{...compact,x:compact.x-bounds.x,y:compact.y-bounds.y},frames:[],compactImage:compactImage?.edge===dock.edge?compactImage.image:undefined};
   if(command==='capture'){
    const [image,guests]=await Promise.all([win.webContents.capturePage(),captureFusionGuestViews(win)]);if(image.isEmpty())throw Error('capture-unavailable');result.frames.push({image:image.resize({width:bounds.width,height:bounds.height,quality:'good'}).toDataURL(),rect:{x:0,y:0,width:bounds.width,height:bounds.height}});result.frames.push(...guests);const current=win.getContentBounds();if(!active||version!==revision||current.width!==bounds.width||current.height!==bounds.height)throw Error('stale-transition');

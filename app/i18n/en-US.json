@@ -378,7 +378,8 @@
       "shortcutConflict": "Shortcut unavailable or invalid. Choose another combination.",
       "reset": "Reset to primary display",
       "hint": "Hover over the edge handle to reveal the capsule, then click to expand. Expanded panels stay open. Drag the blank header to reposition.",
-      "legacyPosition": "Legacy position offset (advanced)"
+      "legacyPosition": "Legacy position offset (advanced)",
+      "bottom": "Bottom"
     },
     "toolbox": {
       "subtitle": "Tool groups · scroll to switch",
@@ -1850,6 +1851,39 @@
         "thanks": "Thank you",
         "surprised": "Found something"
       }
+    },
+    "hud": {
+      "mode": "Appearance",
+      "mode_simple": "Agent HUD",
+      "mode_island": "Original island",
+      "display": "Quota display",
+      "display_ring": "Ring",
+      "display_number": "Number",
+      "display_both": "Ring and number",
+      "openSession": "Open original session",
+      "openSessions": "Open sessions",
+      "idle": "Idle",
+      "working": "Working",
+      "waiting": "Awaiting approval",
+      "offline": "Disconnected",
+      "error": "Connection error",
+      "stale": "Stale data",
+      "used": "{{percent}}% used",
+      "window": "{{hours}} hour quota",
+      "shared": "Shared account quota",
+      "reset": "Resets: {{time}}",
+      "updated": "Updated: {{time}}",
+      "quotaRate": "Rate: {{rate}} percentage points/hour",
+      "noQuota": "Quota: — (not provided)",
+      "tokens24": "Tokens · past 24 hours",
+      "tokenRate": "Tokens/minute · past 5 minutes",
+      "tokenBreakdown": "Input {{input}} · output {{output}}; includes cached {{cached}} and reasoning {{reasoning}} (counted once)",
+      "coverage": "Available records begin {{time}}.",
+      "observedOnly": "Observed sessions only, not all account usage. Tokens are not converted to subscription quota.",
+      "drag": "Drag to any screen edge",
+      "configure": "Configure agents",
+      "record": "Recording tools",
+      "approval": "Pending requests"
     }
   },
   "standalone": {

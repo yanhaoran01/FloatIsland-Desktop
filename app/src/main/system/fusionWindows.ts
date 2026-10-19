@@ -8,6 +8,8 @@
 import { app, BrowserWindow, type WebContents } from 'electron';
 import { fileURLToPath } from 'url';
 import { resolve, relative, isAbsolute } from 'path';
+import { EventEmitter } from 'events';
+export const fusionEvents = new EventEmitter();
 
 /** Checks that a receiver is one of the application's two trusted views. */
 export function isFusionView(contents: WebContents): boolean {
@@ -25,7 +27,13 @@ export function isFusionView(contents: WebContents): boolean {
 
 /** Broadcasts session data to both views, excluding auxiliary/native tool windows. */
 export function broadcastFusion(channel: string, payload: unknown): void {
+  fusionEvents.emit(channel, payload);
   for (const window of BrowserWindow.getAllWindows()) {
     if (!window.isDestroyed() && isFusionView(window.webContents)) window.webContents.send(channel, payload);
   }
+}
+
+/** Records a live completed turn; history restoration must never call this. */
+export function reportAgentCompletion(agent: import('../../preload/types/agentHud').HudAgentId, session: string, message: {id:string;text:string}|undefined): void {
+  if(message?.text.trim())fusionEvents.emit('fusion:agent:completed', {id:agent+':'+session+':'+message.id,agent,sessionKey:agent+':'+session,text:message.text,at:Date.now()});
 }

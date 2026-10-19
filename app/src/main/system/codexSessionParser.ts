@@ -25,6 +25,7 @@ import type { ClaudeCodeSessionSnapshot, ClaudeCodeSessionPhase } from '../types
 import { createReadStream } from 'fs';
 import { createInterface } from 'readline';
 import { setImmediate as yieldToEventLoop } from 'timers/promises';
+import {recordCodexUsage} from './agentHudUsage';
 
 export interface ParsedCodexSession {
   session: ClaudeCodeSessionSnapshot;
@@ -372,6 +373,7 @@ export async function parseCodexSessionFile(
         }
       } else if (context) {
         const payload = asRecord(line.payload ?? line.item);
+        if(payload.type==='token_count')recordCodexUsage(context.sessionId,asRecord(payload.info),timestampOf(line,fallbackTimestamp));
         if (asString(line.type) === 'turn_context') {
           context.cwd = asString(payload.cwd) ?? context.cwd;
           context.model = asString(payload.model) ?? context.model;

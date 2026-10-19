@@ -58,7 +58,7 @@ export function useIslandDrag(options: UseIslandDragOptions): UseIslandDragResul
     if (!draggable) return;
 
     const handleMouseDown = (e: MouseEvent): void => {
-      if (e.button !== 0) return;
+      if (e.button !== 0 || document.documentElement.dataset.fusionHudMode) return;
       isDraggingRef.current = true;
       hasMovedRef.current = false;
       startPosRef.current = { x: e.screenX, y: e.screenY };

@@ -74,12 +74,13 @@ export function createEchoRuntimeService(options: Options) {
   let snapshot: FusionEchoCodexSessionsSnapshot = { state: 'unavailable', updatedAt: null, sessions: [], pendingRequests: [] };
   const waiters = new Map<number, Waiter>();
   const owners = new Map<string, symbol>();
+  const answering = new Set<string>();
   const sourceSequences = new Map<string, number>();
   const workbuddy=new WorkBuddyObserver();
   let workbuddySeenAt=0;
   const localAgents = createLocalAgentDiscovery();
   let localScanAt = 0;
-  const combined=():FusionEchoCodexSessionsSnapshot=>({...snapshot,agents:localAgents.snapshot().agents,sessions:[...snapshot.sessions.filter(item=>item.source!=='workbuddy'&&item.source!=='kimi'),...workbuddy.snapshot(),...localAgents.snapshot().sessions].sort((a,b)=>(b.lastActivity??'').localeCompare(a.lastActivity??''))});
+  const combined=():FusionEchoCodexSessionsSnapshot=>({...snapshot,agents:localAgents.snapshot().agents,sessions:[...snapshot.sessions.filter(item=>item.source!=='workbuddy'&&item.source!=='kimi').map(item=>({...item,capabilities:{...item.capabilities,focus:true,chat:false,approve:snapshot.state==='ready'&&owners.has(item.source+':'+item.sessionId)}})),...workbuddy.snapshot(),...localAgents.snapshot().sessions].sort((a,b)=>(b.lastActivity??'').localeCompare(a.lastActivity??''))});
   const publish = (): void => {
     broadcastFusion('fusion:echo:codex-sessions:updated', combined());
   };
@@ -172,12 +173,13 @@ export function createEchoRuntimeService(options: Options) {
         if (interactive) owners.set(key, owner);
         let settled = false;
         res.once('close', () => {
-          if (!settled && owners.get(key) === owner) void request('disconnect', { source: event.source, sessionId: event.session_id }).catch(() => {});
+          if (!settled && owners.get(key) === owner) { owners.delete(key); void request('disconnect', { source: event.source, sessionId: event.session_id }).catch(() => {}); }
         });
-        const result = await request('event', { event: { protocol_version: '1', timestamp: new Date().toISOString(), ...event },
+        let result: unknown;
+        try { result = await request('event', { event: { protocol_version: '1', timestamp: new Date().toISOString(), ...event },
           requestId: payload.requestId, sourceSeq: payload.sourceSeq }, 31 * 60_000);
         settled = true;
-        if (owners.get(key) === owner) owners.delete(key);
+        } finally { if (owners.get(key) === owner) owners.delete(key); }
         const body = JSON.stringify(result);
         res.writeHead(200, { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body), Connection: 'close' }).end(body);
       } catch {
@@ -216,8 +218,10 @@ export function createEchoRuntimeService(options: Options) {
       const pending = snapshot.pendingRequests?.find((item) => item.requestId === requestId);
       if (!pending) throw new Error('request-expired');
       if (pending.kind === 'approval' ? !['approve', 'deny'].includes(action) : !['answer', 'skip'].includes(action)) throw new Error('invalid-action');
-      await request('answer', { requestId, action, answer });
-      return true;
+      if(answering.has(requestId))throw new Error('request-in-progress');
+      answering.add(requestId);
+      try { await request('answer', { requestId, action, answer }); return true; }
+      finally { answering.delete(requestId); }
     },
   };
 }

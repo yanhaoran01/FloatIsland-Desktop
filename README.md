@@ -2,7 +2,7 @@
 
 [English](README.en.md)
 
-FloatIsland 是 Windows 桌面的贴边工作台，将对话、实用工具、音乐、阅读和下载集中在一个可收起的窗口中。支持顶部、左侧和右侧停靠，深色与浅色主题，以及独立窗口。
+FloatIsland 是 Windows 桌面的贴边工作台，将对话、实用工具、音乐、阅读和下载集中在一个可收起的窗口中。支持上、下、左、右四边停靠，深色与浅色主题，以及独立窗口。
 
 [下载最新版](https://github.com/yanhaoran01/FloatIsland-Desktop/releases/latest) · [使用说明](docs/USER_GUIDE.md) · [构建与发布](docs/BUILD.md) · [更新记录](CHANGELOG.md) · [许可证](LICENSE)
 
@@ -12,14 +12,16 @@ FloatIsland 是 Windows 桌面的贴边工作台，将对话、实用工具、�
 
 | 发布文件 | 用途 |
 | --- | --- |
-| `FloatIsland-1.3.4-Setup.exe` | 安装版，可选择安装目录，适合日常使用 |
-| `FloatIsland-1.3.4-portable.exe` | 免安装版，直接运行 |
-| `FloatIsland-1.3.4-source.zip` | 对应版本的完整源码与构建资料 |
+| `FloatIsland-1.3.5-Setup.exe` | 安装版，可选择安装目录，适合日常使用 |
+| `FloatIsland-1.3.5-portable.exe` | 免安装版，直接运行 |
+| `FloatIsland-1.3.5-source.zip` | 对应版本的完整源码与构建资料 |
 | `SHA256SUMS.txt` | 发布文件的 SHA-256 校验值 |
 
 从 [GitHub Releases](https://github.com/yanhaoran01/FloatIsland-Desktop/releases) 下载。升级前退出正在运行的旧版本，再安装或替换程序。便携版同样使用应用配置目录，用户数据不会自动保存在 EXE 旁。卸载默认保留用户数据。
 
 首次启动按引导完成设置，点击“开始使用”进入对话。停靠位置、快捷键、主题及角色外观均可在设置中调整。安装包未进行代码签名，Windows 可能显示未知发布者。更新检查使用本仓库的 GitHub Releases。
+
+默认保留原灵动岛的外观与交互。可在设置的停靠选项中手动开启 Agent HUD，显示无光晕的简约 Agent 条。悬停 Agent 查看额度，点击查看过去 24 小时 Token 与消耗速率。审批到达时弹出可处理卡片，关闭卡片保留待处理请求。拖动空白处超过 6 个逻辑像素后可移到任意屏幕边缘，松开自动吸附。
 
 桌面角色保留简洁的原始眼睛造型，会平滑注视鼠标位置；点击角色可依次触发眨眼、睁眼、提示、轨道、闪光和彗星动作。任务状态会使用对应的短暂反馈，收起胶囊后仍可从屏幕边缘唤回。
 

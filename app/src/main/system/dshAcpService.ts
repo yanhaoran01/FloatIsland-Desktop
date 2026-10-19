@@ -15,7 +15,7 @@
  * @author 鸡哥
  */
 
-import { broadcastFusion } from './fusionWindows';
+import { reportAgentCompletion, broadcastFusion } from './fusionWindows';
 import { type ChildProcessWithoutNullStreams } from 'child_process';
 import { resolveAgentExecutable, spawnAgent, stopAgent } from './agentExecutable';
 import { createInterface, type Interface as ReadlineInterface } from 'readline';
@@ -66,6 +66,7 @@ export function createDshAcpService(options: DshAcpServiceOptions) {
   type SessionState = Pick<FusionDshSnapshot, 'messages' | 'working' | 'activeCwd' | 'error'>;
   const states = new Map<string, SessionState>();
   const loadedSessions = new Set<string>();
+  const cancelled = new Set<string>();
   const resumes = new Map<string, Promise<FusionDshSession>>();
   let routing = false;
   const saveSession = (): void => {
@@ -351,7 +352,10 @@ export function createDshAcpService(options: DshAcpServiceOptions) {
       selectSession(sessionId);
       if (snapshot.working) throw new Error('session-already-running');
       patch({ activeSessionId: sessionId, working: true, error: null, messages: [...snapshot.messages, { id: `dsh-user-${Date.now()}`, role: 'user', text }] });
-      try { await request('session/prompt', { sessionId, prompt: [{ type: 'text', text }] }, 15 * 60 * 1000); }
+      cancelled.delete(sessionId);
+      try { const result=await request('session/prompt', { sessionId, prompt: [{ type: 'text', text }] }, 15 * 60 * 1000) as {stopReason?:string};
+        if(!cancelled.has(sessionId)&&result?.stopReason!=='cancelled')reportAgentCompletion('dsh',sessionId,[...(states.get(sessionId)?.messages??snapshot.messages)].reverse().find(m=>m.role==='assistant'));
+      }
       catch (error) {
         forSession(sessionId, () => patch({ error: error instanceof Error ? error.message : String(error) }));
         throw error;
@@ -361,6 +365,7 @@ export function createDshAcpService(options: DshAcpServiceOptions) {
     cancel: async (sessionId = snapshot.activeSessionId): Promise<void> => {
       saveSession();
       if (!sessionId || !states.get(sessionId)?.working) return;
+      cancelled.add(sessionId);
       write({ jsonrpc: '2.0', method: 'session/cancel', params: { sessionId } });
     },
     answerPermission: (requestId: string, optionId: string | null): void => {

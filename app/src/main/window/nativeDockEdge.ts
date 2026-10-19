@@ -43,7 +43,7 @@ export function snapNativeDockEdge(win:BrowserWindow,edge:DockEdge,desired:DockR
  if(!native.getMonitorInfo(native.monitorFromWindow(handle,2),info)||!native.getWindowRect(handle,current))return;
  const work=info.rcWork,width=Math.round(desired.width*scale),height=Math.round(desired.height*scale),margin=Math.round(12*scale);
  const x=edge==='left'?work.left:edge==='right'?work.right-width:Math.max(work.left+margin,Math.min(work.right-width-margin,current.left));
- const y=edge==='top'?work.top:Math.max(work.top+margin,Math.min(work.bottom-height-margin,current.top));
+ const y=edge==='top'?work.top:edge==='bottom'?work.bottom-height:Math.max(work.top+margin,Math.min(work.bottom-height-margin,current.top));
  if(current.left!==x||current.top!==y||current.right-current.left!==width||current.bottom-current.top!==height){
   if(!native.setWindowPos(handle,0n,x,y,width,height,0x14))throw Error('native-dock-position-failed');
  }

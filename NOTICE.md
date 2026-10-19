@@ -7,3 +7,5 @@ EchoIsland is pinned at `a7ebfff5887f7edae285f71fac049d025361880f`, MIT. Its req
 Bloub SVG source is pinned at `b4bb3c1b5f93c7b87a2e8d620f667c4093d97749`, MIT. The adapter adds visible-only timing, configuration, pointer look, status expressions and cancellable click feedback. Coucou source and its separate asset notice remain in the vendor tree; restricted character media are excluded from the public source and current renderer assets.
 
 Additional sources, fixed versions, licenses and modifications are recorded in [THIRD_PARTY_TOOLS](app/docs/THIRD_PARTY_TOOLS.md), individual vendor directories and `app/resources/licenses`. No upstream project endorses FloatIsland.
+
+The simple Agent HUD interaction is inspired by [Agent HUD](https://github.com/jazzenchen/agent-hud-open) (Apache-2.0). FloatIsland implements the interaction independently for its existing Windows/Electron services; no Swift source or assets from that project are included.

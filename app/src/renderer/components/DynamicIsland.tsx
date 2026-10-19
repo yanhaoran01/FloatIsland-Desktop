@@ -24,6 +24,7 @@
  * @author 鸡哥
  */
 
+import { AgentHud } from './fusion/AgentHud';
 import { useFusionDock } from './fusion/useFusionDock';
 import { useFusionActivity } from './fusion/fusionActivity';
 import type { JSX } from 'react';
@@ -80,7 +81,7 @@ function DynamicIsland(): JSX.Element {
   return (<>
     {dock.dock?.strip && <button className="fusion-dock-handle" data-edge={dock.dock.config.edge} data-waiting={waiting>0} aria-label={t('fusion.dock.reveal')} onClick={() => { void window.api.fusionDockReveal(); }} />}
     <div
-      {...{onPointerDown:dock.onPointerDown,onPointerMove:dock.onPointerMove,onPointerUp:dock.onPointerUp,onPointerCancel:dock.onPointerUp,onClickCapture:dock.onClickCapture}}
+      {...{onPointerDown:dock.onPointerDown,onPointerMove:dock.onPointerMove,onPointerUp:dock.onPointerUp,onPointerCancel:dock.onPointerCancel,onLostPointerCapture:dock.onLostPointerCapture,onClickCapture:dock.onClickCapture}}
       data-dock-preview={dock.dock?.preview || undefined}
       data-dock-edge={dock.dock?.config.edge || 'top'}
       data-island-state={state}
@@ -88,7 +89,8 @@ function DynamicIsland(): JSX.Element {
       onClick={handleIslandClick}
       style={shellStyle}
     >
-      <DynamicIslandBackground
+      {dock.dock?.config.mode==='simple'&&<AgentHud config={dock.dock.config} active={['idle','hover','expanded'].includes(state)}/>}
+      {(dock.dock?.config.mode!=='simple'||!['idle','hover','expanded'].includes(state))&&<DynamicIslandBackground
         bgMedia={bgMedia}
         bgVideoElementRef={bgVideoElementRef}
         bgVideoHwDecode={bgVideoHwDecode}
@@ -97,8 +99,9 @@ function DynamicIsland(): JSX.Element {
         bgVideoFit={bgVideoFit}
         onVideoLoadedMetadata={handleVideoLoadedMetadata}
         onVideoCanPlay={handleVideoCanPlay}
-      />
+      />}
       <DynamicIslandStateContent
+        compactHud={dock.dock?.config.mode==='simple'}
         state={state}
         timeStr={timeStr}
         dayStr={dayStr}

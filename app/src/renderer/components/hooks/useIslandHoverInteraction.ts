@@ -115,6 +115,14 @@ export function useIslandHoverInteraction(options: UseIslandHoverInteractionOpti
         return;
       }
 
+      if (['idle', 'hover', 'expanded'].includes(state) && (document.documentElement.dataset.fusionHudMode === 'simple' || document.documentElement.dataset.fusionHudPanel === 'true')) {
+        clearAllTimers();
+        isHoveringRef.current = inWindow;
+        if (inWindow) window.api?.disableMousePassthrough();
+        rafId = requestAnimationFrame(checkMousePosition);
+        return;
+      }
+
       const config = STATE_CONFIGS[state];
       const sliderCaptchaActive = Boolean(document.querySelector('.slider-captcha-overlay'));
 

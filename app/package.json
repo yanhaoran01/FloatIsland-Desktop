@@ -1,6 +1,6 @@
 {
   "name": "floatisland",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "FloatIsland — a Windows desktop island for chat, tools, music, reading and downloads.",
   "main": "./out/main/index.js",
   "author": "FloatIsland contributors",

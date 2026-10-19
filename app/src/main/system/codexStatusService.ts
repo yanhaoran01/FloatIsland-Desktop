@@ -128,7 +128,7 @@ function phaseForVisibleEvents(events: ClaudeCodeHookEvent[], now: number): Clau
  * @returns Codex 状态服务实例
  */
 export function createCodexStatusService(options: CreateCodexStatusServiceOptions): CodexStatusService {
-  const sessionsPath = join(app.getPath('home'), '.codex', 'sessions');
+  const sessionsPath = join(process.env.CODEX_HOME || join(app.getPath('home'), '.codex'), 'sessions');
   const persistPath = join(app.getPath('userData'), 'eIsland_store', 'codex-status-state.json');
   const cache = new Map<string, CachedSession>();
   let timer: ReturnType<typeof setInterval> | null = null;

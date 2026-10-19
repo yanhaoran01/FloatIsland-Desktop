@@ -50,6 +50,7 @@ import {registerFusionTranslation} from './system/fusionTranslationService';
 import { registerFusionBrowser, registerFusionMediaScheme } from './system/fusionBrowserService';
 import { registerFusionMusic } from './music/fusionMusicService';
 import { registerFusionIntegrations } from './system/fusionIntegrationService';
+import { registerAgentHud } from './system/agentHudService';
 import { registerLocalAssistantIpcHandlers } from './ipc/agent/localAssistantIpc';
 import { registerEchoExternalCodexIpcHandlers } from './ipc/agent/echoExternalCodexIpc';
 import { registerClipboardIpcHandlers } from './ipc/settings/clipboard';
@@ -618,6 +619,7 @@ function registerIpcHandlers(): void {
   registerCodexAppServerIpcHandlers(codexAppServerService);
   registerDshAcpIpcHandlers(dshAcpService);
   registerLocalAssistantIpcHandlers(localAssistantService);
+  registerAgentHud({codex:codexAppServerService.getSnapshot,dsh:dshAcpService.getSnapshot,echo:echoExternalCodexService.getSnapshot,configured:localAssistantService.configuredProviders});
   registerFusionWorkspace(localAssistantService, { codex: codexAppServerService, dsh: dshAcpService });
   registerFusionTimer();
   registerIndependentTimers();

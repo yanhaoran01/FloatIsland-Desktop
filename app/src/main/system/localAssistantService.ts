@@ -18,6 +18,7 @@
 import { app, net, safeStorage, type WebContents } from 'electron';
 import { mkdir, readFile, writeFile } from 'fs/promises';
 import path from 'path';
+import {recordHudUsage} from './agentHudUsage';
 import type {
   FusionAssistantConfig,
   FusionAssistantMessage,
@@ -168,6 +169,7 @@ export function createLocalAssistantService() {
         body = {
           model: config.model,
           stream: true,
+          stream_options: {include_usage:true},
           messages: request.messages.slice(-30).map((message) => ({ role: message.role, content: message.content.slice(0, 40000) })),
         };
       }
@@ -183,6 +185,7 @@ export function createLocalAssistantService() {
       const decoder = new TextDecoder();
       let buffer = '';
       let finished = false;
+      let usage:Record<string,unknown>={};
       const consume = (line: string): void => {
         const trimmed = line.trim();
         if (!trimmed.startsWith('data:')) return;
@@ -191,9 +194,14 @@ export function createLocalAssistantService() {
         try {
           const parsed = JSON.parse(data) as Record<string, unknown>;
           if (isAnthropic) {
+            const message=parsed.message as Record<string,unknown>|undefined;
+            const next=(message?.usage??parsed.usage) as Record<string,unknown>|undefined;
+            if(next){usage={...usage,...next};recordHudUsage(config.provider,request.requestId,usage,true);}
             const delta = parsed.delta as Record<string, unknown> | undefined;
             if (parsed.type === 'content_block_delta' && typeof delta?.text === 'string') sendEvent({ chunk: delta.text });
           } else {
+            const next=parsed.usage as Record<string,unknown>|undefined;
+            if(next)recordHudUsage(config.provider,request.requestId,next);
             const choices = parsed.choices as Array<{ delta?: { content?: unknown } }> | undefined;
             const content = choices?.[0]?.delta?.content;
             if (typeof content === 'string') sendEvent({ chunk: content });
@@ -222,6 +230,7 @@ export function createLocalAssistantService() {
   };
 
   return {
+    configuredProviders:async()=>Object.keys((await readStoredStore()).providers),
     loadModels: async (provider: FusionAssistantProvider) => {
       const config = await readStoredConfig(provider);
       const key = decryptApiKey(config);

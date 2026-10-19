@@ -5,7 +5,7 @@
  * @description 使用静态 WebGL 网格绘制窗口 Genie 变形过渡。
  * @author 鸡哥
  */
-export type GenieEdge = 'top' | 'left' | 'right';
+export type GenieEdge = 'top' | 'bottom' | 'left' | 'right';
 
 /**
  * 计算快照在 Genie 过渡中的像素位置。
@@ -32,13 +32,13 @@ export function geniePoint(
     value = Math.max(0, Math.min(1, value));
     return value * value * (3 - 2 * value);
   };
-  const distance = edge === 'top' ? y : edge === 'left' ? x : 1 - x;
+  const distance = edge === 'bottom' ? 1 - y : edge === 'top' ? y : edge === 'left' ? x : 1 - x;
   const travel = smooth(p);
   // A small bend follows the dock edge without stretching the page into a funnel.
   const bend = Math.sin(Math.PI * p);
   const squeeze = travel + 0.12 * bend * bend * (1 - distance);
 
-  if (edge === 'top') {
+  if (edge === 'top' || edge === 'bottom') {
     return [
       width / 2 + (compact.x + compact.width / 2 - width / 2) * travel + (x - 0.5) * (width * (1 - squeeze) + compact.width * squeeze),
       y * height * (1 - travel) + (compact.y + y * compact.height) * travel,
@@ -100,13 +100,13 @@ export function createGenieMesh(
 
     void main() {
       tex = uv;
-      float distanceToEdge = edge < 0.5 ? pos.y : edge < 1.5 ? pos.x : 1.0 - pos.x;
+      float distanceToEdge = edge > 2.5 ? 1.0 - pos.y : edge < 0.5 ? pos.y : edge < 1.5 ? pos.x : 1.0 - pos.x;
       float travel = smooth01(progress);
       float bend = sin(3.14159265 * progress);
       float squeeze = travel + 0.12 * bend * bend * (1.0 - distanceToEdge);
       vec2 pixel;
 
-      if (edge < 0.5) {
+      if (edge < 0.5 || edge > 2.5) {
         pixel.x = size.x * 0.5 + (compactRect.x + compactRect.z * 0.5 - size.x * 0.5) * travel
           + (pos.x - 0.5) * (size.x * (1.0 - squeeze) + compactRect.z * squeeze);
         pixel.y = pos.y * size.y * (1.0 - travel)
@@ -182,7 +182,7 @@ export function createGenieMesh(
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
   gl.uniform1i(imageLocation, 0);
-  gl.uniform1f(edgeLocation, edge === 'top' ? 0 : edge === 'left' ? 1 : 2);
+  gl.uniform1f(edgeLocation, edge === 'top' ? 0 : edge === 'left' ? 1 : edge === 'bottom' ? 3 : 2);
   gl.uniform2f(sizeLocation, image.width, image.height);
   gl.uniform4f(compactLocation, compact.x, compact.y, compact.width, compact.height);
 
@@ -230,7 +230,7 @@ export function createGenieMesh(
     gl.useProgram(program);uploadCapsule(nextCapsule);
     gl.useProgram(program);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,texture);
     gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,nextImage);
-    gl.uniform1f(edgeLocation,nextEdge==='top'?0:nextEdge==='left'?1:2);
+    gl.uniform1f(edgeLocation,nextEdge==='top'?0:nextEdge==='left'?1:nextEdge==='bottom'?3:2);
     gl.uniform2f(sizeLocation,nextImage.width,nextImage.height);
     gl.uniform4f(compactLocation,nextCompact.x,nextCompact.y,nextCompact.width,nextCompact.height);
     gl.viewport(0,0,canvas.width,canvas.height);

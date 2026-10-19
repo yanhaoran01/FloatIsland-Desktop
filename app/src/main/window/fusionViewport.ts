@@ -32,7 +32,7 @@ export function saveWorkspaceViewportSize(size:{width:number;height:number}):voi
   preferred=next;loaded=true;revision++;mkdirSync(join(app.getPath('userData'),'eIsland_store'),{recursive:true});writeFileSync(file()+'.tmp',JSON.stringify({version:1,...preferred}));renameSync(file()+'.tmp',file());applySharedSize?.();
 }
 /** Installs controls exclusively for the local main window. */
-export function registerFusionViewport(options:{getWindow:()=>ViewportWindow|null;dock:()=>{edge:'top'|'left'|'right';expanded:boolean;dragging:boolean};apply:(rect:Electron.Rectangle)=>void;commit?:()=>void}):void {
+export function registerFusionViewport(options:{getWindow:()=>ViewportWindow|null;dock:()=>{edge:'top'|'bottom'|'left'|'right';expanded:boolean;dragging:boolean};apply:(rect:Electron.Rectangle)=>void;commit?:()=>void}):void {
   workspaceViewportSize();
   const snapshot=():ViewportState=>({preferred:{...preferred},actual:options.getWindow()?.getBounds()??{...preferred},revision,adjusting:!!gesture,token:gesture?.token??null});
   const publish=():ViewportState=>{const value=snapshot();broadcastFusion('fusion:viewport:changed',value);return value;};
@@ -50,7 +50,7 @@ export function registerFusionViewport(options:{getWindow:()=>ViewportWindow|nul
     if(command==='begin'){
       if(!dock.expanded||dock.dragging||gesture||genieTransitionActive()||!['n','s','e','w','ne','nw','se','sw'].includes(value??''))throw Error('resize-unavailable');
       const edge=value as ResizeEdge;
-      if(edge.includes(dock.edge==='left'?'w':dock.edge==='right'?'e':'n'))throw Error('resize-attached-edge');
+      if(edge.includes(dock.edge==='left'?'w':dock.edge==='right'?'e':dock.edge==='bottom'?'s':'n'))throw Error('resize-attached-edge');
       gesture={token:randomUUID(),edge,bounds:win.getBounds(),point:screen.getCursorScreenPoint(),preferred:{...preferred}};revision++;return publish();
     }
     if(!gesture||value!==gesture.token)throw Error('stale-resize-session');
@@ -58,7 +58,7 @@ export function registerFusionViewport(options:{getWindow:()=>ViewportWindow|nul
     if(command!=='move')throw Error('invalid-resize-command');
     const {bounds,point,edge}=gesture,cursor=screen.getCursorScreenPoint(),area=screen.getDisplayMatching(bounds).workArea;
     const minWidth=Math.min(560,Math.max(1,area.width-24)),minHeight=Math.min(420,Math.max(1,area.height-24));
-    const left=dock.edge==='left'?area.x:area.x+12,right=dock.edge==='right'?area.x+area.width:area.x+area.width-12,top=dock.edge==='top'?area.y:area.y+12,bottom=area.y+area.height-12;
+    const left=dock.edge==='left'?area.x:area.x+12,right=dock.edge==='right'?area.x+area.width:area.x+area.width-12,top=dock.edge==='top'?area.y:area.y+12,bottom=dock.edge==='bottom'?area.y+area.height:area.y+area.height-12;
     let x=bounds.x,y=bounds.y,width=bounds.width,height=bounds.height;
     if(edge.includes('e'))width=Math.max(minWidth,Math.min(right-x,bounds.width+cursor.x-point.x));
     if(edge.includes('w')){x=Math.max(left,Math.min(bounds.x+bounds.width-minWidth,bounds.x+cursor.x-point.x));width=bounds.x+bounds.width-x;}

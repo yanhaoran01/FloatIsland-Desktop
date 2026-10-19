@@ -20,20 +20,20 @@
 
 编译 Rust 主机需安装 Rust stable 的 `x86_64-pc-windows-msvc` 工具链、Visual Studio C++ 构建工具与 Windows SDK。完整重编 Windows 插件还需对应工程声明的 .NET SDK，当前插件包含 .NET 10 工程。`npm ci` 不会自动生成这些插件的全部 DLL。
 
-1.3.3 的 Windows 插件运行时固定来自 eIsland v26.7.4。准备脚本核对安装包 SHA-256，运行时脚本核对版本与 JavaScript 绑定。固定运行时适合构建未修改的上游插件；修改插件源码后应重编对应组件并更新固定来源及绑定校验。
+1.3.5 的 Windows 插件运行时固定来自 eIsland v26.7.4。准备脚本核对安装包 SHA-256，运行时脚本核对版本与 JavaScript 绑定。固定运行时适合构建未修改的上游插件；修改插件源码后应重编对应组件并更新固定来源及绑定校验。
 
 ## 获取源码与依赖
 
 ```powershell
 git clone https://github.com/yanhaoran01/FloatIsland-Desktop.git
 cd FloatIsland-Desktop
-git checkout v1.3.3
+git checkout v1.3.5
 cd app
 npm ci --ignore-scripts
 node node_modules/electron/install.js
 ```
 
-也可解压 Release 的 `FloatIsland-1.3.3-source.zip`。当前源码目录保留应用实现、必要资源、构建脚本、锁文件及许可证，已发布版本的源码包以对应标签为准。
+也可解压 Release 的 `FloatIsland-1.3.5-source.zip`。当前源码目录保留应用实现、必要资源、构建脚本、锁文件及许可证，已发布版本的源码包以对应标签为准。
 
 ## 准备固定资源
 
@@ -86,7 +86,7 @@ npm run build
 在 `app` 目录设置专属构建目录，避免与源码及最终交付文件混放：
 
 ```powershell
-$buildRoot = Join-Path $env:LOCALAPPDATA 'FloatIsland/build-cache/1.3.3'
+$buildRoot = Join-Path $env:LOCALAPPDATA 'FloatIsland/build-cache/1.3.5'
 $env:FUSION_BUILD_DIR = Join-Path $buildRoot 'runtime'
 $env:FUSION_OUTPUT_DIR = Join-Path $buildRoot 'output'
 
@@ -109,20 +109,20 @@ node scripts/release-workflow.cjs launch
 
 该启动方式使用构建目录内的独立配置，启用本机调试端口。正式安装包不使用该调试配置。
 
-最终 EXE 位于 `FUSION_OUTPUT_DIR`，名称为 `FloatIsland-1.3.3-Setup.exe` 和 `FloatIsland-1.3.3-portable.exe`。两者来自同一份编译输出。当前配置没有代码签名；如需签名，按 electron-builder 的证书配置设置发布环境。
+最终 EXE 位于 `FUSION_OUTPUT_DIR`，名称为 `FloatIsland-1.3.5-Setup.exe` 和 `FloatIsland-1.3.5-portable.exe`。两者来自同一份编译输出。当前配置没有代码签名；如需签名，按 electron-builder 的证书配置设置发布环境。
 
 ## GitHub Release
 
 提交最终源码后，在仓库根目录导出源码包。输出目录应位于源码仓库之外：
 
 ```powershell
-$releaseDir = 'D:/FloatIsland-release/1.3.3'
+$releaseDir = 'D:/FloatIsland-release/1.3.5'
 New-Item -ItemType Directory -Path $releaseDir -Force | Out-Null
-python app/scripts/bundle-float-source.py (Join-Path $releaseDir 'FloatIsland-1.3.3-source.zip')
-Copy-Item (Join-Path $env:FUSION_OUTPUT_DIR 'FloatIsland-1.3.3-Setup.exe') $releaseDir
-Copy-Item (Join-Path $env:FUSION_OUTPUT_DIR 'FloatIsland-1.3.3-portable.exe') $releaseDir
+python app/scripts/bundle-float-source.py (Join-Path $releaseDir 'FloatIsland-1.3.5-source.zip')
+Copy-Item (Join-Path $env:FUSION_OUTPUT_DIR 'FloatIsland-1.3.5-Setup.exe') $releaseDir
+Copy-Item (Join-Path $env:FUSION_OUTPUT_DIR 'FloatIsland-1.3.5-portable.exe') $releaseDir
 Copy-Item (Join-Path $env:FUSION_OUTPUT_DIR 'latest.yml') $releaseDir
-Copy-Item (Join-Path $env:FUSION_OUTPUT_DIR 'FloatIsland-1.3.3-Setup.exe.blockmap') $releaseDir
+Copy-Item (Join-Path $env:FUSION_OUTPUT_DIR 'FloatIsland-1.3.5-Setup.exe.blockmap') $releaseDir
 
 Get-ChildItem $releaseDir -File | Where-Object Name -ne 'SHA256SUMS.txt' | Sort-Object Name |
   ForEach-Object { '{0}  {1}' -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name } |
@@ -131,11 +131,11 @@ Get-ChildItem $releaseDir -File | Where-Object Name -ne 'SHA256SUMS.txt' | Sort-
 
 源码导出脚本要求工作区干净，使用 Git 归档生成 ZIP。发布目录包含两个 EXE、源码 ZIP、`SHA256SUMS.txt`、`latest.yml` 及安装包的 `.blockmap`；构建缓存、日志、截图、覆盖率及检查 JSON 留在本机构建目录。
 
-推送源码后，将 `v1.3.3` 标签指向该提交，并在 GitHub Release 上传发行文件。Release 说明包含版本变化、系统要求、安装方式及实际限制，可使用 GitHub CLI：
+推送源码后，将 `v1.3.5` 标签指向该提交，并在 GitHub Release 上传发行文件。Release 说明包含版本变化、系统要求、安装方式及实际限制，可使用 GitHub CLI：
 
 ```powershell
 git push origin main
-gh release create v1.3.3 --repo yanhaoran01/FloatIsland-Desktop --target (git rev-parse HEAD) --title 'FloatIsland 1.3.3' --notes-file 'D:/FloatIsland-release/notes.md' "$releaseDir/*"
+gh release create v1.3.5 --repo yanhaoran01/FloatIsland-Desktop --target (git rev-parse HEAD) --title 'FloatIsland 1.3.5' --notes-file 'D:/FloatIsland-release/notes.md' "$releaseDir/*"
 ```
 
 再次发布时使用新版本号，同步 `app/package.json`、锁文件、更新记录及归档文件名。保留已发布版本和对应源码标签。

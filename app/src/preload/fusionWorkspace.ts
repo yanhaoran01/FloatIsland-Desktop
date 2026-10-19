@@ -14,6 +14,10 @@ const listen = <T>(channel: string, callback: (value: T) => void): (() => void) 
   return () => ipcRenderer.removeListener(channel, handler);
 };
 export const fusionWorkspaceApi: FusionWorkspaceApi = {
+  fusionHudDismiss:id=>ipcRenderer.invoke('fusion:hud:dismiss',id),
+  fusionHudSnapshot:()=>ipcRenderer.invoke('fusion:hud:snapshot'),
+  onFusionHud:callback=>listen('fusion:hud:updated',callback),
+  fusionHudPanel:open=>ipcRenderer.invoke('fusion:hud:panel',open),
   fusionGenie:(command,value)=>ipcRenderer.invoke('fusion:genie',command,value),
   onFusionGenieCancelled:callback=>listen('fusion:genie:cancelled',callback),
   fusionWorkBuddyGet:()=>ipcRenderer.invoke('fusion:workbuddy:get'),

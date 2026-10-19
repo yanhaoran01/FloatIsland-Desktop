@@ -5,7 +5,7 @@
  */
 
 /** @file FusionShortRequest.tsx @description One concise original-source request on the island. @author 鸡哥 */
-import { useState, type JSX } from 'react';
+import { useRef, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFusionActivity } from './fusionActivity';
 
@@ -15,6 +15,7 @@ export function FusionShortRequest(): JSX.Element | null {
   const { codex, dsh, echo } = useFusionActivity();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const submitting = useRef(false);
   const c = codex?.pendingRequests[0], d = !c ? dsh?.pendingRequests[0] : undefined;
   const e = !c && !d ? echo?.pendingRequests?.[0] : undefined;
   if (!c && !d && !e) return null;
@@ -26,13 +27,14 @@ export function FusionShortRequest(): JSX.Element | null {
   const deny = d?.options.find(option => option.kind === 'reject_once');
   const question = c?.method === 'item/tool/requestUserInput' || e?.kind === 'question' || (Boolean(d) && (!allow || !deny));
   const submit = async (accept: boolean): Promise<void> => {
-    if (busy || c?.submitted || d?.submitted) return;
+    if (submitting.current || c?.submitted || d?.submitted) return;
+    submitting.current = true;
     setBusy(true); setError('');
     try {
       if (c) await window.api.fusionCodexAnswer(id, accept ? 'accept' : 'decline');
       else if (d) await window.api.fusionDshAnswerPermission(id, accept ? allow!.optionId : deny!.optionId);
       else await window.api.fusionAnswerExternalRequest(id, accept ? 'approve' : 'deny');
-    } catch (reason) { setError(String(reason)); } finally { setBusy(false); }
+    } catch (reason) { setError(String(reason)); } finally { submitting.current = false; setBusy(false); }
   };
   return <aside className="fusion-short-request">
     <strong>{source === 'dsh' ? t('fusion.provider.dsh') : source} · {c?.cwd || session}</strong><p>{details}</p>

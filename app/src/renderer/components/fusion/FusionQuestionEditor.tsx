@@ -5,7 +5,7 @@
  */
 
 /** @file FusionQuestionEditor.tsx @description Shared per-request answers supporting single and multiple choice. @author 鸡哥 */
-import { useState, type JSX } from 'react';
+import { useRef, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFusionDraft } from './useFusionDraft';
 export interface QuestionAnswer { id: string; selected: string[]; custom?: string; }
@@ -17,6 +17,7 @@ export function FusionQuestionEditor({ requestKey, questions, disabled, submit }
 }): JSX.Element {
   const { t } = useTranslation();
   const draft = useFusionDraft('request:' + requestKey);
+  const lock=useRef(false);
   const [busy, setBusy] = useState(false), [error, setError] = useState('');
   let values: Record<string, QuestionAnswer> = {};
   try { values = JSON.parse(draft.value.text || '{}'); } catch { /* first input */ }
@@ -38,10 +39,10 @@ export function FusionQuestionEditor({ requestKey, questions, disabled, submit }
     {draft.conflict && <div>{t('fusion.entry.draftConflict')}<button onClick={() => draft.resolve(true)}>{t('fusion.entry.keepMine')}</button>
       <button onClick={() => draft.resolve(false)}>{t('fusion.entry.useLatest')}</button></div>}
     <button disabled={disabled || busy || !draft.ready || draft.conflict || questions.some(q => !values[q.id]?.selected.length && !values[q.id]?.custom?.trim())}
-      onClick={() => { setBusy(true); setError(''); void draft.flush().then(ok => {
+      onClick={() => { if(lock.current)return;lock.current=true;setBusy(true); setError(''); void draft.flush().then(ok => {
         if (ok) return submit(questions.map(q => values[q.id] || { id: q.id, selected: [] }));
         return undefined;
-      }).catch(reason => setError(String(reason))).finally(() => setBusy(false)); }}>{t('fusion.request.submitAnswer')}</button>
+      }).catch(reason => setError(String(reason))).finally(() => {lock.current=false;setBusy(false);}); }}>{t('fusion.request.submitAnswer')}</button>
     {error && <p role="alert">{error}</p>}
   </div>;
 }

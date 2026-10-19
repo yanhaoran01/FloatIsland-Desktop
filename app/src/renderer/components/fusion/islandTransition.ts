@@ -8,7 +8,7 @@ type Operation={target:0|1;commit:()=>void;cancelled:boolean;finishing:boolean};
 let running:Operation|null=null,queued:{direction:Direction;commit:()=>void}|null=null;
 let lastFocus:HTMLElement|null=null,meshCanvas:HTMLCanvasElement|undefined,warmed=false;
 const nextFrame=()=>new Promise<void>(resolve=>requestAnimationFrame(()=>resolve()));
-const reducedMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.dataset.fiReducedMotion==='true';
+const reducedMotion=()=>document.documentElement.dataset.fusionHudMode==='simple'||matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.dataset.fiReducedMotion==='true';
 /** @returns Whether a dock transition is still preparing, animating or finishing. */
 export function islandTransitionActive():boolean{return running!==null;}
 /** Compile once while the capsule is idle, before the first gesture. @returns No value. */

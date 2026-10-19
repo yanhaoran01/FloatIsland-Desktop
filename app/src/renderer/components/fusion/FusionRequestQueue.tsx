@@ -10,7 +10,7 @@
  * @author 鸡哥
  */
 import { FusionQuestionEditor } from './FusionQuestionEditor';
-import { useEffect, useState, type JSX } from 'react';
+import { useEffect, useRef, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFusionActivity } from './fusionActivity';
 
@@ -21,6 +21,7 @@ export function FusionRequestQueue(): JSX.Element | null {
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState<Record<string, boolean>>({});
   const [error, setError] = useState('');
+  const submittingKeys = useRef(new Set<string>());
   const [target, setTarget] = useState<{ requestId: string; source?: string } | null>(null);
   const total = (codex?.pendingRequests.length ?? 0) + (dsh?.pendingRequests.length ?? 0) + (echo?.pendingRequests?.length ?? 0);
   useEffect(() => {
@@ -40,11 +41,12 @@ export function FusionRequestQueue(): JSX.Element | null {
   }, [open, target, total]);
   if (!total) return null;
   const submit = async (key: string, action: () => Promise<unknown>): Promise<void> => {
-    if (submitting[key]) return;
+    if (submittingKeys.current.has(key)) return;
+    submittingKeys.current.add(key);
     setSubmitting((old) => ({ ...old, [key]: true })); setError('');
     try { await action(); }
     catch (reason) { setError(reason instanceof Error ? reason.message : t('fusion.overview.unavailable')); }
-    finally { setSubmitting((old) => ({ ...old, [key]: false })); }
+    finally { submittingKeys.current.delete(key); setSubmitting((old) => ({ ...old, [key]: false })); }
   };
   return <section className="fusion-global-requests" aria-label={t('fusion.overview.pending')}>
     <button className="fusion-request-disclosure" type="button" aria-expanded={open}
